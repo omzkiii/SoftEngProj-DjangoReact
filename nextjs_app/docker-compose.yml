@@ -1,0 +1,10 @@
+services:
+  app:
+    build: .
+    container_name: nextjs-app
+    command: npm start
+    environment:
+      - NODE_ENV=production
+    ports:
+      - '3000:3000'
+    

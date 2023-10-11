@@ -10,8 +10,8 @@ function App() {
     // Define an async function to fetch data
     async function fetchData() {
       try {
-        const response = await axios.get('/api/users');
-        setUser(response.data[0].name);
+        const response = await axios.get('/api/zara.thustra');
+        setUser(response.data.name);
         console.log(typeof(user));
       } catch (error) {
         console.error('Error:', error);
