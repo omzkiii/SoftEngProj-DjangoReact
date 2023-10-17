@@ -2,7 +2,7 @@
 "use client"
 import React, { useState } from 'react';
 
-const RegisterModal = ({ isOpen, onClose }) => {
+const RegisterForm = ({ onClose }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -14,13 +14,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div
-      className={`fixed inset-0 flex items-center justify-center z-50 transition-opacity duration-300 ${
-        isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-      }`}
-    >
-      <div className="bg-green-500 text-white rounded-lg shadow-lg p-4">
-        <h2 className="text-2xl font-bold mb-4">Register</h2>
+      <>
         <input
           type="text"
           placeholder="Name"
@@ -46,17 +40,10 @@ const RegisterModal = ({ isOpen, onClose }) => {
           onClick={handleRegister}
           className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800"
         >
-          Register
+          Sign-up
         </button>
-        <button
-          onClick={onClose}
-          className="bg-green-200 text-green-800 px-4 py-2 rounded-lg ml-2 hover:bg-green-300"
-        >
-          Close
-        </button>
-      </div>
-    </div>
+      </>
   );
 };
 
-export default RegisterModal;
+export default RegisterForm;
