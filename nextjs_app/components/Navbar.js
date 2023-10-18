@@ -1,9 +1,10 @@
 "use client"
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import LoginModal from "./Account";
 import Link from "next/link";
 import Image from "next/image";
+import ProductDropDown from "./ProductDropDown";
 
 
 const Navbar = () => {
@@ -15,6 +16,13 @@ const Navbar = () => {
   const handleSearch = () => {
     router.push(`/search?q=${searchQuery}`);
   };
+
+  const [productsIsOpen, setProductsIsOpen] = useState(false);
+
+
+  const toggleProducts = () => {
+    setProductsIsOpen(!productsIsOpen)
+  }
   
   return (
     <nav className="p-2 bg-green-600">
@@ -23,10 +31,21 @@ const Navbar = () => {
             <Link href="/"><Image src="/logonobg.png" alt="Logo" width={75} height={40} /> </Link>
             <Link href="/">AgriAccess</Link>
           </div>
-            <Link href="/products" className="text-white">Products</Link>
-            <Link href="/about" className="text-white">Our Story</Link>
+          <div>
+            <button onClick={toggleProducts} className="text-white">Products</button>
+              {productsIsOpen &&<ProductDropDown onClick={toggleProducts}/>}
+          </div>
+            <Link href="/about" className="text-white" onClick={toggleProducts}>Our Story</Link>
             <Link href="/contact" className="text-white">Contact Us</Link>
+            
+            {/* TODO: Change to profile icon */}
+            <Link href={'/?login=true'}>
+              <button type="button" className="bg-green-700 text-white rounded-md p-2 ml-4"> Login/Sign-up </button>
+            </Link>
+
+            {params==='true' && <LoginModal isOpen={true} onClose={router.back}/>}
             <Link href="/cart" className="text-white">Cart</Link>
+
             <input
             type="search"
             placeholder="Search..."
@@ -36,12 +55,8 @@ const Navbar = () => {
             />
             <button type="button" onClick={handleSearch} className="bg-green-700 text-white rounded-md p-2"> Search </button>
 
-            {/* TODO: Change to profile icon */}
-            <Link href={'/?login=true'}>
-              <button type="button" className="bg-green-700 text-white rounded-md p-2 ml-4"> Login/Sign-up </button>
-            </Link>
 
-            {params==='true' && <LoginModal isOpen={true} onClose={router.back}/>}     
+
         </div>
       </nav>
       
