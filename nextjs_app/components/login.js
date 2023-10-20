@@ -1,10 +1,17 @@
 "use client"
 import React, { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
 const LoginForm = ({onClose}) => {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+
+    const toggleShowPassword = (e) => {
+        setShowPassword(e.target.checked)
+    }
+
 
     //TODO: backend authentication
     const handleLogin = () => {
@@ -13,21 +20,39 @@ const LoginForm = ({onClose}) => {
   };
 
     return (
-        <>
+        <div className="text-green-900">
             <input
-            type="email"
-            placeholder="Email"
+            type="text"
+            placeholder="Username"
             className="w-full px-3 py-2 mb-3 rounded-lg"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             />
             <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="Password"
             className="w-full px-3 py-2 mb-3 rounded-lg"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             />
+
+            <div className="flex justify-between">
+
+                <label>
+                    <input
+                        type="checkbox"
+                        value="showPassword"
+                        checked={showPassword}
+                        onChange={toggleShowPassword}
+                    />
+                Show Password
+                </label>
+                <Link href="/">Forgot Password</Link>
+
+            </div>
+            <br/>
+
+
             <button
             onClick={handleLogin}
             className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800"
@@ -35,7 +60,8 @@ const LoginForm = ({onClose}) => {
             Log In
             </button>
             
-        </>
+            
+        </div>
     );
 };
 
