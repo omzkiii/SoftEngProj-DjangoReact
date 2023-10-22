@@ -35,7 +35,7 @@ const Navbar = () => {
             <button onClick={toggleProducts} className="text-white">Products</button>
               {productsIsOpen &&<ProductDropDown onClick={toggleProducts}/>}
           </div>
-            <Link href="/about" className="text-white" onClick={toggleProducts}>Our Story</Link>
+            <Link href="/about" className="text-white">Our Story</Link>
             <Link href="/contact" className="text-white">Contact Us</Link>
             
             {/* TODO: Change to profile icon */}
