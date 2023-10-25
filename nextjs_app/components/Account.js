@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import LoginForm from './Login';
 import RegisterForm from './Register';
+import Modal from './Modal';
 
 const AccountModal = ({ isOpen, onClose }) => {
   const [showLogIn, setShowLogIn] = useState(true);
