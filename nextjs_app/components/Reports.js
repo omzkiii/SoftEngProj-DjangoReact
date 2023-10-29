@@ -19,7 +19,7 @@ const Reports = () => {
 
     return (
         <div className="bg-green-100 min-h-screen flex flex-col items-center justify-center">
-            <h1 aclassNme="font-extrabold text-green-500 m-4 text-5xl">Reports</h1>
+            <h1 className="font-extrabold text-green-500 m-4 text-5xl">Reports</h1>
             <div className="m-4">
                 <button value="inventory" onClick={toggleReport} className={activeBtn === "inventory" ? "text-green-700 bg-white rounded-md p-2 mr-2": "bg-green-700 text-white rounded-md p-2 mr-2"}>Inventory Report</button>
                 <button value="order" onClick={toggleReport} className={activeBtn === "order" ? "text-green-700 bg-white rounded-md p-2 mr-2": "bg-green-700 text-white rounded-md p-2 mr-2"}>Order Report</button>
