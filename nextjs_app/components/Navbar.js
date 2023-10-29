@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import LoginModal from "./Account";
+import AccountModal from "./Account";
 import Link from "next/link";
 import Image from "next/image";
 import ProductDropDown from "./ProductDropDown";
@@ -84,6 +84,9 @@ const Navbar = () => {
         <Link href={'/?login=true'}>
           <img src="/userIcon.png" alt="UserIcon" />
         </Link>
+
+        {params==='true' && <AccountModal isOpen={true} onClose={router.back}/>}
+
         <img src="cartIcon.png" alt="Cart " />
         <input
           type="search"
