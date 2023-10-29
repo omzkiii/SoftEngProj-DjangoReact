@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import LoginModal from "./Account";
+import AccountModal from "./Account";
 import Link from "next/link";
 import Image from "next/image";
 import ProductDropDown from "./ProductDropDown";
@@ -43,7 +43,7 @@ const Navbar = () => {
               <button type="button" className="bg-green-700 text-white rounded-md p-2 ml-4"> Login/Sign-up </button>
             </Link>
 
-            {params==='true' && <LoginModal isOpen={true} onClose={router.back}/>}
+            {params==='true' && <AccountModal isOpen={true} onClose={router.back}/>}
             <Link href="/cart" className="text-white">Cart</Link>
 
             <input
