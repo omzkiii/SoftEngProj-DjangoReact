@@ -38,7 +38,6 @@ const Navbar = () => {
     //         <Link href="/about" className="text-white" onClick={toggleProducts}>Our Story</Link>
     //         <Link href="/contact" className="text-white">Contact Us</Link>
             
-            
     //         {/* TODO: Change to profile icon */}
     //         <Link href={'/?login=true'}>
     //           {/* <button type="button" className="bg-green-700 text-white rounded-md p-2 ml-4"> Login/Sign-up </button> */}
