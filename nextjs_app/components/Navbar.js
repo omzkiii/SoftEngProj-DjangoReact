@@ -84,6 +84,9 @@ const Navbar = () => {
         <Link href={'/?login=true'}>
           <img src="/userIcon.png" alt="UserIcon" />
         </Link>
+
+        {params==='true' && <AccountModal isOpen={true} onClose={router.back}/>}
+
         <img src="cartIcon.png" alt="Cart " />
         <input
           type="search"
