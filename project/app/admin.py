@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User
+from .models import User, Product
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ('username', 'name')
@@ -7,3 +7,4 @@ class UserAdmin(admin.ModelAdmin):
 # Register your models here.
 
 admin.site.register(User, UserAdmin)
+admin.site.register(Product)

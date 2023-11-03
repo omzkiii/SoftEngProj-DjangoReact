@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import LoginModal from "./Account";
+import Account from "./Account";
 import Link from "next/link";
 import Image from "next/image";
 import ProductDropDown from "./ProductDropDown";
@@ -24,6 +24,15 @@ const Navbar = () => {
     setProductsIsOpen(!productsIsOpen)
   }
   
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <nav className="p-2 bg-green-600">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -40,18 +49,17 @@ const Navbar = () => {
             
             {/* TODO: Change to profile icon */}
             <Link href={'/?login=true'}>
-              <button type="button" className="bg-green-700 text-white rounded-md p-2 ml-4"> Login/Sign-up </button>
+              <button type="button" onClick={openModal} className="bg-green-700 text-white rounded-md p-2 ml-4"> Login/Sign-up </button>
             </Link>
-
-            {params==='true' && <LoginModal isOpen={true} onClose={router.back}/>}
+              {params==='true' && <Account onClose={closeModal} isModalOpen={isModalOpen}/>}
             <Link href="/cart" className="text-white">Cart</Link>
 
             <input
-            type="search"
-            placeholder="Search..."
-            className="p-2 border border-green-300 rounded-md"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+              type="search"
+              placeholder="Search..."
+              className="p-2 border border-green-300 rounded-md"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
             <button type="button" onClick={handleSearch} className="bg-green-700 text-white rounded-md p-2"> Search </button>
 
