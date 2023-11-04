@@ -24,6 +24,15 @@ const Navbar = () => {
     setProductsIsOpen(!productsIsOpen)
   }
   
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     // <nav className="p-2 bg-green-600">
     //     <div className="max-w-7xl mx-auto flex justify-between items-center">

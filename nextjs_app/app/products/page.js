@@ -5,7 +5,7 @@ import ProductCard from '../../components/ProductCard';
 import Modal from '../../components/Modal';
 
 
-
+//THESE ARE THE TEMPORARY DATA FOR PRODUCTS:
 const products = [
   {
     id: 1,

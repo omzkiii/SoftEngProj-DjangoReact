@@ -3,6 +3,9 @@ import React from 'react';
 import ProductCard from '../../../components/ProductCard';
 
 // TODO: Fetch data from backend
+
+
+//THESE ARE THE TEMPORARY DATA FOR PRODUCTS:
 const products = [
   {
     id: 1,
@@ -29,6 +32,7 @@ const ProductPage = () => {
           <ProductCard key={product.id} product={product}/>
         ))}
       </div>
+      <p className="text-lg text-green-700 mb-8 text-center">OPEN nexjs_app/app/products/fruits/page.js to edit</p>
     </div>
   );
 };
