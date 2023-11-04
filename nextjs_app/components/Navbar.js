@@ -91,10 +91,10 @@ const Navbar = () => {
       </div>
       <div className="flex flex-row justify-end items-center space-x-8">
         <Link href={'/?login=true'}>
-          <img src="/userIcon.png" alt="UserIcon" />
+          <img src="/userIcon.png" alt="UserIcon" onClick={openModal} />
         </Link>
 
-        {params==='true' && <AccountModal isOpen={true} onClose={router.back}/>}
+        {params==='true' && <AccountModal onClose={closeModal} isModalOpen={isModalOpen}/>}
 
         <img src="cartIcon.png" alt="Cart " />
         <input
