@@ -144,9 +144,3 @@ CORS_ALLOWED_ORIGINS =[
     'http://frontend:3000',
 
 ]
-
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-    ]
-}

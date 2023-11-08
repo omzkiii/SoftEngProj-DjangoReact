@@ -14,11 +14,5 @@ module.exports = {
       },
     },
   },
-  variants: {
-    extend: {
-      opacity: ['disabled'],
-      transform: ['hover', 'focus'],
-    },
-  },
   plugins: [],
 }
