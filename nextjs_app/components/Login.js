@@ -40,7 +40,7 @@ const LoginForm = ({ onClose }) => {
         type="email"
         name="email"
         placeholder="Email"
-        className="w-full px-3 py-2 mb-3 rounded-lg"
+        className="w-full px-3 py-2 mb-3 rounded-lg text-green-950"
         value={formData.email}
         onChange={handleInputChange}
       />
@@ -48,7 +48,7 @@ const LoginForm = ({ onClose }) => {
         type="password"
         name="password"
         placeholder="Password"
-        className="w-full px-3 py-2 mb-3 rounded-lg"
+        className="w-full px-3 py-2 mb-3 rounded-lg text-green-950"
         value={formData.password}
         onChange={handleInputChange}
       />
