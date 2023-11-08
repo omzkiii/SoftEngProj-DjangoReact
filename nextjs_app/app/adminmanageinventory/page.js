@@ -1,6 +1,6 @@
 //FRAMEWORK NECCESITIES
 import React from 'react';
-import { useState } from "react"
+// import { useState } from "react"
 
 //REPORT PAGES TO BE PULLED TO THE BOX
 import InventoryReport from '../../components/adminReports/inventory.js'
@@ -11,8 +11,8 @@ const MainPage = () => {
 
   //VARIABLES AND BUTTON FUNCTION 
 
-  const [activeBtn, setActiveBtn] = useState("inventory")
-  const [selectedPeriod, setSelectedPeriod] = useState("monthly")
+//   const [activeBtn, setActiveBtn] = useState("inventory")
+//   const [selectedPeriod, setSelectedPeriod] = useState("monthly")
 
   const toggleReport = (e) => {
       setActiveBtn(e.target.value)
