@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+axios.defaults.withCredentials = true
+
 const LoginForm = ({ onClose }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -15,13 +17,14 @@ const LoginForm = ({ onClose }) => {
     console.log('Logging in with email:', formData.email);
 
     try {
-      const response = await axios.post('http://localhost:8000/api/users/login/', formData);
-
+      const response = await axios.post('http://127.0.0.1:8000/api/users/login/', formData);
+      
       if (response.status === 200) {
         // Successful login, handle user authentication and redirection
         setIsLoggedIn(true);
         setError(null);
         console.log('Log in success');
+        console.log(response.user);
         onClose(); // Close the modal
       } else {
         // Handle login errors
