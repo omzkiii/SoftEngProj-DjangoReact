@@ -1,37 +1,37 @@
-"""
-URL configuration for project project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers
-from app import views
-from app.views import ProductListView, UserViewSet
-
+from django.conf import settings
+from django.conf.urls.static import static
+from app.views import UserRegistrationAPIView
 
 
 # router = routers.DefaultRouter()
 # router.register(r'users', views.UserViewSet.as_view, 'app')
-router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
+# router = routers.DefaultRouter()
+# router.register(r'users', UserViewSet)
 
 
 urlpatterns = [
-     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
-    path('api/product/', ProductListView.as_view()),
+    # Admin
+    path('admin/', admin.site.urls),
+
+    # Main API
+    path('api/', include('app.urls')),
+
+    # User Registration API
+    path('register/', UserRegistrationAPIView.as_view()),
+    
+    # User Authentication API
+    # auth/token/login/ - for logging in
+    # auth/token/logout/ - for logging out
+    # auth/users/me/ - for retrieving, updating and deleting user data
+    # auth/users/reset_password/ - for sending reset link to user email
+    # auth/users/reset_password_confirm/ - for changing user password
+    # https://djoser.readthedocs.io/en/latest/base_endpoints.html#
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.authtoken')),
+
+    # path('api/', include(router.urls)),
 
 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) #for accessing uploaded images
