@@ -1,34 +1,17 @@
-version: '2'
-
+version: '3'
 services:
-  frontend:
-    build: ./nextjs_app
-    container_name: nextjs-app
-    command: npm run dev
+  django_app:
+    build:
+      context: ./django_app
     ports:
-      - 3000:3000
-    networks:
-      - network1
-    # links:
-    #   - backend
-    # depends_on:
-    #   - backend
-    
-  backend:
-    build: ./project
-    container_name: django-server
-    command: python ./project/manage.py runserver backend:8000
-    ports:
-      - 8000:8000
+      - "8000:8000"
     volumes:
-      - .:/app
-    networks:
-      - network1
+      - ./django_app:/app
 
-networks:
-  network1:
-    name: my-net
-    external: true
-      
-
-    
+  nextjs_app:
+    build:
+      context: ./nextjs_app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./nextjs_app:/app
