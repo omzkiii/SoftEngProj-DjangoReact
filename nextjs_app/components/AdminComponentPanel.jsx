@@ -8,6 +8,7 @@ import InventoryReport from '../components/adminReports/inventory';
 import OrdersReport from  '../components/adminReports/orders';
 
 import SalesReport from '../components/adminReports/sales';
+import Reports from './Reports';
 
 const MainPage = () => {
 
@@ -52,7 +53,7 @@ const MainPage = () => {
 
                     {activeBtn === "orders" && <OrdersReport />}
                     {activeBtn === "inventory" && <InventoryReport />}
-                    {activeBtn === "sales" && <SalesReport />}
+                    {activeBtn === "sales" && <Reports />}
                   </div>
                 </div>
 

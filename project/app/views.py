@@ -1,6 +1,7 @@
 from rest_framework.generics import ListAPIView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView
+from rest_framework.views import APIView
 from .serializers import ProductSerializer, DiscountSerializer
-from .models import Product, Discount
+from .models import Product, Discount, InventoryTxn
 from rest_framework.permissions import IsAdminUser
 
 
@@ -11,10 +12,25 @@ ProductListView - to get all products
 ProductUpdateView - update single product using id
 ProductRetrieveView - retrieve single product using id
 """
-class ProductListCreateView(ListCreateAPIView):
-    queryset = Product.objects.all()
+
+class ProductListCreateView(APIView):
     serializer_class = ProductSerializer
     permission_classes = [IsAdminUser]
+    def get(self, request):
+        products = Product.objects.all()
+        serialized_prod = ProductSerializer(products, many=True)
+        return Response(serialized_prod.data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        serializer = ProductSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        product = serializer.save()
+        serialized_prod = ProductSerializer(product) 
+
+        inv_txn = InventoryTxn(product=product, date=product.date_created, txn_type=InventoryTxn.ADD)
+        inv_txn.save()
+        
+        return Response(serialized_prod.data, status=status.HTTP_201_CREATED)
 
 
 class ProductListView(ListAPIView):
@@ -22,6 +38,7 @@ class ProductListView(ListAPIView):
     serializer_class = ProductSerializer
 
 
+#TODO: Custom update view to include creation of inventory transaction objects
 class ProductUpdateView(UpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -63,12 +80,12 @@ class CartListCreateView(ListCreateAPIView):
 """
 User Registration View
 """
-from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import CustomerSerializer, UserCreatePasswordRetypeSerializer
 
 class UserRegistrationAPIView(APIView):
+    serializer_class = UserCreatePasswordRetypeSerializer
 
     def post(self, request, *args, **kwargs):
         user_serializer = UserCreatePasswordRetypeSerializer(data=request.data)
