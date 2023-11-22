@@ -1,14 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
+#############################################
 class Product(models.Model):
-    fruit = "Fruit"
-    vegetable = "Vegetable"
+    FRUIT = "Fruit"
+    VEGETABLE = "Vegetable"
 
     CATEGORY = [
-        (fruit, fruit),
-        (vegetable, vegetable)
+        (FRUIT, FRUIT),
+        (VEGETABLE, VEGETABLE)
     ]
 
 
@@ -28,6 +28,7 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.name} - {self.category}"
     
+#############################################
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -37,21 +38,26 @@ class Customer(models.Model):
 
     def __str__(self) -> str:
         return self.user.username
-    
+
+#############################################    
 
 class Cart(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.DecimalField(max_digits=20, decimal_places=2)
 
+    def __str__(self) -> str:
+        return f"{self.customer.user.username}'s Cart"
+
+#############################################
 
 class Discount(models.Model):
-    peso = "Peso"
-    perc = "Percentage"
+    PESO = "Peso"
+    PERC = "Percentage"
 
     DISC_TYPE = [
-        (peso, peso),
-        (perc, perc)
+        (PESO, PESO),
+        (PERC, PERC)
     ]
 
     products = models.ManyToManyField(Product)
@@ -59,3 +65,68 @@ class Discount(models.Model):
     disc_type = models.CharField(max_length=50, choices=DISC_TYPE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     is_active = models.BooleanField(default=True)
+
+    def __str__(self) -> str:
+        return self.description
+
+
+#############################################
+
+from django.utils import timezone
+
+class InventoryTxn(models.Model):
+    ADD = "Addition"
+    SALE = "Sale"
+    OTHERS = "Others"
+
+    TXN_TYPE = [
+        (ADD, ADD),
+        (SALE, SALE),
+        (OTHERS, OTHERS)
+    ]
+    
+    product = models.ForeignKey(Product, on_delete=models.PROTECT)
+    date = models.DateTimeField(default=timezone.now())
+    txn_type = models.CharField(max_length=10, choices=TXN_TYPE)
+
+#############################################
+
+#TODO: Delete if not necessary to generate reports
+class EndingBalance(models.Model):
+
+    product = models.ForeignKey(Product, on_delete=models.PROTECT)
+    amount = models.DecimalField(max_digits=20, decimal_places=2)
+    date = models.DateField()
+
+#############################################
+
+#TODO: Change on_delete to SET() and set to deleted customer (create user and customer for deleted accounts)
+class Order(models.Model):
+    UNPAID = "Unpaid"
+    PAID = "Paid"
+    PACKED = "Packed"
+    IN_TRANSIT = "In Transit"
+    COMPLETED = "Completed"
+
+    STATUS = [
+        (UNPAID, UNPAID),
+        (PAID, PAID),
+        (PACKED, PACKED),
+        (IN_TRANSIT, IN_TRANSIT),
+        (COMPLETED, COMPLETED)
+    ]
+
+    
+    user = models.ForeignKey(Customer, on_delete=models.DO_NOTHING)
+    product = models.ManyToManyField(Product, through="OrderProduct")
+    date_placed = models.DateTimeField(auto_now_add=True)
+    date_completed = models.DateTimeField()
+    status = models.CharField(max_length=15, choices=STATUS)
+
+
+#############################################
+
+class OrderProduct(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.DecimalField(max_digits=20, decimal_places=2)
