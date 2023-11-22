@@ -21,6 +21,7 @@ class Product(models.Model):
     category = models.CharField(max_length=50, choices=CATEGORY)
     image = models.ImageField(upload_to="products", null=True)
     is_featured = models.BooleanField(default=False)
+    is_available = models.BooleanField(default=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 

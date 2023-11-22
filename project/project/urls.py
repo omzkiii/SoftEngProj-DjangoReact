@@ -19,6 +19,12 @@ urlpatterns = [
     path('api/', include('app.urls')),
 
     # User Registration API
+    # Request body format should be:
+    #    {
+    #        "user": {"username": "", "email": "", "first_name": "", "last_name": "", "password": "", "re_password": ""},
+    #        "cart": {"{product_id}": quantity, "10": 7}
+    #    }
+    #
     path('register/', UserRegistrationAPIView.as_view()),
     
     # User Authentication API

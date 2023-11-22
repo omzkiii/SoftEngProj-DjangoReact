@@ -132,7 +132,7 @@ class UserRegistrationAPIView(APIView):
     serializer_class = UserCreatePasswordRetypeSerializer
 
     def post(self, request, *args, **kwargs):
-        user_serializer = UserCreatePasswordRetypeSerializer(data=request.data)
+        user_serializer = UserCreatePasswordRetypeSerializer(data=request.data.get('user'))
         user_serializer.is_valid(raise_exception=True)
         user = user_serializer.save()
 
@@ -140,7 +140,14 @@ class UserRegistrationAPIView(APIView):
         cust_data = {"user":user.id}
         cust_serializer = CustomerSerializer(data=cust_data)
         cust_serializer.is_valid(raise_exception=True)
-        cust_serializer.save()
+        customer = cust_serializer.save()
+
+        #To create cart data for the customer
+        
+        cart = request.data.get('cart', {})
+        for k,v in cart.items():
+            customer.products.add(k, through_defaults={'quantity':v})
+
 
         return Response(user_serializer.data, status=status.HTTP_201_CREATED)
         
