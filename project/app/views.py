@@ -1,7 +1,7 @@
-from rest_framework.generics import ListAPIView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.views import APIView
-from .serializers import ProductSerializer, DiscountSerializer
-from .models import Product, Discount, InventoryTxn
+from .serializers import ProductSerializer, DiscountSerializer, CartSerializer
+from .models import Product, Discount, InventoryTxn, Cart
 from rest_framework.permissions import IsAdminUser
 
 
@@ -71,9 +71,21 @@ class DiscountRetrieveView(RetrieveAPIView):
 """
 Cart-related views
 """
+
 class CartListCreateView(ListCreateAPIView):
-    #TODO: cart view
-    pass
+    def get_queryset(self):
+        customer = self.kwargs.get('customer')  
+        return Cart.objects.filter(customer__user__username=customer)
+    serializer_class = CartSerializer
+
+
+class CartRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+    #TODO: cart view# 
+    def get_queryset(self):
+        customer = self.kwargs.get('customer')  
+        return Cart.objects.filter(customer__user__username=customer)
+    serializer_class = CartSerializer
+    lookup_field = 'pk'
 
 
 
