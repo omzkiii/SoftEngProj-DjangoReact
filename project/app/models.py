@@ -86,8 +86,9 @@ class InventoryTxn(models.Model):
     ]
     
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
-    date = models.DateTimeField(default=timezone.now())
+    date = models.DateTimeField(auto_now_add=True)
     txn_type = models.CharField(max_length=10, choices=TXN_TYPE)
+    quantity = models.DecimalField(max_digits=20, decimal_places=2, default=0)
 
 #############################################
 
@@ -122,6 +123,8 @@ class Order(models.Model):
     date_placed = models.DateTimeField(auto_now_add=True)
     date_completed = models.DateTimeField()
     status = models.CharField(max_length=15, choices=STATUS)
+    gross_amount = models.DecimalField(max_digits=20, decimal_places=2)
+    discount = models.DecimalField(max_digits=20, decimal_places=2)
 
 
 #############################################

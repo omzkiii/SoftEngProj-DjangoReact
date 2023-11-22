@@ -1,6 +1,6 @@
 from rest_framework.generics import ListAPIView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView
 from rest_framework.views import APIView
-from .serializers import ProductSerializer, DiscountSerializer
+from .serializers import ProductSerializer, ProductUpdateSerializer, DiscountSerializer
 from .models import Product, Discount, InventoryTxn
 from rest_framework.permissions import IsAdminUser
 
@@ -27,7 +27,7 @@ class ProductListCreateView(APIView):
         product = serializer.save()
         serialized_prod = ProductSerializer(product) 
 
-        inv_txn = InventoryTxn(product=product, date=product.date_created, txn_type=InventoryTxn.ADD)
+        inv_txn = InventoryTxn(product=product, date=product.date_created, txn_type=InventoryTxn.ADD, quantity=product.quantity)
         inv_txn.save()
         
         return Response(serialized_prod.data, status=status.HTTP_201_CREATED)
@@ -38,11 +38,43 @@ class ProductListView(ListAPIView):
     serializer_class = ProductSerializer
 
 
-#TODO: Custom update view to include creation of inventory transaction objects
-class ProductUpdateView(UpdateAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-    lookup_field = 'pk'
+from django.http import Http404
+
+class ProductUpdateView(APIView):
+    serializer_class = ProductUpdateSerializer
+    permission_classes = [IsAdminUser]
+
+    def get_object(self, pk):
+        try:
+            return Product.objects.get(pk=pk)
+        except Product.DoesNotExist:
+            raise Http404
+        
+    def get(self, request, pk, *args, **kwargs):
+        product = self.get_object(pk)
+        serializer = ProductSerializer(product)
+        
+        return Response(serializer.data)
+
+
+    def put(self, request, pk, *args, **kwargs):
+        product = self.get_object(pk)
+        prev_qty = product.quantity
+        serializer = ProductUpdateSerializer(product, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        
+        change_in_qty = product.quantity - prev_qty
+
+        if change_in_qty > 0:
+            inv_txn = InventoryTxn(product=product, txn_type=InventoryTxn.ADD, quantity=change_in_qty)
+            inv_txn.save()
+        elif change_in_qty < 0:
+            inv_txn = InventoryTxn(product=product, txn_type=InventoryTxn.OTHERS, quantity=change_in_qty)
+            inv_txn.save()
+
+        return Response(serializer.data)
+
 
 
 class ProductRetrieveView(RetrieveAPIView):

@@ -9,6 +9,12 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = '__all__'
 
+class ProductUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = '__all__'
+        read_only_fields = ['cost']
+
 
 class DiscountSerializer(serializers.ModelSerializer):
     class Meta:
