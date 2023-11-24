@@ -4,10 +4,9 @@ import React from 'react';
 import { useState } from "react";
 
 //REPORT PAGES TO BE PULLED TO THE BOX
-import InventoryReport from '../components/adminReports/inventory';
-import OrdersReport from  '../components/adminReports/orders';
-
-import SalesReport from '../components/adminReports/sales';
+import InventoryReport from '../components/reports/InventoryReport';
+import OrdersReport from  '../components/reports/OrderReport';
+import SalesReport from '../components/reports/FinancialReport';
 
 const MainPage = () => {
 
@@ -50,8 +49,8 @@ const MainPage = () => {
                   <div className="p-10 rounded-lg shadow-md bg-light-grayish-blue">
                     {/* CONTENT OF THE PANEL */}
 
-                    {activeBtn === "orders" && <OrdersReport />}
                     {activeBtn === "inventory" && <InventoryReport />}
+                    {activeBtn === "orders" && <OrdersReport />} 
                     {activeBtn === "sales" && <SalesReport />}
                   </div>
                 </div>
