@@ -84,9 +84,9 @@ const Navbar = () => {
 
         <Link href="/"><Image src="/logonobg.png" alt="Logo" width={75} height={40} /> </Link>
         <Link href="/">AgriAccess</Link>
-        <button onClick={toggleProducts} className="text-white">Products</button>
-        {productsIsOpen && <ProductDropDown onClick={toggleProducts} />}
-        <Link href="/about" className="text-white" onClick={toggleProducts}>Our Story</Link>
+        <button onMouseEnter={toggleProducts} onMouseLeave={toggleProducts}className="text-white relative">Products{productsIsOpen && <ProductDropDown onClick={toggleProducts} />}</button>
+        
+        <Link href="/about" className="text-white" >Our Story</Link>
         <Link href="/contact" className="text-white">Contact Us</Link>
       </div>
       <div className="flex flex-row justify-end items-center space-x-8">

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,7 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'corsheaders',
-    'rest_framework'
+    'rest_framework',
+    'rest_framework.authtoken',
+    'djoser',
+
 ]
 
 MIDDLEWARE = [
@@ -131,11 +135,27 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+# File Handling Settings
+# https://docs.djangoproject.com/en/4.2/topics/files/
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = 'media/'
+
+# Email Settings
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'email')
+
+
+# CORS Settings
+
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'http://0.0.0.0:3000',
     'http://frontend:3000'
 ]
+
+CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS =[
     'http://localhost:3000',
@@ -145,8 +165,30 @@ CORS_ALLOWED_ORIGINS =[
 
 ]
 
+
+# DRF Settings
+# https://www.django-rest-framework.org/
+
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
+    'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
-    ]
+        )
+}
+
+
+# Authentication Settings
+# https://djoser.readthedocs.io/en/latest/index.html
+
+DJOSER = {
+    'USER_ID_FIELD':'username',
+    'PASSWORD_RESET_CONFIRM_URL': 'reset_password/{uid}/{token}', #TODO: change URL to frontend URL
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
+    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True,
+    'PASSWORD_RESET_CONFIRM_RETYPE': True,
+    'SERIALIZERS': {
+        'user_create_password_retype': 'app.serializers.UserCreatePasswordRetypeSerializer',
+        'user': 'app.serializers.UserSerializer',
+        'current_user': 'app.serializers.UserSerializer',
+    },
+    'USER_CREATE_PASSWORD_RETYPE': True,
 }

@@ -6,7 +6,7 @@ const ProductDropDown = ({onClick}) => {
         
     return (
         <>
-            <ul className="absolute mt-9 bg-green-600 border rounded shadow-lg">
+            <ul className="absolute mt-0 bg-green-600 border rounded shadow-lg">
                   {categories.map((cat, index) => (
                     <Link href={`/products/${cat.toLowerCase()}`}><li key={index} onClick={onClick} className="px-4 py-2 cursor-pointer hover:bg-gray-100 hover:text-green-950">
                       {cat}
