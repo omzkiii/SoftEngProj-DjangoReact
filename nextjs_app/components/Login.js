@@ -47,7 +47,7 @@ const LoginForm = ({onClose}) => {
                     />
                 Show Password
                 </label>
-                <Link href="/">Forgot Password</Link>
+                <Link href="/passwordreset">Forgot Password</Link>
 
             </div>
             <br/>

@@ -37,6 +37,14 @@ class ProductListView(ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
+class ProductCategoryListView(ListAPIView):
+    
+
+    def get_queryset(self):
+        category = self.kwargs.get('category')  
+        return Product.objects.filter(category=category)
+    serializer_class = ProductSerializer
+
 
 #TODO: Custom update view to include creation of inventory transaction objects
 class ProductUpdateView(UpdateAPIView):
