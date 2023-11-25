@@ -84,8 +84,9 @@ const Navbar = () => {
 
         <Link href="/"><Image src="/logonobg.png" alt="Logo" width={75} height={40} /> </Link>
         <Link href="/">AgriAccess</Link>
+        <a href="/products">
         <button onMouseEnter={toggleProducts} onMouseLeave={toggleProducts}className="text-white relative">Products{productsIsOpen && <ProductDropDown onClick={toggleProducts} />}</button>
-        
+        </a>
         <Link href="/about" className="text-white" >Our Story</Link>
         <Link href="/contact" className="text-white">Contact Us</Link>
       </div>
