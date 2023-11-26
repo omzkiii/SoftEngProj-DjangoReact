@@ -4,6 +4,7 @@ import Modal from '@/components/Modal';
 const InventoryReport = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [editedItem, setEditedItem] = useState(null);
 
   const items = [
     {
@@ -47,15 +48,27 @@ const InventoryReport = () => {
     setSelectedItem(null);
   };
 
-  const updateQuantity = (index, increment) => {
-    const updatedItems = [...items];
-    if (increment) {
-      updatedItems[index].qty += 1;
-    } else {
-      updatedItems[index].qty -= 1;
-      if (updatedItems[index].qty < 0) updatedItems[index].qty = 0; // Prevent negative quantity
-    }
+  
+
+// Function to handle edits and update the items array
+const handleEdit = () => {
+  if (editedItem) {
+    const updatedItems = items.map((item, index) => {
+      if (index === editedItem.index) {
+        return editedItem.editedData;
+      }
+      return item;
+    });
+
     setItems(updatedItems);
+    setShowModal(false); // Close the modal after editing
+  }
+};
+  // Function to open the edit modal with the selected item's details
+   // Function to open the edit modal with the selected item's details
+   const openEditModal = (item, index) => {
+    setEditedItem({ editedData: { ...item }, index });
+    setShowModal(true);
   };
 
   return (
@@ -92,28 +105,25 @@ const InventoryReport = () => {
                 <td>{item.name}</td>
                 <td>
                   <div className="flex items-center justify-center">
-                    <button
-                      onClick={() => updateQuantity(index, false)}
-                      className="border font-bold border-white rounded-full w-8 h-8 bg-transparent text-green-500 hover:bg-green-100">
+                    <button className="border font-bold border-white rounded-full w-8 h-8 bg-transparent text-green-500 hover:bg-green-100">
                       -
                     </button>
                     <span className="mx-2">{item.qty}</span>
-                    <button
-                      onClick={() => updateQuantity(index, true)}
-                      className="border font-bold border-white  w-8 h-8 bg-transparent text-green-500 hover:bg-green-100"
-                    >
+                    <button className="border font-bold border-white  w-8 h-8 bg-transparent text-green-500 hover:bg-green-100">
                       +
                     </button>
                   </div>
               </td>
-                <td>{item.price}</td>
+              <td>
+                {item.price}
+              </td>
                 
-                <td className="items-center">
-                  <div className="space-x-2">
-                    <button className="px-2 py-1 bg-green-500 text-white rounded">Update</button>
-                    <button className="px-2 py-1 bg-red-500 text-white rounded">Delete</button>
-                  </div>
-                </td>
+              <td className="items-center">
+                <div className="space-x-2">
+                  <button onClick={() => openEditModal(item, index)} className="px-2 py-1 bg-green-400 text-white rounded">Update</button>
+                  <button className="px-2 py-1 bg-red-500 text-white rounded">Delete</button>
+                </div>
+              </td>
               </tr>
             ))}
           </tbody>
@@ -135,6 +145,19 @@ const InventoryReport = () => {
           </div>
         </Modal>
       )}
+
+      {/* Modal for updating the details of the item */}
+      {editedItem && (
+        <Modal isOpen={showModal} closeModal={() => setShowModal(false)}>
+          {/* Render an edit form with inputs for the item details */}
+          <div>
+            {/* Inputs to edit the item details */}
+            {/* ... */}
+            <button onClick={handleEdit}>Save Changes</button>
+          </div>
+        </Modal>
+)}
+
     </div>
   );
 };
