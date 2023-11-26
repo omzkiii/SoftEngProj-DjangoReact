@@ -1,0 +1,40 @@
+Content-Type: multipart/alternative;
+ boundary="===============7600433307765579300=="
+MIME-Version: 1.0
+Subject: Password reset on localhost:8000
+From: webmaster@localhost
+To: geogeomarsantos@gmail.com
+Date: Wed, 22 Nov 2023 14:37:58 -0000
+Message-ID: <170066387837.63580.14667553549931184837@arch>
+
+--===============7600433307765579300==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+You're receiving this email because you requested a password reset for your user account at localhost:8000.
+
+Please go to the following page and choose a new password:
+http://localhost:8000/reset_password/MjI/by2lza-709bc1243a4f28ef6f1d15d2956da3c9
+Your username, in case you've forgotten: geo123
+
+Thanks for using our site!
+
+The localhost:8000 team
+--===============7600433307765579300==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+<p>You're receiving this email because you requested a password reset for your user account at localhost:8000.</p>
+
+<p>Please go to the following page and choose a new password:</p>
+<a href="http://localhost:8000/reset_password/MjI/by2lza-709bc1243a4f28ef6f1d15d2956da3c9">http://localhost:8000/reset_password/MjI/by2lza-709bc1243a4f28ef6f1d15d2956da3c9</a>
+<p>Your username, in case you've forgotten: <b>geo123</b></p>
+
+<p>Thanks for using our site!</p>
+
+<p>The localhost:8000 team</p>
+--===============7600433307765579300==--
+
+-------------------------------------------------------------------------------
