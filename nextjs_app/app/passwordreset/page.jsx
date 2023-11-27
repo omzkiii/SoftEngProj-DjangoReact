@@ -15,7 +15,7 @@ const PasswordResetPage = () => {
             type="email"
             name="email"
             placeholder="Email"
-            className="w-full px-10 py-2 mb-3 rounded-lg text-black"
+            className="w-full px-6 py-2 mb-3 rounded-lg text-black"
           />
           <div className="flex justify-end">
             <button
