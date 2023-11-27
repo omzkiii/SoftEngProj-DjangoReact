@@ -12,12 +12,12 @@ const InventoryReport = () => {
       name: 'Kamote',
       qty: 54,
       price: '120/kg',
-      //Use "\n" to indicate a new line, use back ticks for new lines too.
+      //Use "<br>" to indicate a new line, use back ticks for new lines too.
       description: 
       `
      
       Price: 120/kg<br>
-      Quantity: 54kg <br>    -----------------------  <br>
+      Quantity: 54kg <br> 
 
       This Kamote has been harvested in the grenest fields of Batanes <br>
       Handpicked and fertilized from the farmers that brought joy to the land. <br>
@@ -32,9 +32,10 @@ const InventoryReport = () => {
       description: 
       `Price: 170/kg <br>
       quantity: 62 kg <br>
+
       Chicken breast from the green field of Central Luzon where chickens are fed  <br>
       with organic and healthy feeds. Taste the delicate poultry of the north now with AgriAccess!
-       `,
+       `
     },
   ];
 
