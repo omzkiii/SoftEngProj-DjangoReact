@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from .serializers import ProductSerializer, DiscountSerializer, CartSerializer, OrderSerializer, OrderProductSerializer
 from .models import Product, Discount, InventoryTxn, Cart, Order, OrderProduct
 from rest_framework.permissions import IsAdminUser
+from django.db.models import Q
 
 
 """
@@ -59,6 +60,15 @@ class ProductRetrieveView(RetrieveAPIView):
     serializer_class = ProductSerializer
     lookup_field = 'pk'
 
+class ProductSearchView(ListAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        query = self.request.query_params.get('q', '')
+        if query:
+            return Product.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
+        else:
+            return Product.objects.all()
 
 
 """
