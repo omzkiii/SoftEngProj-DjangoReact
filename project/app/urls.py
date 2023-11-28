@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.urls import path
-from .views import ProductListView, ProductListCreateView, ProductUpdateView, ProductRetrieveView, CartRetrieveUpdateDestroyView, CartListCreateView, ProductCategoryListView
+from .views import ProductListView, ProductListCreateView, ProductUpdateView, ProductRetrieveView, CartRetrieveUpdateDestroyView, CartListCreateView, ProductCategoryListView, ProductSearchView
 from .views import DiscountListCreateView, DiscountRetrieveView
 from .views import OrderListCreateView, OrderProductListCreateView, ComputedTotalView, OrderProductRetrieveView
 
@@ -13,6 +13,8 @@ urlpatterns = [
     path('products/create', ProductListCreateView.as_view(), name="products_create"),
     path('products/update/<int:pk>', ProductUpdateView.as_view(), name="products_update"),
     path('products/<int:pk>', ProductRetrieveView.as_view(), name="products_detail"),
+    path('products/search/', ProductSearchView.as_view(), name="products_detail"), #use http://localhost:8000/api/products/search/?q=${query}, example:http://localhost:8000/api/products/search/?q=apple
+
 
     # Discount APIs
     path('discounts/', DiscountListCreateView.as_view(), name="discounts"),
