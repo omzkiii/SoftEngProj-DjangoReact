@@ -1,8 +1,9 @@
+from django.shortcuts import get_object_or_404
 from requests import Response
 from rest_framework.generics import ListAPIView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.views import APIView
 from .serializers import ProductSerializer, DiscountSerializer, CartSerializer, OrderSerializer, OrderProductSerializer
-from .models import Product, Discount, InventoryTxn, Cart, Order, OrderProduct
+from .models import Product, Discount, InventoryTxn, Cart, Order, OrderProduct, Customer
 from rest_framework.permissions import IsAdminUser
 from django.db.models import Q
 
@@ -129,13 +130,30 @@ Computed Total views
 """
 class ComputedTotalView(APIView):
     def get(self, request,*args, **kwargs):
-        orderId = self.kwargs.get('orderId')
-        orderProduct = OrderProduct.objects.filter(order = orderId)
-        serialized_orderProduct = OrderProductSerializer(orderProduct, many = True)
-        products = Product.objects.all()
+        #Get the user
+        userId = self.kwargs.get('userId')
+        user = CustomerSerializer(Customer.objects.filter(user_id=userId).first()).data
+
+        #Get the cart
+        cart = Cart.objects.filter(customer__user_id=userId)
+        if not cart:
+            return Response({'error': 'Cart is empty'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        #Create new order
+
+
+        order = cart.first().transfer_to_order()
+
+        orderProducts = OrderProduct.objects.filter(order=order)
+        serialized_orderProducts = OrderProductSerializer(orderProducts, many=True)
+
+        serializedProduct = ProductSerializer(Product.objects.all())
+
         computed_order_products = []
         newprice = 0
-        for order in serialized_orderProduct.data:
+
+        #Calculate the total with discount
+        for order in serialized_orderProducts.data:
             discount = Discount.objects.filter(products=order["product"])
             serlializedDiscount = DiscountSerializer(discount, many = True)
 
@@ -144,18 +162,21 @@ class ComputedTotalView(APIView):
             if len(serlializedDiscount.data) != 0:
                 if(serlializedDiscount.data[0]['disc_type'] == "Percentage"):
                     newprice = (float(serlializedProduct.data[0]['price']) - float(serlializedProduct.data[0]['price']) * float(serlializedDiscount.data[0]['amount']))*float(order['quantity'])
-                    
-                    #newprice = float(serlializedProduct.data[0]['price']) - float(serlializedProduct.data[0]['price']) * float(serlializedDiscount.data[0]['amount'])
                     print(float(serlializedDiscount.data[0]['amount']))
                     print(float(serlializedProduct.data[0]['price']))
                     print(newprice)
                 else:
                     newprice = (float(serlializedProduct.data[0]['price']) - float(serlializedDiscount.data[0]['amount']))*float(order['quantity'])
 
-            computed_order_products.append({"product": serlializedProduct.data[0]['name'], "total price": newprice})
-
-
-        return Response(computed_order_products, status=status.HTTP_200_OK)
+            computed_order_products.append({"product": serlializedProduct.data[0]['name'], "total_price": newprice})
+        
+            # Calculate total price for the order
+        total_price = sum(item["total_price"] for item in computed_order_products)
+        # Update the order with the total price
+        print("TOTAL PRICE")
+        print(total_price)
+        Order.objects.filter(id=order['order']).update(total_amount=total_price)
+        return Response(OrderSerializer(Order.objects.filter(id=order['order']),many = True).data, status=status.HTTP_200_OK)
 
 
 
