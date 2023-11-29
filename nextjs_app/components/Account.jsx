@@ -19,9 +19,6 @@ const AccountModal = ({ isModalOpen, onClose }) => {
     setShowSignUp(true);
   }
 
-  
-
-
   return (
     <Modal isOpen={isModalOpen} closeModal={onClose}>
       <div className="bg-green-500 text-white rounded-lg shadow-lg p-4">
