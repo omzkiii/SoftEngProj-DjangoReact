@@ -1,15 +1,35 @@
 from requests import Response
 from rest_framework.generics import ListAPIView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.views import APIView
-<<<<<<< HEAD
-from .serializers import ProductSerializer, ProductUpdateSerializer, DiscountSerializer, CartSerializer
-from .models import Product, Discount, InventoryTxn, Cart
-=======
-from .serializers import ProductSerializer, DiscountSerializer, CartSerializer, OrderSerializer, OrderProductSerializer
-from .models import Product, Discount, InventoryTxn, Cart, Order, OrderProduct
->>>>>>> 510cca6d5fb75f33c355a980ab8cdf54d292e869
+from .serializers import ProductSerializer, ProductUpdateSerializer, DiscountSerializer, CartSerializer, OrderSerializer, OrderProductSerializer
+from .models import Product, Discount, InventoryTxn, Cart, Order, OrderProduct, Customer
 from rest_framework.permissions import IsAdminUser
+from rest_framework import permissions
 from django.db.models import Q
+
+"""Custom permission"""
+class IsOwnerOrReadOnly(permissions.BasePermission):
+
+    def has_object_permission(self, request, view, obj):
+        # Read permissions are allowed to any request,
+        # so we'll always allow GET, HEAD or OPTIONS requests.
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        # Instance must have an attribute named `owner`.
+        return obj.user == request.user
+    
+class IsCustomerOrReadOnly(permissions.BasePermission):
+    
+    def has_object_permission(self, request, view, obj):
+        # Read permissions are allowed to any request,
+        # so we'll always allow GET, HEAD or OPTIONS requests.
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        # Instance must have an attribute named `owner`.
+        return obj.customer == request.user
+
 
 
 """
@@ -44,8 +64,8 @@ class ProductListView(ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
+
 class ProductCategoryListView(ListAPIView):
-    
 
     def get_queryset(self):
         category = self.kwargs.get('category')  
@@ -91,11 +111,11 @@ class ProductUpdateView(APIView):
         return Response(serializer.data)
 
 
-
 class ProductRetrieveView(RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'pk'
+
 
 class ProductSearchView(ListAPIView):
     serializer_class = ProductSerializer
@@ -133,6 +153,8 @@ class CartListCreateView(ListCreateAPIView):
         customer = self.kwargs.get('customer')  
         return Cart.objects.filter(customer__user__username=customer)
     serializer_class = CartSerializer
+    permission_classes = [IsCustomerOrReadOnly]
+
 
 
 class CartRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
@@ -227,6 +249,22 @@ class UserRegistrationAPIView(APIView):
 
         return Response(user_serializer.data, status=status.HTTP_201_CREATED)
         
+
+
+
+
+
+class CustomerUpdateAPIView(UpdateAPIView):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+    lookup_field = 'pk'
+    permission_classes = [IsOwnerOrReadOnly]
+
+
+
+
+
+
 
 
 
