@@ -1,8 +1,15 @@
-from rest_framework.generics import ListAPIView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
+from requests import Response
+from rest_framework.generics import ListAPIView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.views import APIView
+<<<<<<< HEAD
 from .serializers import ProductSerializer, ProductUpdateSerializer, DiscountSerializer, CartSerializer
 from .models import Product, Discount, InventoryTxn, Cart
+=======
+from .serializers import ProductSerializer, DiscountSerializer, CartSerializer, OrderSerializer, OrderProductSerializer
+from .models import Product, Discount, InventoryTxn, Cart, Order, OrderProduct
+>>>>>>> 510cca6d5fb75f33c355a980ab8cdf54d292e869
 from rest_framework.permissions import IsAdminUser
+from django.db.models import Q
 
 
 """
@@ -35,6 +42,14 @@ class ProductListCreateView(APIView):
 
 class ProductListView(ListAPIView):
     queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+class ProductCategoryListView(ListAPIView):
+    
+
+    def get_queryset(self):
+        category = self.kwargs.get('category')  
+        return Product.objects.filter(category=category)
     serializer_class = ProductSerializer
 
 
@@ -82,6 +97,15 @@ class ProductRetrieveView(RetrieveAPIView):
     serializer_class = ProductSerializer
     lookup_field = 'pk'
 
+class ProductSearchView(ListAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        query = self.request.query_params.get('q', '')
+        if query:
+            return Product.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
+        else:
+            return Product.objects.all()
 
 
 """
@@ -112,12 +136,64 @@ class CartListCreateView(ListCreateAPIView):
 
 
 class CartRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
-    #TODO: cart view# 
     def get_queryset(self):
         customer = self.kwargs.get('customer')  
         return Cart.objects.filter(customer__user__username=customer)
     serializer_class = CartSerializer
     lookup_field = 'pk'
+
+"""
+Order-Related views
+"""
+class OrderListCreateView(ListCreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    
+
+class OrderProductListCreateView(ListCreateAPIView):
+    def get_queryset(self):
+        order = self.kwargs.get('order')  
+        return OrderProduct.objects.filter(order=order)
+    serializer_class = OrderProductSerializer
+
+class OrderProductRetrieveView(RetrieveAPIView):
+    queryset = OrderProduct.objects.all()
+    serializer_class = OrderProductSerializer
+    lookup_field = 'order'
+
+"""
+Computed Total views
+"""
+class ComputedTotalView(APIView):
+    def get(self, request,*args, **kwargs):
+        orderId = self.kwargs.get('orderId')
+        orderProduct = OrderProduct.objects.filter(order = orderId)
+        serialized_orderProduct = OrderProductSerializer(orderProduct, many = True)
+        products = Product.objects.all()
+        computed_order_products = []
+        newprice = 0
+        for order in serialized_orderProduct.data:
+            discount = Discount.objects.filter(products=order["product"])
+            serlializedDiscount = DiscountSerializer(discount, many = True)
+
+            product = Product.objects.filter(id=order["product"])
+            serlializedProduct = ProductSerializer(product, many = True)
+            if len(serlializedDiscount.data) != 0:
+                if(serlializedDiscount.data[0]['disc_type'] == "Percentage"):
+                    newprice = (float(serlializedProduct.data[0]['price']) - float(serlializedProduct.data[0]['price']) * float(serlializedDiscount.data[0]['amount']))*float(order['quantity'])
+                    
+                    #newprice = float(serlializedProduct.data[0]['price']) - float(serlializedProduct.data[0]['price']) * float(serlializedDiscount.data[0]['amount'])
+                    print(float(serlializedDiscount.data[0]['amount']))
+                    print(float(serlializedProduct.data[0]['price']))
+                    print(newprice)
+                else:
+                    newprice = (float(serlializedProduct.data[0]['price']) - float(serlializedDiscount.data[0]['amount']))*float(order['quantity'])
+
+            computed_order_products.append({"product": serlializedProduct.data[0]['name'], "total price": newprice})
+
+
+        return Response(computed_order_products, status=status.HTTP_200_OK)
+
 
 
 

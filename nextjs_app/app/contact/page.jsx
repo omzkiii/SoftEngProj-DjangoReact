@@ -11,7 +11,7 @@ const ContactPage = () => {
     // Define an async function to fetch data
     async function fetchData() {
       try {
-        const response = await axios.get('http://localhost:8000/api/product/');
+        const response = await axios.get('http://localhost:8000/api/products/');
         setItem(response.data[0].name);
         console.log(typeof(item));
       } catch (error) {
