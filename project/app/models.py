@@ -43,6 +43,9 @@ class Customer(models.Model):
 #############################################    
 
 class Cart(models.Model):
+    class Meta:
+        unique_together = (('customer', 'product'),)
+
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.DecimalField(max_digits=20, decimal_places=2)

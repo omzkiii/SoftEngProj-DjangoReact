@@ -1,34 +1,12 @@
 from requests import Response
 from rest_framework.generics import ListAPIView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.views import APIView
-from .serializers import ProductSerializer, ProductUpdateSerializer, DiscountSerializer, CartSerializer, OrderSerializer, OrderProductSerializer
+from .serializers import ProductSerializer, ProductUpdateSerializer, DiscountSerializer
+from .serializers import CartSerializer, CartUpdateSerializer, OrderSerializer, OrderProductSerializer
 from .models import Product, Discount, InventoryTxn, Cart, Order, OrderProduct, Customer
-from rest_framework.permissions import IsAdminUser
-from rest_framework import permissions
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from .permissions import IsOwner, IsOwnerOrReadOnly
 from django.db.models import Q
-
-"""Custom permission"""
-class IsOwnerOrReadOnly(permissions.BasePermission):
-
-    def has_object_permission(self, request, view, obj):
-        # Read permissions are allowed to any request,
-        # so we'll always allow GET, HEAD or OPTIONS requests.
-        if request.method in permissions.SAFE_METHODS:
-            return True
-
-        # Instance must have an attribute named `owner`.
-        return obj.user == request.user
-    
-class IsCustomerOrReadOnly(permissions.BasePermission):
-    
-    def has_object_permission(self, request, view, obj):
-        # Read permissions are allowed to any request,
-        # so we'll always allow GET, HEAD or OPTIONS requests.
-        if request.method in permissions.SAFE_METHODS:
-            return True
-
-        # Instance must have an attribute named `owner`.
-        return obj.customer == request.user
 
 
 
@@ -153,7 +131,7 @@ class CartListCreateView(ListCreateAPIView):
         customer = self.kwargs.get('customer')  
         return Cart.objects.filter(customer__user__username=customer)
     serializer_class = CartSerializer
-    permission_classes = [IsCustomerOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
 
 
@@ -161,8 +139,10 @@ class CartRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         customer = self.kwargs.get('customer')  
         return Cart.objects.filter(customer__user__username=customer)
-    serializer_class = CartSerializer
-    lookup_field = 'pk'
+    serializer_class = CartUpdateSerializer
+    lookup_field = 'product'
+    permission_classes = [IsOwner]
+
 
 """
 Order-Related views

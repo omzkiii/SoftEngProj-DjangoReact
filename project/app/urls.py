@@ -22,7 +22,7 @@ urlpatterns = [
 
     #Cart APIs
     path('cart/<str:customer>', CartListCreateView.as_view(), name="cart"),
-    path('cart/<str:customer>/<int:pk>', CartRetrieveUpdateDestroyView.as_view(), name="cart_detail"),
+    path('cart/<str:customer>/<int:product>', CartRetrieveUpdateDestroyView.as_view(), name="cart_detail"),
 
     #Order APIs
     path('orderproducts/<int:order>', OrderProductListCreateView.as_view(), name="order_product"),

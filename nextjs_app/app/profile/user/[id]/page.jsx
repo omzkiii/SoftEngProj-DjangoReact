@@ -27,8 +27,8 @@ const users = [
 
 
 const UserProfile = ({params}) => {
-    const paramId = parseInt(params.id)
-    const user = users.find((user) => user.id === paramId)
+    const paramId = params.id
+    const user = users.find((user) => user.username === paramId)
     const [activeBtn, setActiveBtn] = useState("order")
 
     const toggleView = (e) => {
