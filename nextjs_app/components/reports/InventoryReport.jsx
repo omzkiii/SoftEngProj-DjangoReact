@@ -2,16 +2,22 @@ import React, { useState } from 'react';
 import Modal from '@/components/Modal';
 
 const InventoryReport = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [showDescriptionModal, setShowDescriptionModal] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+
+
+  
   const [selectedItem, setSelectedItem] = useState(null);
   const [editedItem, setEditedItem] = useState(null);
 
+  // THE TEST ITEMS AND VARIABLES
   const items = [
     {
+      Id : 1,
       productImg: '/kamotePic.jpg',
       name: 'Kamote',
       qty: 54,
-      price: '120/kg',
+      costPerUnit: '120/kg',
       //Use "<br>" to indicate a new line, use back ticks for new lines too.
       description: 
       `
@@ -25,10 +31,11 @@ const InventoryReport = () => {
        `
     },
     {
+      Id: 2,
       productImg: '/chickenBreastPic.jpg',
       name: 'Chicken Breast',
       qty: 62,
-      price: '170/kg',
+      costPerUnit: '170/kg',
       description: 
       `Price: 170/kg <br>
       quantity: 62 kg <br>
@@ -39,38 +46,50 @@ const InventoryReport = () => {
     },
   ];
 
-  const openModal = (item) => {
-    setSelectedItem(item);
-    setShowModal(true);
+  
+  //TEST OPEN CLOSE MODALS FOR DESCRIPTION 
+  const [isDescriptionModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setDescriptionModalOpen(true);
   };
 
   const closeModal = () => {
-    setShowModal(false);
-    setSelectedItem(null);
+    setIsModalOpen(false);
   };
 
+  //CURRENT MODALS FOR DESCRIPTION
+  const openDescriptionModal = (item) => {
+    setSelectedItem(item);
+    setShowDescriptionModal(true); // Use setShowDescriptionModal to control the description modal
+  };
+
+  const closeDescriptionModal = () => {
+    setShowDescriptionModal(false); // Close description modal using setShowDescriptionModal
+    setSelectedItem(null);
+  };
   
 
-// Function to handle edits and update the items array
+// The Function to update the details in db (To EDIT)
 const handleEdit = () => {
-  if (editedItem) {
-    const updatedItems = items.map((item, index) => {
-      if (index === editedItem.index) {
-        return editedItem.editedData;
+    if (editedItem) {
+      const updatedItems = items.map((item, index) => {
+        if (index === editedItem.index) {
+          return editedItem.editedData;
       }
       return item;
     });
 
     setItems(updatedItems);
-    setShowModal(false); // Close the modal after editing
+    setShowModal(false); 
   }
 };
-  // Function to open the edit modal with the selected item's details
    // Function to open the edit modal with the selected item's details
    const openEditModal = (item, index) => {
     setEditedItem({ editedData: { ...item }, index });
-    setShowModal(true);
+    setShowUpdateModal(true);
+    setSelectedItem(item); // Set the selected item for displaying the image in the update modal
   };
+
 
   return (
     <div>
@@ -93,15 +112,16 @@ const handleEdit = () => {
           <tbody>
             {items.map((item, index) => (
               <tr key={index} className="py-4 text-center items-center">
-                <td className="align-middle text-center items-center cursor-pointer"> 
+                <td className="align-middle text-center items-center cursor-pointer"
+                onClick={() => openDescriptionModal(item)}> 
                   <img 
                     src={item.productImg}
                     alt={item.name}
                     width={100}
                     height={100}
-                    onClick={() => openModal(item)}
-                    
+                    className="mx-auto block"
                   />
+                  
                 </td>
                 <td>{item.name}</td>
                 <td>
@@ -116,7 +136,7 @@ const handleEdit = () => {
                   </div>
               </td>
               <td>
-                {item.price}
+                {item.costPerUnit}
               </td>
                 
               <td className="items-center">
@@ -133,7 +153,7 @@ const handleEdit = () => {
 
       {/* Modal for the Description of the product */}
       {selectedItem && (
-        <Modal isOpen={showModal} closeModal={closeModal}>
+        <Modal isOpen={showDescriptionModal} closeModal={closeDescriptionModal}>
           <div className="bg-green-500 text-white rounded-lg shadow-lg p-4 text-center">
             <div className='text-center'>
               <h1>{selectedItem.name}</h1>
@@ -149,13 +169,33 @@ const handleEdit = () => {
 
       {/* Modal for updating the details of the item */}
       {editedItem && (
-        <Modal isOpen={showModal} closeModal={() => setShowModal(false)}>
-          {/* Render an edit form with inputs for the item details */}
-          <div>
-            {/* Inputs to edit the item details */}
-            {/* ... */}
-            <button onClick={handleEdit}>Save Changes</button>
+        <Modal isOpen={showUpdateModal} closeModal={() => setShowUpdateModal(false)}> 
+          
+          <div className="bg-white p-5 flex items-center">  
+          
+            <div className="mx-5">
+              <img
+                    src={selectedItem?.productImg}
+                    alt={selectedItem?.name}
+                    width={200}
+                    height={200}
+                  />
+            </div>
+            <form className="flex flex-col  ">
+
+              <label className="text-black m-1">Product ID: </label>
+                <input className="text-black m-1" type="text" value={items.productId}  placeholder={selectedItem?.Id}/>
+              <label className="text-black m-1"> Product Name:</label>
+                <input className="text-black m-1" type="text" value={items.name} placeholder={selectedItem?.name} />
+              <label className="text-black m-1"> Quantity:</label>
+                <input className="text-black m-1" type="text" value={items.qty} placeholder={selectedItem?.qty} />
+              <label className="text-black m-1">Price:</label>
+                <input className="text-black m-1" type="text" value={items.costPerUnit}  placeholder={selectedItem?.costPerUnit} />
+             
+            <button onClick={handleEdit} className="bg-green-500 p-1 rounded-xl">Save Changes</button>
+            </form>
           </div>
+
         </Modal>
 )}
 
