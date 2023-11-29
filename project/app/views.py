@@ -1,10 +1,13 @@
 from requests import Response
 from rest_framework.generics import ListAPIView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.views import APIView
-from .serializers import ProductSerializer, DiscountSerializer, CartSerializer, OrderSerializer, OrderProductSerializer
-from .models import Product, Discount, InventoryTxn, Cart, Order, OrderProduct
-from rest_framework.permissions import IsAdminUser
+from .serializers import ProductSerializer, ProductUpdateSerializer, DiscountSerializer
+from .serializers import CartSerializer, CartUpdateSerializer, OrderSerializer, OrderProductSerializer
+from .models import Product, Discount, InventoryTxn, Cart, Order, OrderProduct, Customer
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from .permissions import IsOwner, IsOwnerOrReadOnly
 from django.db.models import Q
+
 
 
 """
@@ -29,7 +32,7 @@ class ProductListCreateView(APIView):
         product = serializer.save()
         serialized_prod = ProductSerializer(product) 
 
-        inv_txn = InventoryTxn(product=product, date=product.date_created, txn_type=InventoryTxn.ADD)
+        inv_txn = InventoryTxn(product=product, date=product.date_created, txn_type=InventoryTxn.ADD, quantity=product.quantity)
         inv_txn.save()
         
         return Response(serialized_prod.data, status=status.HTTP_201_CREATED)
@@ -39,8 +42,8 @@ class ProductListView(ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
+
 class ProductCategoryListView(ListAPIView):
-    
 
     def get_queryset(self):
         category = self.kwargs.get('category')  
@@ -48,17 +51,49 @@ class ProductCategoryListView(ListAPIView):
     serializer_class = ProductSerializer
 
 
-#TODO: Custom update view to include creation of inventory transaction objects
-class ProductUpdateView(UpdateAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-    lookup_field = 'pk'
+from django.http import Http404
+
+class ProductUpdateView(APIView):
+    serializer_class = ProductUpdateSerializer
+    permission_classes = [IsAdminUser]
+
+    def get_object(self, pk):
+        try:
+            return Product.objects.get(pk=pk)
+        except Product.DoesNotExist:
+            raise Http404
+        
+    def get(self, request, pk, *args, **kwargs):
+        product = self.get_object(pk)
+        serializer = ProductSerializer(product)
+        
+        return Response(serializer.data)
+
+
+    def put(self, request, pk, *args, **kwargs):
+        product = self.get_object(pk)
+        prev_qty = product.quantity
+        serializer = ProductUpdateSerializer(product, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        
+        change_in_qty = product.quantity - prev_qty
+
+        if change_in_qty > 0:
+            inv_txn = InventoryTxn(product=product, txn_type=InventoryTxn.ADD, quantity=change_in_qty)
+            inv_txn.save()
+        elif change_in_qty < 0:
+            inv_txn = InventoryTxn(product=product, txn_type=InventoryTxn.OTHERS, quantity=change_in_qty)
+            inv_txn.save()
+
+        return Response(serializer.data)
 
 
 class ProductRetrieveView(RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'pk'
+
 
 class ProductSearchView(ListAPIView):
     serializer_class = ProductSerializer
@@ -96,14 +131,18 @@ class CartListCreateView(ListCreateAPIView):
         customer = self.kwargs.get('customer')  
         return Cart.objects.filter(customer__user__username=customer)
     serializer_class = CartSerializer
+    permission_classes = [IsAuthenticated]
+
 
 
 class CartRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         customer = self.kwargs.get('customer')  
         return Cart.objects.filter(customer__user__username=customer)
-    serializer_class = CartSerializer
-    lookup_field = 'pk'
+    serializer_class = CartUpdateSerializer
+    lookup_field = 'product'
+    permission_classes = [IsOwner]
+
 
 """
 Order-Related views
@@ -171,7 +210,7 @@ class UserRegistrationAPIView(APIView):
     serializer_class = UserCreatePasswordRetypeSerializer
 
     def post(self, request, *args, **kwargs):
-        user_serializer = UserCreatePasswordRetypeSerializer(data=request.data)
+        user_serializer = UserCreatePasswordRetypeSerializer(data=request.data.get('user'))
         user_serializer.is_valid(raise_exception=True)
         user = user_serializer.save()
 
@@ -179,10 +218,33 @@ class UserRegistrationAPIView(APIView):
         cust_data = {"user":user.id}
         cust_serializer = CustomerSerializer(data=cust_data)
         cust_serializer.is_valid(raise_exception=True)
-        cust_serializer.save()
+        customer = cust_serializer.save()
+
+        #To create cart data for the customer
+        
+        cart = request.data.get('cart', {})
+        for k,v in cart.items():
+            customer.products.add(k, through_defaults={'quantity':v})
+
 
         return Response(user_serializer.data, status=status.HTTP_201_CREATED)
         
+
+
+
+
+
+class CustomerUpdateAPIView(UpdateAPIView):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+    lookup_field = 'pk'
+    permission_classes = [IsOwnerOrReadOnly]
+
+
+
+
+
+
 
 
 
