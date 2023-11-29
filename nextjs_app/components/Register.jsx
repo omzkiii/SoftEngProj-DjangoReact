@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const RegisterForm = ({ onClose }) => {
-  const [formData, setFormData] = useState({ username: "", firstName:"", lastName:"", email: "", password: "", confirmPassword: "" });
+  const [formData, setFormData] = useState({user:  {username:"", email:"", first_name:"", last_name:"", password:"", re_password:""} });
   const [showPassword, setShowPassword] = useState();
   const [showConfirmPassword, setShowConfirmPassword] = useState();
   const [error, setError] = useState(null);
@@ -62,18 +62,18 @@ const RegisterForm = ({ onClose }) => {
       />
       <input
         type="text"
-        name="firstName"
+        name="first_name"
         placeholder="First name"
         className="w-full px-3 py-2 mb-3 rounded-lg text-black"
-        value={formData.firstName}
+        value={formData.first_name}
         onChange={handleInputChange}
       />
       <input
         type="text"
-        name="lastName"
+        name="last_name"
         placeholder="Last name"
         className="w-full px-3 py-2 mb-3 rounded-lg text-black"
-        value={formData.lastName}
+        value={formData.last_name}
         onChange={handleInputChange}
       />
       
@@ -98,14 +98,14 @@ const RegisterForm = ({ onClose }) => {
         <br/>
         <input
           type={showConfirmPassword ? "text" : "password"}
-          name="confirmPassword"
+          name="re_password"
           placeholder="Confirm Password"
           className="w-full px-3 py-2 mb-3 rounded-lg text-black"
-          value={formData.confirmPassword}
+          value={formData.re_password}
           onChange={handleInputChange}
         />
         <label>
-          <input
+          <input  
             type="checkbox"
             value="showConfirmPassword"
             checked={showConfirmPassword}
