@@ -96,8 +96,6 @@ class Discount(models.Model):
 
 #############################################
 
-from django.utils import timezone
-
 class InventoryTxn(models.Model):
     ADD = "Addition"
     SALE = "Sale"
@@ -113,15 +111,6 @@ class InventoryTxn(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     txn_type = models.CharField(max_length=10, choices=TXN_TYPE)
     quantity = models.DecimalField(max_digits=20, decimal_places=2, default=0)
-
-#############################################
-
-#TODO: Delete if not necessary to generate reports
-class EndingBalance(models.Model):
-
-    product = models.ForeignKey(Product, on_delete=models.PROTECT)
-    amount = models.DecimalField(max_digits=20, decimal_places=2)
-    date = models.DateField()
 
 #############################################
 
@@ -147,13 +136,9 @@ class Order(models.Model):
     date_placed = models.DateTimeField(auto_now_add=True)
     date_completed = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=15, choices=STATUS)
-<<<<<<< HEAD
     total_amount = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True)
-
-=======
-    gross_amount = models.DecimalField(max_digits=20, decimal_places=2)
-    discount = models.DecimalField(max_digits=20, decimal_places=2)
->>>>>>> 46b207edda02c607be40f052c826ced5485a537e
+    gross_amount = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True)
+    discount = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True)
 
 
 #############################################
@@ -162,3 +147,4 @@ class OrderProduct(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.DecimalField(max_digits=20, decimal_places=2)
+    unit_price = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True)

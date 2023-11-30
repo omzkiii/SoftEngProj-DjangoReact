@@ -13,7 +13,14 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         return obj.user == request.user
     
 
-class IsOwner(permissions.BasePermission):
+class IsCartOwner(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         return obj.customer.user == request.user
+    
+
+# class IsBuyer(permissions.BasePermission):
+
+#     def has_object_permission(self, request, view, obj):
+#         return obj.order.user == request.user
+
