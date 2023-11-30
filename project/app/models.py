@@ -21,6 +21,7 @@ class Product(models.Model):
     category = models.CharField(max_length=50, choices=CATEGORY)
     image = models.ImageField(upload_to="products", null=True)
     is_featured = models.BooleanField(default=False)
+    is_available = models.BooleanField(default=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 
@@ -42,6 +43,9 @@ class Customer(models.Model):
 #############################################    
 
 class Cart(models.Model):
+    class Meta:
+        unique_together = (('customer', 'product'),)
+
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.DecimalField(max_digits=20, decimal_places=2)
@@ -106,8 +110,9 @@ class InventoryTxn(models.Model):
     ]
     
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
-    date = models.DateTimeField(default=timezone.now())
+    date = models.DateTimeField(auto_now_add=True)
     txn_type = models.CharField(max_length=10, choices=TXN_TYPE)
+    quantity = models.DecimalField(max_digits=20, decimal_places=2, default=0)
 
 #############################################
 
@@ -142,8 +147,13 @@ class Order(models.Model):
     date_placed = models.DateTimeField(auto_now_add=True)
     date_completed = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=15, choices=STATUS)
+<<<<<<< HEAD
     total_amount = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True)
 
+=======
+    gross_amount = models.DecimalField(max_digits=20, decimal_places=2)
+    discount = models.DecimalField(max_digits=20, decimal_places=2)
+>>>>>>> 46b207edda02c607be40f052c826ced5485a537e
 
 
 #############################################

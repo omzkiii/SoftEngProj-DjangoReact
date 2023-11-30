@@ -1,0 +1,32 @@
+Content-Type: multipart/alternative;
+ boundary="===============3071312694637806580=="
+MIME-Version: 1.0
+Subject: 127.0.0.1:8000 - Your password has been successfully changed!
+From: webmaster@localhost
+To: sooyoung@email.com
+Date: Wed, 29 Nov 2023 03:52:52 -0000
+Message-ID: <170122997251.4784.3089313770111053019@MEDEA>
+
+--===============3071312694637806580==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+Your password has been changed!
+
+Thanks for using our site!
+
+The 127.0.0.1:8000 team
+--===============3071312694637806580==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+<p>Your password has been changed!</p>
+
+<p>Thanks for using our site!</p>
+
+<p>The 127.0.0.1:8000 team</p>
+--===============3071312694637806580==--
+
+-------------------------------------------------------------------------------
