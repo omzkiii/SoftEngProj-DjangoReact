@@ -2,17 +2,11 @@ from django.shortcuts import get_object_or_404
 from requests import Response
 from rest_framework.generics import ListAPIView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.views import APIView
-<<<<<<< HEAD
-from .serializers import ProductSerializer, DiscountSerializer, CartSerializer, OrderSerializer, OrderProductSerializer
-from .models import Product, Discount, InventoryTxn, Cart, Order, OrderProduct, Customer
-from rest_framework.permissions import IsAdminUser
-=======
 from .serializers import ProductSerializer, ProductUpdateSerializer, DiscountSerializer
 from .serializers import CartSerializer, CartUpdateSerializer, OrderSerializer, OrderProductSerializer
 from .models import Product, Discount, InventoryTxn, Cart, Order, OrderProduct, Customer
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from .permissions import IsOwner, IsOwnerOrReadOnly
->>>>>>> 46b207edda02c607be40f052c826ced5485a537e
+from .permissions import IsCartOwner, IsOwnerOrReadOnly
 from django.db.models import Q
 
 
@@ -148,7 +142,7 @@ class CartRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
         return Cart.objects.filter(customer__user__username=customer)
     serializer_class = CartUpdateSerializer
     lookup_field = 'product'
-    permission_classes = [IsOwner]
+    permission_classes = [IsCartOwner]
 
 
 """
@@ -164,6 +158,9 @@ class OrderProductListCreateView(ListCreateAPIView):
         order = self.kwargs.get('order')  
         return OrderProduct.objects.filter(order=order)
     serializer_class = OrderProductSerializer
+    permission_classes = [IsAuthenticated]
+
+
 
 class OrderProductRetrieveView(RetrieveAPIView):
     queryset = OrderProduct.objects.all()
@@ -173,6 +170,65 @@ class OrderProductRetrieveView(RetrieveAPIView):
 """
 Computed Total views
 """
+class OrderCreateView(APIView):
+    serializer_class = CartSerializer
+    permission_classes = [IsAuthenticated, IsCartOwner]
+
+    def post(self, request, user, *args, **kwargs):
+        cart_items = Cart.objects.filter(customer__user_id=user)
+        if not cart_items:
+            return Response({'error': 'Cart is empty'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        self.check_object_permissions(request, cart_items[0])
+        customer = Customer.objects.get(user=user)
+
+        order = Order.objects.create(user=customer, status=Order.UNPAID, )
+
+        #to set order fields
+        gross_amount = 0
+        total_discounts = 0
+
+        #iterating through each cart product
+        for item in cart_items:
+            product = item.product
+            quantity = item.quantity
+            unit_price = product.price
+
+            #create product line item
+            OrderProduct.objects.create(
+                order=order,
+                product= product,
+                quantity= quantity,
+                unit_price = unit_price
+            )
+
+            # compute for total product price
+            product_price = unit_price * quantity
+
+            # compute for total product discounts
+            discounts = Discount.objects.filter(products=product)
+            product_discount = 0
+
+            for d in discounts:
+                if d.is_active and d.disc_type == Discount.PESO:
+                    product_discount += d.amount * quantity
+                elif d.is_active and d.disc_type == Discount.PERC:
+                    unit_discount = unit_price * d.amount
+                    product_discount += unit_discount * quantity
+            
+            gross_amount += product_price
+            total_discounts += min(product_discount, product_price)
+        
+        order.gross_amount = gross_amount
+        order.discount = total_discounts
+        order.total_amount = gross_amount - total_discounts
+        order.save()
+        print(order)
+
+        serializer = OrderSerializer(order)
+        return Response(serializer.data)      
+
+
 class ComputedTotalView(APIView):
     def get(self, request,*args, **kwargs):
         #Get the user
@@ -215,7 +271,7 @@ class ComputedTotalView(APIView):
 
             computed_order_products.append({"product": serlializedProduct.data[0]['name'], "total_price": newprice})
         
-            # Calculate total price for the order
+            # Calculate total price for the ordercts
         total_price = sum(item["total_price"] for item in computed_order_products)
         # Update the order with the total price
         print("TOTAL PRICE")
@@ -224,10 +280,17 @@ class ComputedTotalView(APIView):
         return Response(OrderSerializer(Order.objects.filter(id=order['order']),many = True).data, status=status.HTTP_200_OK)
 
 
+"""
+Report Views
+"""
+
+
+
+
 
 
 """
-User Registration View
+User Views
 """
 from rest_framework.response import Response
 from rest_framework import status
@@ -256,10 +319,6 @@ class UserRegistrationAPIView(APIView):
 
         return Response(user_serializer.data, status=status.HTTP_201_CREATED)
         
-
-
-
-
 
 class CustomerUpdateAPIView(UpdateAPIView):
     queryset = Customer.objects.all()
