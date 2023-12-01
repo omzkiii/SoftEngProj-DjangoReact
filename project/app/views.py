@@ -1,12 +1,12 @@
 from django.shortcuts import get_object_or_404
 from requests import Response
-from rest_framework.generics import ListAPIView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView 
+from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView 
 from rest_framework.views import APIView
 from .serializers import ProductSerializer, ProductUpdateSerializer, DiscountSerializer, SingleOrderSerializer
 from .serializers import CartSerializer, CartUpdateSerializer, OrderSerializer, OrderProductSerializer
 from .models import Product, Discount, InventoryTxn, Cart, Order, OrderProduct, Customer
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from .permissions import IsCartOwner, IsOwnerOrReadOnly
+from .permissions import IsCartOwner, IsLoggedInUser, IsOrderOwner
 from django.db.models import Q
 
 
@@ -112,7 +112,11 @@ Discount-related views:
 DiscountListCreateView(for admin use only) - view all and create discounts
 DiscountRetrieveView - to retrieve single discount
 """
-class DiscountListCreateView(ListCreateAPIView):
+class DiscountListView(ListAPIView):
+    queryset = Discount.objects.all()
+    serializer_class = DiscountSerializer
+
+class DiscountCreateView(CreateAPIView):
     queryset = Discount.objects.all()
     serializer_class = DiscountSerializer
     permission_classes = [IsAdminUser]
@@ -151,14 +155,30 @@ Order-Related views
 class OrderListView(ListAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    permission_classes = [IsAdminUser]
+
+
+class UserOrderListView(APIView):
+    permission_classes = [IsAuthenticated, IsLoggedInUser]
+
+    def get(self, request, user, *args, **kwargs):
+        customer = Customer.objects.get(user=user)
+        self.check_object_permissions(request, customer)
+
+        orders = Order.objects.filter(user=customer)
+        serializer = OrderSerializer(orders, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class OrderCreateSingleView(APIView):
     serializer_class = OrderSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsLoggedInUser]
     
     def post(self, request, user, *args, **kwargs):
         customer = Customer.objects.get(user=user)
+        self.check_object_permissions(request, customer)
+
         serialized_data = SingleOrderSerializer(data=request.data) 
         serialized_data.is_valid(raise_exception=True)
         product = Product.objects.get(id=serialized_data.data.get('product'))
@@ -194,15 +214,21 @@ class OrderCreateSingleView(APIView):
         serializer = OrderSerializer(order)
         return Response(serializer.data)      
     
-    #permission_classes = [IsAdminUser]
+
+class OrderRetrieveView(RetrieveAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    lookup_field = 'pk'
+    permission_classes = [IsOrderOwner]
+
 
 class OrderRetrieveUpdateView(RetrieveUpdateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     lookup_field = 'pk'
-    #permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser]
 
-class OrderProductListCreateView(ListCreateAPIView):
+class OrderProductListView(ListAPIView):
     def get_queryset(self):
         order = self.kwargs.get('order')  
         return OrderProduct.objects.filter(order=order)
@@ -211,10 +237,10 @@ class OrderProductListCreateView(ListCreateAPIView):
 
 
 
-class OrderProductRetrieveView(RetrieveAPIView):
-    queryset = OrderProduct.objects.all()
-    serializer_class = OrderProductSerializer
-    lookup_field = 'order'
+# class OrderProductRetrieveView(RetrieveAPIView):
+#     queryset = OrderProduct.objects.all()
+#     serializer_class = OrderProductSerializer
+#     lookup_field = 'order'
 
 
 """
@@ -334,7 +360,8 @@ class ComputedTotalView(APIView):
 Report Views
 """
 class ReportRetrieveView(APIView):
-    
+    permission_classes = [IsAdminUser]
+
     def get(self, request,*args, **kwargs):
         category = self.request.query_params.get('cat', '')
         month = self.request.query_params.get('month', '')
@@ -404,7 +431,7 @@ class CustomerUpdateAPIView(UpdateAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
     lookup_field = 'pk'
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsLoggedInUser]
 
 
 
