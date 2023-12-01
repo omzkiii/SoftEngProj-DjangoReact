@@ -41,7 +41,7 @@ urlpatterns = [
     path('compute/<int:userId>', ComputedTotalView.as_view(), name="compute"),
 
     #Report APIs
-   path('report/', ReportRetrieveView.as_view(), name="report"), #report/?cat={cat}&month={month}&year={year}, example:http://localhost:8000/api/products/search/?q=apple
+    path('report/', ReportRetrieveView.as_view(), name="report"), #report/?cat={cat}&month={month}&year={year}, example:http://127.0.0.1:8000/api/report/?cat=month&month=12&year=2023
     
 
 ]
