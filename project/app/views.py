@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from requests import Response
-from rest_framework.generics import ListAPIView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView 
 from rest_framework.views import APIView
 from .serializers import ProductSerializer, ProductUpdateSerializer, DiscountSerializer, SingleOrderSerializer
 from .serializers import CartSerializer, CartUpdateSerializer, OrderSerializer, OrderProductSerializer
@@ -148,7 +148,7 @@ class CartRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
 """
 Order-Related views
 """
-class OrderListCreateView(ListCreateAPIView):
+class OrderListView(ListAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
@@ -194,6 +194,13 @@ class OrderCreateSingleView(APIView):
         serializer = OrderSerializer(order)
         return Response(serializer.data)      
     
+    #permission_classes = [IsAdminUser]
+
+class OrderRetrieveUpdateView(RetrieveUpdateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    lookup_field = 'pk'
+    #permission_classes = [IsAdminUser]
 
 class OrderProductListCreateView(ListCreateAPIView):
     def get_queryset(self):
@@ -409,51 +416,3 @@ class CustomerUpdateAPIView(UpdateAPIView):
 
 
 
-# class UserList(ListAPIView):
-#     serializer_class = UserSerializer
-#     queryset = User.objects.all()
-
-#     def get_queryset(self):
-#         # You can customize this method to filter users based on query parameters
-#         username = self.request.query_params.get('username', None)
-#         if username:
-#             return User.objects.filter(username__icontains=username)
-#         return User.objects.all()
-
-
-# class UserViewSet(viewsets.ModelViewSet):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-#     permission_classes = [permissions.AllowAny]
-
-#     @action(detail=False, methods=['post'])
-#     def login(self, request):
-#         email = request.data.get('email')
-#         password = request.data.get('password')
-
-#         user = authenticate(request, username=email, password=password)
-
-#         if user is not None:
-#             login(request, user)
-#             print('User is logged in')
-#             return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
-#         else:
-#             return Response({'message': 'Login failed'}, status=status.HTTP_401_UNAUTHORIZED)
-
-#     @action(detail=False, methods=['post'])
-#     def register(self, request):
-#         email = request.data.get('email')
-#         password = request.data.get('password')
-
-#         if not email or not password:
-#             return Response({'message': 'Email and password are required'}, status=status.HTTP_400_BAD_REQUEST)
-
-#         if User.objects.filter(username=email).exists():
-#             return Response({'message': 'Email already registered'}, status=status.HTTP_400_BAD_REQUEST)
-
-#         user = User.objects.create_user(username=email, password=password)
-
-#         if user:
-#             return Response({'message': 'Registration successful'}, status=status.HTTP_201_CREATED)
-#         else:
-#             return Response({'message': 'Registration failed'}, status=status.HTTP_400_BAD_REQUEST)
