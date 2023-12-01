@@ -18,15 +18,24 @@ const inventory = () => {
       </div>
 
       <div className="h-auto w-auto flex justify-space-between container mx-auto text-black">
-        <div class="h-auto flex justify-start font-semibold">
+        <div class="h-auto flex justify-start ">
           <p>ORDER NUMBER: {}</p>
         </div>
       </div>
 
-      <div className="h-auto w-auto flex justify-space-between p-1 container mx-auto text-black">
+      <div className="h-auto w-75 flex justify-space-between p-1 container mx-auto text-black">
         <div class="w-3/4">
           <h1 class="text-5xl">#69696969{}</h1>
         </div>
+        <td className="py-4 items-center">
+          <select name="status" id="orderStatus">
+            <option value="" disabled selected hidden>Choose a Status</option>
+            <option value="completed" className="text-cyan-600">Completed</option>
+            <option value="pending" className="text-green-400">Pending</option>
+            <option value="cancelled" className="text-red-400">Cancelled</option>
+            {/*  IDK kung pano tong part na to  */}
+          </select>
+        </td>
       </div>
      
       <div className="h-auto w-auto flex justify-space-between p-1 text-black container mx-auto">
