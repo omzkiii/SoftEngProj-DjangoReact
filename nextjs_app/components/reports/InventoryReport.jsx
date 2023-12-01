@@ -43,7 +43,8 @@ const InventoryReport = () => {
       Chicken breast from the green field of Central Luzon where chickens are fed  <br>
       with organic and healthy feeds. Taste the delicate poultry of the north now with AgriAccess!
        `
-    },
+    }
+    
   ];
 
   
@@ -100,12 +101,12 @@ const handleEdit = () => {
       <div className="overflow-x-auto text-black">
         <table className="min-w-full">
           <thead>
-            <tr className="text-center bg-amber-400 font-extrabold font-serif text-2xl">
-              <th className="text-center">PRODUCT</th>
-              <th className="text-center">PRODUCT NAME</th>
-              <th className="text-center">QUANTITY</th>
-              <th className="text-center">PRICE</th>
-              <th className="text-center">OPERATION</th>
+            <tr className="text-center bg-amber-400  font-extrabold font-serif text-2xl">
+              <th className="text-center text-white">PRODUCT</th>
+              <th className="text-center text-white">PRODUCT NAME</th>
+              <th className="text-center text-white">QUANTITY</th>
+              <th className="text-center text-white">PRICE</th>
+              <th className="text-center text-white">OPERATION</th>
             </tr>
           </thead>
 
