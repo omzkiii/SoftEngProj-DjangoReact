@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from requests import Response
 from rest_framework.generics import ListAPIView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.views import APIView
-from .serializers import ProductSerializer, ProductUpdateSerializer, DiscountSerializer
+from .serializers import ProductSerializer, ProductUpdateSerializer, DiscountSerializer, SingleOrderSerializer
 from .serializers import CartSerializer, CartUpdateSerializer, OrderSerializer, OrderProductSerializer
 from .models import Product, Discount, InventoryTxn, Cart, Order, OrderProduct, Customer
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -117,7 +117,7 @@ class DiscountListCreateView(ListCreateAPIView):
     serializer_class = DiscountSerializer
     permission_classes = [IsAdminUser]
 
-class DiscountRetrieveView(RetrieveAPIView):
+class DiscountRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = Discount.objects.all()
     serializer_class = DiscountSerializer
     lookup_field = 'pk'
@@ -151,6 +151,48 @@ Order-Related views
 class OrderListCreateView(ListCreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+
+
+class OrderCreateSingleView(APIView):
+    serializer_class = OrderSerializer
+    # permission_classes = [IsAuthenticated]
+    
+    def post(self, request, user, *args, **kwargs):
+        customer = Customer.objects.get(user=user)
+        serialized_data = SingleOrderSerializer(data=request.data) 
+        serialized_data.is_valid(raise_exception=True)
+        product = Product.objects.get(id=serialized_data.data.get('product'))
+        quantity = float(serialized_data.data.get('quantity'))
+        unit_price = float(product.price)
+        gross_amount = unit_price * quantity
+
+        discounts = Discount.objects.filter(products=product)
+        product_discount = 0
+
+        for d in discounts:
+            if d.is_active and d.disc_type == Discount.PESO:
+                product_discount += float(d.amount) * quantity
+            elif d.is_active and d.disc_type == Discount.PERC:
+                unit_discount = unit_price * float(d.amount)
+                product_discount += unit_discount * quantity
+        
+
+        actual_discount = min(gross_amount, product_discount)
+        total_amount = gross_amount - actual_discount
+
+
+        order = Order.objects.create(user=customer, status=Order.UNPAID, total_amount = total_amount, gross_amount=gross_amount, discount=actual_discount)
+
+        #create product line item
+        OrderProduct.objects.create(
+            order=order,
+            product= product,
+            quantity= quantity,
+            unit_price = unit_price
+        )
+
+        serializer = OrderSerializer(order)
+        return Response(serializer.data)      
     
 
 class OrderProductListCreateView(ListCreateAPIView):
@@ -166,6 +208,7 @@ class OrderProductRetrieveView(RetrieveAPIView):
     queryset = OrderProduct.objects.all()
     serializer_class = OrderProductSerializer
     lookup_field = 'order'
+
 
 """
 Computed Total views
@@ -283,6 +326,36 @@ class ComputedTotalView(APIView):
 """
 Report Views
 """
+class ReportRetrieveView(APIView):
+    
+    def get(self, request,*args, **kwargs):
+        category = self.request.query_params.get('cat', '')
+        month = self.request.query_params.get('month', '')
+        year = self.request.query_params.get('year', '')
+
+        orders = Order.objects.filter(date_placed__year=year)
+
+        if(category=='month'):
+            orders = orders.filter(date_placed__month=month)
+        
+        order_count = len(orders)
+        revenue = 0
+        cost = 0
+
+        for order in orders:
+            if order.total_amount:
+                revenue += order.total_amount
+
+            order_line = OrderProduct.objects.filter(order=order)
+
+            for line in order_line:
+                cost += line.product.cost * line.quantity
+
+        profit = revenue - cost
+
+        return Response({"orders":order_count,"revenue":revenue,"profit":profit}, status=status.HTTP_200_OK)
+
+
 
 
 
