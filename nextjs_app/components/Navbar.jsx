@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useLoggedInContext } from '../contexts/LoggedInContext';
 import AccountModal from "./Account";
 import Link from "next/link";
 import Image from "next/image";
@@ -9,12 +10,11 @@ import UserDropDown from "./UserDropDown";
 
 
 const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, setIsLoggedIn} = useLoggedInContext();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = React.useState("");
   const params = searchParams.get('login');
-
   const handleSearch = () => {
     router.push(`/products?q=${searchQuery}`);
   };
@@ -59,16 +59,17 @@ const Navbar = () => {
               <img
                 src="/userIcon.png"
                 alt="UserIcon"
-                onClick={toggleUserDropdown}
+                onClick={()=>toggleUserDropdown()}
                 className="cursor-pointer"
               />
-              {userDropdownOpen && <UserDropDown onClick={toggleUserDropdown} setIsLoggedIn={setIsLoggedIn} />}
+              {userDropdownOpen && <UserDropDown onClick={()=>toggleUserDropdown()}/>}
             </div>
 
       : <Link href={'/?login=true'}>
           <img src="/userIcon.png" alt="UserIcon" onClick={openModal} />
         </Link>}
-        {params==='true' && <AccountModal onClose={closeModal} isModalOpen={isModalOpen} setIsLoggedIn={setIsLoggedIn}/>}
+        {params==='true' && <AccountModal onClose={closeModal} isModalOpen={isModalOpen}/>}
+        
         {/* {userDropdownOpen && <UserDropDown onClick={toggleUserDropdown} />} */}
         
         <img src="cartIcon.png" alt="Cart " />
