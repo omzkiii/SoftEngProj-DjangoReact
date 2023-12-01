@@ -4,7 +4,7 @@ import LoginForm from './Login';
 import RegisterForm from './Register';
 import Modal from './Modal';
 
-const AccountModal = ({ isModalOpen, onClose }) => {
+const AccountModal = ({ isModalOpen, onClose, setIsLoggedIn }) => {
   const [showLogIn, setShowLogIn] = useState(true);
   const [showSignUp, setShowSignUp] = useState(false);
 
@@ -20,7 +20,7 @@ const AccountModal = ({ isModalOpen, onClose }) => {
   }
 
   return (
-    <Modal isOpen={isModalOpen} closeModal={onClose}>
+    <Modal isOpen={isModalOpen} closeModal={onClose} >
       <div className="bg-green-500 text-white rounded-lg shadow-lg p-4">
         {/* TODO: change to 'x' icon */}
         <div className='mb-2 flex justify-end'> 
@@ -41,8 +41,8 @@ const AccountModal = ({ isModalOpen, onClose }) => {
           
         </div>
 
-        {showLogIn && <LoginForm onClose={onClose}/>}
-        {showSignUp && <RegisterForm onClose={onClose}/>}
+        {showLogIn && <LoginForm onClose={onClose} setIsLoggedIn={setIsLoggedIn}/>}
+        {showSignUp && <RegisterForm onClose={onClose} setIsLoggedIn={setIsLoggedIn}/>}
       </div>
     </Modal>
   );
