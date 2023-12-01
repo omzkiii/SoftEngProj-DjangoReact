@@ -56,7 +56,7 @@ const Navbar = () => {
         <img src="cartIcon.png" alt="Cart " />
         <input
           type="search"
-          placeholder="Search..."
+          placeholder="Search..."   
           className="p-2 border border-green-300 rounded-md"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -67,5 +67,5 @@ const Navbar = () => {
   </nav>
   );
 };
-
+  
 export default Navbar;
