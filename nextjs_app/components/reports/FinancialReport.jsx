@@ -1,62 +1,113 @@
-const FinancialReport = () => {
-    //TODO: fetch data based on month and year props
-    const analytics = {
-        sales: 300000,
-        discount: 50000,
-        cogs: 100000,
+ //TODO: fetch analytics based on month and year props    
+    
+    
+    const FinancialReport = () => {
+       
+        const analytics =[
+          {
+            orders: "101", 
+            revenue: 23301,
+            profit: 12642
+          },
+        ];
+
+        const monthOptions = [
+          { value: 'january', label: 'January' },
+          { value: 'february', label: 'February' },
+          { value: 'march', label: 'March' },
+          { value: 'april', label: 'April' },
+          { value: 'may', label: 'May' },
+          { value: 'june', label: 'June' },
+          { value: 'july', label: 'July' },
+          { value: 'august', label: 'August' },
+          { value: 'september', label: 'September' },
+          { value: 'october', label: 'October' },
+          { value: 'november', label: 'November' },
+          { value: 'december', label: 'December' },
+        ];
+
+        const yearOptions = [
+          { value: 2023, label: 2023 },
+          { value: 2022, label: 2022 },
+          { value: 2021, label: 2021 },
+          { value: 2020, label: 2020 },
+          { value: 2019, label: 2019 },
+          { value: 2018, label: 2018 },
+          { value: 2017, label: 2017 },
+          
+        ];
+  return(
+        
+    <div> 
+
+      <div className=" font-serif color text-amber-400 m-4 text-4xl font-extrabold">
+      <h2 className="text-AgriAccessOrange"> SALES REPORT  </h2>
+      </div>
+
+        <div className="flex">
+            <div className=" ml-12 mr-4">
+              <select className="text-black rounded-3xl border border-gray-300 px-4 py-2">
+                <option value="monthly">Monthly</option>
+                <option value="weekly">Weekly</option>
+                <option value="yearly">Yearly</option>
+              </select>
+            </div>
+
+            <div> 
+              <h1 className="text-green-700 font-extrabold text-4xl">&gt;</h1> 
+            </div>
+
+
+            <div>
+
+              {/* THE SELECT FIELD FOR MONTHS */}
+              <select className="text-black rounded-3xl border border-gray-300 px-4 py-2">
+                {monthOptions.map((option) => (
+                  <option key={option.value} value={option.value}> {option.label}</option>
+                  ))}
+              </select>
+
+              {/* THE SELECT FIELD FOR YEARS */}
+              <select className="text-black rounded-3xl border border-gray-300 px-4 py-2 ml-6">
+                {yearOptions.map((option2) => (
+                  
+                  <option key={option2.val} value={option2.value}> {option2.label}</option>
+
+                ))}
+                
+              </select>
+                  
+            </div>
+          </div>
+
+        {/* BOXES BELOW DITO   */}
+        {/* line-height: 300px; */}
+    <div className="flex flex-wrap justify-center flex-items-center font-extrabold"> 
+      <div className="w-1/4 h-96 shadow-xl m-10 text-center leading-snug text-3xl">
+        <br/>
+        <h1 className="text-4xl text-AgriAccessOrange"> ORDERS</h1>
+        <br/>
+        <h1 className="text-8xl text-AgriAccessOrange">{analytics[0].orders}</h1>
+    
+      </div>
+    
+          
+      <div className="w-1/4 h-96 shadow-xl m-10 text-center leading-tight text-3xl">
+        <br/>
+        <h1 className="text-4xl text-AgriAccessOrange"> REVENUE</h1>
+        <br/>
+        <h1 className="text-8xl text-AgriAccessOrange">{analytics[0].revenue}</h1>
+      </div>
+        
+      <div className="w-1/4 h-96 shadow-xl m-10 text-center leading-tight text-3xl">
+        <br/>
+        <h1 className="text-4xl text-AgriAccessOrange"> PROFIT</h1>
+        <br/>
+        <h1 className="text-8xl text-AgriAccessOrange">{analytics[0].profit}</h1>
+      </div>
+    </div>
+  </div>
+            )
     }
 
-    return(
-<div>
-  
-  <div className="text-center font-serif color text-amber-400 m-4 text-4xl font-extrabold">
-  <h2> INVENTORY </h2>
-  </div>
-
-  <div className="text-black">
-<div className="overflow-x-auto">
-  <table className="min-w-full">
-    <thead>
-      <tr className="text-center bg-amber-400 font-extrabold font-serif text-2xl">
-        <th className="text-center">PRODUCT</th>
-        <th className="text-center">PRODUCT NAME</th>
-        <th className="text-center">QUANTITY</th>
-        <th className="text-center">PRICE</th>
-        <th className="text-center">OPERATION</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr className="py-4 text-center">
-        <td> <p>display </p></td>
-        <td> <p>display </p></td>
-        <td><p>display </p></td>
-
-        <td className="py-4 items-center">
-          <select name="status" id="orderStatus">
-            <option value="" disabled selected hidden>Choose a Status</option>
-            <option value="completed" className="text-cyan-600">Completed</option>
-            <option value="pending" className="text-green-400">Pending</option>
-            <option value="cancelled" className="text-red-400">Cancelled</option>
-          </select>
-        </td>
-
-        <td className="items-center space-x-2">
-          <button className="px-2 py-1 bg-blue-500 text-white rounded">View</button>
-          <button className="px-2 py-1 bg-red-500 text-white rounded">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-
-    
-  </table>
-</div>
-</div>
-
-
-  </div>
-
-        )
-}
-
-export default FinancialReport
+    export default FinancialReport
