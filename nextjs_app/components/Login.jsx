@@ -3,8 +3,7 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true
 
-const LoginForm = ({ onClose }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const LoginForm = ({ onClose, setIsLoggedIn }) => {
   const [formData, setFormData] = useState({ username: '', password: '' });
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -26,8 +25,9 @@ const LoginForm = ({ onClose }) => {
       
       if (response.status === 200) {
         // Successful login, handle user authentication and redirection
+        localStorage.setItem('token', response.data.auth_token);
         setIsLoggedIn(true);
-        setError(null);
+        setError(null); 
         console.log('Log in success');
         console.log(response.user);
         onClose(); // Close the modal

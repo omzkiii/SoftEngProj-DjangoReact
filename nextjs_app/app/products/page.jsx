@@ -19,7 +19,10 @@ const ProductPage = () => {
     console.log('search params', searchParams.get('q'))
     async function fetchProducts() {
       try {
-        const response = await axios.get('http://localhost:8000/api/products/search/?q='+query);
+        const response = query == null
+        ? await axios.get('http://localhost:8000/api/products/')
+        : await axios.get('http://localhost:8000/api/products/search/?q=' + query);
+
         setProducts(response.data);
       } catch (error){
         console.log('Error: ', error);
