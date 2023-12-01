@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.urls import path
 from .views import ProductListView, ProductListCreateView, ProductUpdateView, ProductRetrieveView, CartRetrieveUpdateDestroyView, CartListCreateView, ProductCategoryListView, ProductSearchView
 from .views import DiscountListCreateView, DiscountRetrieveView
-from .views import OrderProductListCreateView, ComputedTotalView, OrderCreateView, OrderListCreateView
+from .views import OrderProductListCreateView, ComputedTotalView, OrderCreateView, OrderListView, OrderRetrieveUpdateView
 
 
 urlpatterns = [
@@ -30,7 +30,9 @@ urlpatterns = [
     path('checkout/<int:user>', OrderCreateView.as_view(), name="checkout"),
     
     #TODO: confirm use. delete if not necessary
-    path('order/<int:cart>', OrderListCreateView.as_view(), name="order"),
+    path('order/<int:pk>', OrderRetrieveUpdateView.as_view(), name="order_edit"),
+    path('order/', OrderListView.as_view(), name="order"),
+
 
 
     path('compute/<int:userId>', ComputedTotalView.as_view(), name="compute"),
