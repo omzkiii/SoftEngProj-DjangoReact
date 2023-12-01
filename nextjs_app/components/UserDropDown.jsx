@@ -1,8 +1,10 @@
 import axios from "axios";
 import Link from "next/link";
+import { useLoggedInContext } from '../contexts/LoggedInContext';
 
-const ProductDropDown = ({ onClick, setIsLoggedIn }) => {
-    const categories = ['Profile', 'Logout'];
+
+const ProductDropDown = ({ onClick }) => {
+    const { logout } = useLoggedInContext();
     const handleLogout = async() =>{
       try {
         const response = await axios.post('http://127.0.0.1:8000/auth/token/logout/',{},{
@@ -14,8 +16,8 @@ const ProductDropDown = ({ onClick, setIsLoggedIn }) => {
         if (response.status === 204){
           localStorage.removeItem('token');
           console.log("Logged out")
-          setIsLoggedIn(false)
-          onClick
+          logout()
+          onClick()
         }
       } catch (error) {
         
