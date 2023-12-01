@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useLoggedInContext } from '../contexts/LoggedInContext';
 
 const RegisterForm = ({ onClose }) => {
+  const { login } = useLoggedInContext();
   const [formData, setFormData] = useState({user:  {username:"", email:"", first_name:"", last_name:"", password:"", re_password:""} });
   const [showPassword, setShowPassword] = useState();
   const [showConfirmPassword, setShowConfirmPassword] = useState();
@@ -29,6 +31,7 @@ const RegisterForm = ({ onClose }) => {
         // Registration successful
         setError(null);
         console.log("Registration success");
+        login();
         onClose(); // Close the modal
       } else {
         // Handle registration errors

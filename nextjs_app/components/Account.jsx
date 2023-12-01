@@ -4,7 +4,7 @@ import LoginForm from './Login';
 import RegisterForm from './Register';
 import Modal from './Modal';
 
-const AccountModal = ({ isModalOpen, onClose, setIsLoggedIn }) => {
+const AccountModal = ({ isModalOpen, onClose, login }) => {
   const [showLogIn, setShowLogIn] = useState(true);
   const [showSignUp, setShowSignUp] = useState(false);
 
@@ -41,8 +41,8 @@ const AccountModal = ({ isModalOpen, onClose, setIsLoggedIn }) => {
           
         </div>
 
-        {showLogIn && <LoginForm onClose={onClose} setIsLoggedIn={setIsLoggedIn}/>}
-        {showSignUp && <RegisterForm onClose={onClose} setIsLoggedIn={setIsLoggedIn}/>}
+        {showLogIn && <LoginForm onClose={onClose}/>}
+        {showSignUp && <RegisterForm onClose={onClose}/>}
       </div>
     </Modal>
   );
