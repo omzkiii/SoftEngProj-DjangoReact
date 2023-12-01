@@ -14,7 +14,7 @@ const Navbar = () => {
   const params = searchParams.get('login');
 
   const handleSearch = () => {
-    router.push(`/search?q=${searchQuery}`);
+    router.push(`/products?q=${searchQuery}`);
   };
 
   const [productsIsOpen, setProductsIsOpen] = useState(false);
