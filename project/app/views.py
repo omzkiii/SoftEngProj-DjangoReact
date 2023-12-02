@@ -427,12 +427,11 @@ class UserRegistrationAPIView(APIView):
         return Response(user_serializer.data, status=status.HTTP_201_CREATED)
         
 
-class CustomerUpdateAPIView(UpdateAPIView):
+class CustomerRetrieveUpdateAPIView(RetrieveUpdateAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
     lookup_field = 'pk'
     permission_classes = [IsLoggedInUser]
-
 
 
 
