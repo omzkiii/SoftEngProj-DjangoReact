@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useLoggedInContext } from '../contexts/LoggedInContext';
 import AccountModal from "./Account";
@@ -14,7 +14,7 @@ const Navbar = () => {
   const { isLoggedIn, setIsLoggedIn} = useLoggedInContext();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [searchQuery, setSearchQuery] = React.useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const params = searchParams.get("login");
   const [cartIcon, setCartIcon] = useState("/cartIcon.png");

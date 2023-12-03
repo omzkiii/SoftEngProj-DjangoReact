@@ -14,6 +14,16 @@ const ProductCard = ({ product }) => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+  const [quantity, setQuantity] =  useState(0)
+
+  const addQty = () => {
+    setQuantity(quantity+1)
+  }
+
+  const minusQty = () => {
+    if(quantity !== 0)
+      setQuantity(quantity-1)    
+  }
   
 
   
@@ -28,6 +38,19 @@ const ProductCard = ({ product }) => {
             <span className="text-black font-semibold">
               PHP {product.price}
             </span>
+            <table className="font-extrabold ">
+                  <tr>
+                    <td className="bg-AgriAccessGreen px-2 border-t border-b border-AgriAccessGreen" >
+                      <button onClick={minusQty}> - </button> 
+                    </td>
+                    <td className=" px-4 border-t border-b border-AgriAccessGreen text-black">
+                      {quantity}
+                    </td>
+                    <td className="bg-AgriAccessGreen px-2 border-t border-b border-AgriAccessGreen">
+                    <button onClick={addQty}> +   </button>
+                    </td>
+                  </tr>
+                </table>
             <button className="bg-green-500 text-white px-3 py-1 rounded" >
               Add to Cart
             </button>
@@ -46,6 +69,19 @@ const ProductCard = ({ product }) => {
                 <p className="text-green-800 font-semibold mt-2">
                   PHP {product.price}
                 </p>
+                <table className="font-extrabold ">
+                  <tr>
+                    <td className="bg-AgriAccessGreen px-2 border-t border-b border-AgriAccessGreen" >
+                      <button onClick={minusQty}> - </button> 
+                    </td>
+                    <td className=" px-4 border-t border-b border-AgriAccessGreen text-black">
+                      {quantity}
+                    </td>
+                    <td className="bg-AgriAccessGreen px-2 border-t border-b border-AgriAccessGreen">
+                    <button onClick={addQty}> +   </button>
+                    </td>
+                  </tr>
+                </table>
                 <button
                 className="mt-4 bg-green-500 text-white px-4 py-2 rounded"
                 onClick={closeModal}
