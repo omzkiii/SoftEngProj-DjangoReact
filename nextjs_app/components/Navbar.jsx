@@ -131,6 +131,9 @@ const Navbar = () => {
         </Link>
 
         {params==='true' && <AccountModal onClose={closeModal} isModalOpen={isModalOpen}/>}
+        {userDropdownOpen && <UserDropDown onClick={toggleUserDropdown} />}
+
+      {/* THE NAVBAR */}
       <div> 
         <img src={cartIcon} alt="Cart" onClick={toggleSidebar} className="cursor-pointer" width={60} height={60} />
           {/* THE SIDEBAR*/}
