@@ -9,6 +9,12 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = '__all__'
 
+
+class SingleOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderProduct
+        fields = ['product', 'quantity']
+
 class OrderProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderProduct
@@ -18,6 +24,12 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'
+
+class ProductUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = '__all__'
+        read_only_fields = ['cost']
 
 
 class DiscountSerializer(serializers.ModelSerializer):
@@ -30,6 +42,13 @@ class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
         fields = '__all__'
+
+
+class CartUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cart
+        fields = '__all__'
+        read_only_fields = ['customer','product']
 
 
 class InventoryTxnSerializer(serializers.ModelSerializer):
@@ -49,15 +68,14 @@ class UserCreatePasswordRetypeSerializer(BaseUserCreatePasswordRetypeSerializer)
 
 class UserSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
-        fields = ['username', 'email', 'first_name', 'last_name']
+        fields = ['id','username', 'email', 'first_name', 'last_name']
+        read_only_fields = ['id']
 
 
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
         fields = '__all__'
-
-
 
 
 
