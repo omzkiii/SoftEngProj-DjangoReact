@@ -14,8 +14,12 @@
             'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
         },
         colors:{
-          'AgriAccessOrange' : '#de9c4b'  
+          'AgriAccessOrange' : '#de9c4b',
+          'AgriAccessGreen' : '#29544B',
+          'Lime':'#A4B07B'
     },
+
+
       },
     },
     variants: {
