@@ -88,7 +88,7 @@
         <h1 className="text-4xl text-AgriAccessOrange"> ORDERS</h1>
         <br/>
         <h1 className="text-8xl text-AgriAccessOrange">{analytics[0].orders}</h1>
-    
+                  
       </div>
     
           
