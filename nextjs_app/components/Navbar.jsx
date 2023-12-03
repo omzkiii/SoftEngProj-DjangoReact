@@ -131,13 +131,8 @@ const Navbar = () => {
         </Link>
 
         {params==='true' && <AccountModal onClose={closeModal} isModalOpen={isModalOpen}/>}
-        <div>
-          <img src={cartIcon}
-    alt="Cart"
-    onClick={toggleSidebar}
-    className="cursor-pointer"
-    width={60}
-    height={60} />
+      <div> 
+        <img src={cartIcon} alt="Cart" onClick={toggleSidebar} className="cursor-pointer" width={60} height={60} />
           {/* THE SIDEBAR*/}
           {isSidebarOpen && (
             <div className={`fixed inset-y-0 right-0 bg-gray-800 bg-opacity-50 z-50 transform transition-transform ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'} w-1/4`}>
