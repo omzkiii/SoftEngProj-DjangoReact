@@ -1,7 +1,9 @@
 import React from 'react'
-
+import { useLoggedInContext } from '@/contexts/LoggedInContext';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 export default function Cart({ isSidebarOpen, closeSidebar }) {
-
+  const { carts, products } = useLoggedInContext();
     const calculateSubTotal = () => {
         const totalPrice = toOrder.reduce((acc, item) => {
           return acc + item.priceDouble;
@@ -68,6 +70,7 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
   ]
    
   var shippingFee = 100.00;
+    
 
   return (
     <div className={`fixed inset-y-0 right-0 bg-gray-800 bg-opacity-50 z-50 transform transition-transform ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'} w-1/4`}>
@@ -75,7 +78,7 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
               
                 <div className="flex flex-col justify-center ">
                   <button className="bg-transparent border-AgriAccessOrange text-AgriAccessOrange border-2 rounded-full px-3 py-2 font-extrabold " onClick={closeSidebar}>
-                    &lt; CONTINUE SHOPPING
+                    &lt; CONTINUE SHOPPING 
                   </button>
                 </div>
                 <br />
@@ -85,19 +88,18 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
                 </div>
                 {/* Mapping through toOrder and displaying items */}
                 <div className="text-AgriAccessOrange">
-                  {toOrder.map((item, index) => (
+                  {carts.map((item, index) => (
                     <div key={index} className="flex items-center justify-between p-2 border-b">
                       <div className="flex items-center">
                         <div>
-                          <img src={item.img} alt={item.name} width={100} height={100} className="mr-6" />
+                          <img src={item.img} alt={item.product} width={100} height={100} className="mr-6" />
                           <div className="text-2xl">
                             <h1>{item.price}</h1>
                           </div>
                         </div>
                         <div classname="flex flex-col ">
                           <div className="flex flex-row text-xl justify-center">
-                          <h1> {item.name} / </h1>
-                          <h3>  {item.size} </h3>
+                          <h1>{products[item.product].name}</h1>
                           </div>
 
                         <div className="flex justify-center mt-2 mb-2">
@@ -107,7 +109,7 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
                                <button> - </button> 
                               </td>
                               <td className=" px-4 border-t border-b border-AgriAccessGreen">
-                                {item.qty}
+                                {item.quantity}
                               </td>
                               <td className="bg-AgriAccessGreen px-2 border-t border-b border-AgriAccessGreen">
                               <button> +   </button>
