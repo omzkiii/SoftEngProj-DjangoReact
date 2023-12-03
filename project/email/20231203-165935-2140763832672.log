@@ -1,0 +1,40 @@
+Content-Type: multipart/alternative;
+ boundary="===============2954125756992398516=="
+MIME-Version: 1.0
+Subject: Password reset on localhost:8000
+From: webmaster@localhost
+To: test@email.com
+Date: Sun, 03 Dec 2023 08:59:35 -0000
+Message-ID: <170159397586.13748.8670674924188280700@LAPTOP-VTMLH8HD>
+
+--===============2954125756992398516==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+You're receiving this email because you requested a password reset for your user account at localhost:8000.
+
+Please go to the following page and choose a new password:
+http://localhost:8000/reset_password/MjA/byn5vb-5e692eda084bffb05342ba6214568d58
+Your username, in case you've forgotten: dua
+
+Thanks for using our site!
+
+The localhost:8000 team
+--===============2954125756992398516==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+<p>You're receiving this email because you requested a password reset for your user account at localhost:8000.</p>
+
+<p>Please go to the following page and choose a new password:</p>
+<a href="http://localhost:8000/reset_password/MjA/byn5vb-5e692eda084bffb05342ba6214568d58">http://localhost:8000/reset_password/MjA/byn5vb-5e692eda084bffb05342ba6214568d58</a>
+<p>Your username, in case you've forgotten: <b>dua</b></p>
+
+<p>Thanks for using our site!</p>
+
+<p>The localhost:8000 team</p>
+--===============2954125756992398516==--
+
+-------------------------------------------------------------------------------
