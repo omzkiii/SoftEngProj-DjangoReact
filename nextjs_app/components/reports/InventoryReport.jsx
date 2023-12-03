@@ -65,11 +65,11 @@ const InventoryReport = () => {
   };
 
   const closeDescriptionModal = () => {
-    setShowDescriptionModal(false); // Close description modal using setShowDescriptionModal
+    setShowDescriptionModal(false); //Close description modal using setShowDescriptionModal
     setSelectedItem(null);
   };
   
-
+6
 // The Function to update the details in db (To EDIT)
 const handleEdit = () => {
     if (editedItem) {
@@ -150,6 +150,10 @@ const handleEdit = () => {
             ))}
           </tbody>
         </table>
+
+
+
+        
       </div>
 
       {/* Modal for the Description of the product */}
