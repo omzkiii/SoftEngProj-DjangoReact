@@ -20,32 +20,40 @@ const AccountModal = ({ isModalOpen, onClose, login }) => {
   }
 
   return (
-    <Modal isOpen={isModalOpen} closeModal={onClose} >
-      <div className="bg-green-500 text-white rounded-lg shadow-lg p-4">
-        {/* TODO: change to 'x' icon */}
-        <div className='mb-2 flex justify-end'> 
-          <button
+    <Modal isOpen={isModalOpen} closeModal={onClose}>
+      <div className={`rounded-lg shadow-lg p-4 ${showLogIn ? 'bg-white text-black' : 'bg-AgriAccessOrange text-white'}`}>
+        {/* Rest of your code remains the same */}
+        <button
             onClick={onClose}
-            className="bg-green-200 text-green-800 px-2 py-0 rounded-lg hover:bg-green-300">
+            className="bg-green-200 text-green-800 px-2 py-0 rounded-lg hover:bg-green-300 ">
             x
           </button>
-        </div>
+       
+    
 
         <div className='mb-4 flex justify-center'>
-          {/* TODO: styling when clicked and styling when not clicked; positioning */}
-          <button className={showLogIn ? 'text-green-700 bg-white rounded-md p-2': 'bg-green-700 text-white rounded-md p-2' } onClick={toggleLogIn}>Log-in</button>
-
-          {/* TODO: styling when clicked and styling when not clicked; positioning */}
-          <button className={showSignUp ? 'text-green-700 bg-white rounded-md p-2': 'bg-green-700 text-white rounded-md p-2' } onClick={toggleSignUp}>Sign up</button>
-
           
+        <button
+            className={showLogIn 
+              ? 'text-white bg-AgriAccessOrange font-extrabold rounded-md p-2 w-1/4 ' 
+              : 'font-extrabold bg-white text-AgriAccessOrange rounded-md p-2'}
+            onClick={toggleLogIn}
+          >Log-in</button>
+          
+          <button
+            className={showSignUp 
+              ? 'text-whit font-extrabold rounded-xl shadow-2xl p-2 ' 
+              : 'font-extrabold bg-white text-AgriAccessOrange rounded-xl border-2 border-black p-2 w-1/4 shadow-md shadow-gray-600'}
+            onClick={toggleSignUp}
+          >Sign up</button>
         </div>
 
-        {showLogIn && <LoginForm onClose={onClose}/>}
-        {showSignUp && <RegisterForm onClose={onClose}/>}
+        {showLogIn && <LoginForm onClose={onClose} />}
+        {showSignUp && <RegisterForm onClose={onClose} />}
       </div>
     </Modal>
   );
 };
 
 export default AccountModal;
+

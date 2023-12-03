@@ -45,47 +45,55 @@ const LoginForm = ({ onClose }) => {
 
   return (
     <div className="text-green-900">
+
+      <label className='text-Lime'>Username</label>
             <input
+            
             type="text"
             name="username"
-            placeholder="Username"
-            className="w-full px-3 py-2 mb-3 rounded-lg"
+            placeholder="Jose Rizzers"
+            className="w-full px-3 py-2 mb-3 border-2 border-Lime"
             value={formData.username}
             onChange={handleInputChange}
             />
+
+      <label className='text-Lime'>Password</label>
             <input
             type={showPassword ? "text" : "password"}
             name="password"
             placeholder="Password"
-            className="w-full px-3 py-2 mb-3 rounded-lg"
+            className="w-full px-3 py-2 mb-3 border-2 border-Lime"
             value={formData.password}
             onChange={handleInputChange}
             />
 
             <div className="flex justify-between">
 
-                <label>
+                <label className='text-AgriAccessOrange font-extrabold underline'>
                     <input
                         type="checkbox"
                         value="showPassword"
                         checked={showPassword}
                         onChange={toggleShowPassword}
+                        className='mr-2 rounded-full'
                     />
                 Show Password
                 </label>
-                <a href="/passwordreset">Forgot Password</a>
 
+                
+                  <a href="/passwordreset" className='text-AgriAccessOrange underline'>Forgot Password</a>
+                
             </div>
             <br/>
 
             <button
             onClick={handleLogin}
-            className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800"
+            className="bg-AgriAccessOrange font-extrabold w-full text-white px-4 py-2 rounded-lg hover:bg-orange-00"
             >
             Log In
             </button>
               
-        </div>
+    </div>
   );
 };
 
