@@ -4,7 +4,7 @@ import { useLoggedInContext } from '../contexts/LoggedInContext';
 
 const RegisterForm = ({ onClose }) => {
   const { login } = useLoggedInContext();
-  const [formData, setFormData] = useState({user:  {username:"", email:"", first_name:"", last_name:"", password:"", re_password:""} });
+  const [formData, setFormData] = useState({user:  {username:"", email:"", first_name:"", last_name:"", password:"", re_password:""}});
   const [showPassword, setShowPassword] = useState();
   const [showConfirmPassword, setShowConfirmPassword] = useState();
   const [error, setError] = useState(null);
