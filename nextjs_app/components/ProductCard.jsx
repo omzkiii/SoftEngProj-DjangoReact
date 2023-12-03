@@ -14,11 +14,12 @@ const ProductCard = ({ product }) => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+  
 
   
   return (
       <div className="bg-white rounded-lg overflow-hidden shadow-lg p-4">
-        <Image src="/productImg.png" alt="Product Image" width={600} height={600} /> 
+        <Image src="/productImg.png" alt="Product Image" onClick={openModal} width={600} height={600} /> 
         <div className="mt-4">
           <h2 className="text-xl font-semibold text-gray-800">
             {product.name}
@@ -27,7 +28,7 @@ const ProductCard = ({ product }) => {
             <span className="text-black font-semibold">
               PHP {product.price}
             </span>
-            <button className="bg-green-500 text-white px-3 py-1 rounded" onClick={openModal}>
+            <button className="bg-green-500 text-white px-3 py-1 rounded" >
               Add to Cart
             </button>
           </div>
