@@ -1,7 +1,7 @@
   //FRAMEWORK NECCESITIES
   "use client" 
   import React from 'react';
-  import { useState } from "react";
+  import { useEffect, useState } from "react";
 
   //REPORT PAGES TO BE PULLED TO THE BOX
   import InventoryReport from '../components/reports/InventoryReport';
@@ -9,7 +9,7 @@
   import SalesReport from '../components/reports/FinancialReport';
 
   const MainPage = () => {
-
+ 
     //VARIABLES AND BUTTON FUNCTION 
 
     const [activeBtn, setActiveBtn] = useState("inventory");
