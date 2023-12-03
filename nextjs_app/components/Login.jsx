@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useLoggedInContext } from '../contexts/LoggedInContext';
 
 axios.defaults.withCredentials = true
 
 const LoginForm = ({ onClose }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const { login } = useLoggedInContext();
+  const [formData, setFormData] = useState({ username: '', password: '' });
   const [error, setError] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const toggleShowPassword = (e) => {
+      setShowPassword(e.target.checked)
+  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -14,19 +20,20 @@ const LoginForm = ({ onClose }) => {
   };
 
   const handleLogin = async () => {
-    console.log('Logging in with email:', formData.email);
+    console.log('Logging in with email:', formData.username);
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/users/login/', formData);
+      const response = await axios.post('http://127.0.0.1:8000/auth/token/login/', formData);
       
       if (response.status === 200) {
         // Successful login, handle user authentication and redirection
-        setIsLoggedIn(true);
-        setError(null);
+        localStorage.setItem('token', response.data.auth_token);
+        login();
+        setError(null); 
         console.log('Log in success');
         console.log(response.user);
         onClose(); // Close the modal
-      } else {
+      } else { 
         // Handle login errors
         setError('Login failed');
       }
@@ -37,37 +44,48 @@ const LoginForm = ({ onClose }) => {
   };
 
   return (
-    <>
-    
-      {error && <p>{error}</p>}
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        className="w-full px-3 py-2 mb-3 rounded-lg text-black"
-        value={formData.email}
-        onChange={handleInputChange}
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        className="w-full px-3 py-2 mb-3 rounded-lg text-black"
-        value={formData.password}
-        onChange={handleInputChange} 
-      />
-      
-      <button
-        onClick={handleLogin}
-        className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800"
-      >
-        Log In
-      </button>
-      
-      <a 
-      className="w-full px-3"
-      href="/passwordreset">Forgot password?</a>
-    </>
+    <div className="text-green-900">
+            <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            className="w-full px-3 py-2 mb-3 rounded-lg"
+            value={formData.username}
+            onChange={handleInputChange}
+            />
+            <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder="Password"
+            className="w-full px-3 py-2 mb-3 rounded-lg"
+            value={formData.password}
+            onChange={handleInputChange}
+            />
+
+            <div className="flex justify-between">
+
+                <label>
+                    <input
+                        type="checkbox"
+                        value="showPassword"
+                        checked={showPassword}
+                        onChange={toggleShowPassword}
+                    />
+                Show Password
+                </label>
+                <a href="/passwordreset">Forgot Password</a>
+
+            </div>
+            <br/>
+
+            <button
+            onClick={handleLogin}
+            className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800"
+            >
+            Log In
+            </button>
+              
+        </div>
   );
 };
 

@@ -1,4 +1,4 @@
-const ProfileDetails = ({user}) => {
+const ProfileDetails = ({customer, user}) => {
     return (
         <div className="bg-green-100 flex flex-col">
             <div className="flex justify-center">
@@ -9,9 +9,11 @@ const ProfileDetails = ({user}) => {
             </div>
 
             <ul className="text-green-500 text-2xl font-semibold">
-                <li className="mb-2">Name: {user.name}</li>
+                <li className="mb-2">Name: {`${user.first_name} ${user.last_name}`}</li>
                 <li className="mb-2">Email: {user.email}</li>
                 <li className="mb-2">Username: {user.username}</li>
+                <li className="mb-2">Contact no: {customer.contact_no}</li>
+                <li className="mb-2">Address: {customer.address}</li>
             </ul>
 
         </div>

@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 from django.urls import path
 from .views import ProductListView, ProductListCreateView, ProductUpdateView, ProductRetrieveView, CartRetrieveUpdateDestroyView, CartListCreateView, ProductCategoryListView, ProductSearchView
-from .views import DiscountListCreateView, DiscountRetrieveView
-from .views import OrderListCreateView, OrderProductListCreateView, ComputedTotalView, OrderProductRetrieveView
+from .views import DiscountListView, DiscountCreateView, DiscountRetrieveUpdateDestroyView, OrderCreateSingleView, ReportRetrieveView
+from .views import OrderProductListView, ComputedTotalView, OrderCreateView, OrderRetrieveUpdateView, OrderListView, UserOrderListView, OrderRetrieveView
 
 
 urlpatterns = [
@@ -17,18 +17,34 @@ urlpatterns = [
 
 
     # Discount APIs
-    path('discounts/', DiscountListCreateView.as_view(), name="discounts"),
-    path('discounts/<int:pk>', DiscountRetrieveView.as_view(), name="discount_detail"),
+    path('discounts/', DiscountListView.as_view(), name="discounts"),
+    path('discounts/create', DiscountCreateView.as_view(), name="discounts"),
+    path('discounts/<int:pk>', DiscountRetrieveUpdateDestroyView.as_view(), name="discount_detail"),
+    
 
     #Cart APIs
     path('cart/<str:customer>', CartListCreateView.as_view(), name="cart"),
-    path('cart/<str:customer>/<int:pk>', CartRetrieveUpdateDestroyView.as_view(), name="cart_detail"),
+    path('cart/<str:customer>/<int:product>', CartRetrieveUpdateDestroyView.as_view(), name="cart_detail"),
 
     #Order APIs
-    path('orderproducts/<int:order>', OrderProductListCreateView.as_view(), name="order_product"),
-    path('order/<int:cart>', OrderListCreateView.as_view(), name="order"),
 
-    path('compute/<int:orderId>', ComputedTotalView.as_view(), name="compute"),
+    path('checkout/<int:user>', OrderCreateView.as_view(), name="checkout"),
+    path('order/buynow/<int:user>', OrderCreateSingleView.as_view(), name="buynow"),
 
+    path('order/', OrderListView.as_view(), name="order"),
+    path('order/<int:pk>', OrderRetrieveUpdateView.as_view(), name="order_edit"),
+
+    path('order/user/all/<int:user>', UserOrderListView.as_view(), name="user_order"),
+    path('order/user/<int:pk>', OrderRetrieveView.as_view(), name="user_order_detail"),
+    
+    path('orderproducts/<int:order>', OrderProductListView.as_view(), name="order_product"),
+
+    #TODO: for deletion    
+    path('compute/<int:userId>', ComputedTotalView.as_view(), name="compute"),
+
+
+    #Report APIs
+    path('report/', ReportRetrieveView.as_view(), name="report"), #report/?cat={cat}&month={month}&year={year}, example:http://127.0.0.1:8000/api/report/?cat=month&month=12&year=2023
+    
 
 ]
