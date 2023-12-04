@@ -8,8 +8,7 @@ export const LoggedInProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState({});
   const [customer, setCustomer] = useState({})
-  const [carts, setCarts] = useState({})
-  const [products, setProducts] = useState({});
+  const [products, setProducts] = useState([]);
 
 
   
@@ -22,7 +21,7 @@ export const LoggedInProvider = ({ children }) => {
   const logout = () => {
     setIsLoggedIn(false);
   };
-
+//User
   const getUser = async () => {
 
     try {
@@ -37,41 +36,25 @@ export const LoggedInProvider = ({ children }) => {
           'Authorization': 'Token ' + localStorage.getItem('token')
         },
       })
-
-      const responseCart = await axios.get(`http://127.0.0.1:8000/api/cart/${response.data.username}`,{
-        headers: {
-          'Authorization': 'Token ' + localStorage.getItem('token')
-        },})
-          if(responseCart.status === 200){
-            setCarts(responseCart.data)
-          }
-          else
-            setCarts(localStorage.getItem('cart'))
-
       setUser(response.data)
       setCustomer(responseCust.data)
       console.log(response.data)
       console.log(responseCust.data)
-      console.log(responseCart.data)
 
 
     } catch (error) {
       
     }
   }
-  const currentCart = async () => {
-    const response = await axios.get(`http://127.0.0.1:8000/api/cart/${user.id}`,
-    {headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Token ' + localStorage.getItem('token')
-    }})
-    if(response.status === 200){
-      setCarts(response.data)
-    }
-    else
-      setCarts(localStorage.getItem('cart'))
-}
 
+  //Carts
+  
+
+
+
+
+
+//Orders
 const fetchProducts = async () => {
   try {
   const response = await axios.get(`http://127.0.0.1:8000/api/products/`)
@@ -88,16 +71,12 @@ const fetchProducts = async () => {
     if (localStorage.getItem('token')) {
         setIsLoggedIn(true)}
     getUser()
-    localStorage.setItem('cart',{})
-    currentCart()
-    fetchProducts()
-    console.log("CARTS")
-    console.log(carts)  
     console.log(user)
+    fetchProducts();
   },[])
 
   return (
-    <LoggedInContext.Provider value={{ isLoggedIn, login, logout, setIsLoggedIn, user, customer, carts, products }}>
+    <LoggedInContext.Provider value={{ isLoggedIn, login, logout, setIsLoggedIn, user, customer, products, fetchProducts }}>
       {children}
     </LoggedInContext.Provider>
   );
