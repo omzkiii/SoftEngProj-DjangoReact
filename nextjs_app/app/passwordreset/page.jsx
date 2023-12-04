@@ -42,9 +42,12 @@ const PasswordResetPage = () => {
           />
           <div className="flex justify-end">
 
-<div>
+            <div>
+              <button className='bg-AgriAccessOrange'>
+                Back
+              </button>
 
-</div>
+            </div>
 
 
             <button
