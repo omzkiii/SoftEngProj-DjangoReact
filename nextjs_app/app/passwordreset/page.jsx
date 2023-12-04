@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Modal from '@/components/Modal';
 import axios from 'axios';
-
+import AccountModal from '@/components/Account';
 
 const PasswordResetPage = () => {
   const [formData, setFormData] = useState({ email: '' });
@@ -29,7 +29,7 @@ const PasswordResetPage = () => {
   }
 
   return (
-    <div className="bg-green-100 min-h-screen flex flex-col items-center justify-center">
+    <div className="bg-blue-100 min-h-screen flex flex-col items-center justify-center">
       <Modal isOpen={showModal} closeModal={()=>setShowModal(true)}>
         <div className="bg-green-500 text-white rounded-lg shadow-lg p-4">
           <input
@@ -41,6 +41,12 @@ const PasswordResetPage = () => {
             onChange={handleInputChange}
           />
           <div className="flex justify-end">
+
+<div>
+
+</div>
+
+
             <button
               className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800"
               onClick={handleSend}
