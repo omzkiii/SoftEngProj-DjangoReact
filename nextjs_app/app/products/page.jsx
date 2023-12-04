@@ -9,7 +9,6 @@ import { useSearchParams } from 'next/navigation';
 
 
 const ProductPage = () => {
-
   const [products, setProducts] = useState([]);
   const searchParams = useSearchParams()
   let query = searchParams.get('q')

@@ -3,6 +3,8 @@
 import Image from "next/image";
 import React, { useState } from 'react';
 import Modal from '../components/Modal';
+import axios from "axios";
+import { useLoggedInContext } from "@/contexts/LoggedInContext";
 
 const ProductCard = ({ product }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,7 +16,7 @@ const ProductCard = ({ product }) => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  const [quantity, setQuantity] =  useState(0)
+  const [quantity, setQuantity] = useState(0)
 
   const addQty = () => {
     setQuantity(quantity+1)
@@ -24,6 +26,26 @@ const ProductCard = ({ product }) => {
     if(quantity !== 0)
       setQuantity(quantity-1)    
   }
+
+  const { user } = useLoggedInContext();
+  const cartData = {
+    "quantity": quantity,
+    "customer": user.id,
+    "product": product.id
+  }
+  const addToCart = async() => {
+    try {
+      const response = await axios.post(`http://127.0.0.1:8000/api/cart/${user.username}`,cartData,{
+        headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Token ' + localStorage.getItem('token')
+      },})
+      console.log("Cart Added")
+    } catch (error) {
+      console.log(cartData)
+    }
+  }
+ 
   
 
   
@@ -51,7 +73,7 @@ const ProductCard = ({ product }) => {
                     </td>
                   </tr>
                 </table>
-            <button className="bg-green-500 text-white px-3 py-1 rounded" >
+            <button className="bg-green-500 text-white px-3 py-1 rounded" onClick={()=>addToCart()}>
               Add to Cart
             </button>
           </div>
@@ -84,7 +106,7 @@ const ProductCard = ({ product }) => {
                 </table>
                 <button
                 className="mt-4 bg-green-500 text-white px-4 py-2 rounded"
-                onClick={closeModal}
+                onClick={()=>{addToCart();closeModal}}
               >
                 Add to Cart
               </button>

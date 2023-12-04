@@ -62,6 +62,7 @@ const AccountModal = ({ isModalOpen, onClose, login }) => {
 
         {showLogIn && <LoginForm onClose={onClose} />}
         {showSignUp && <RegisterForm onClose={onClose} />}
+        {/* <PasswordResetPage toggleLogIn={toggleLogIn} /> */}
       </div>
     </Modal>
   );
