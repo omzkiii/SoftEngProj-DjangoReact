@@ -1,10 +1,12 @@
 import axios from "axios";
 import Link from "next/link";
 import { useLoggedInContext } from '../contexts/LoggedInContext';
+import { useRouter } from 'next/navigation';
 
 
 const ProductDropDown = ({ onClick }) => {
     const { user, logout } = useLoggedInContext();
+    const router = useRouter();
 
 
 
@@ -18,9 +20,9 @@ const ProductDropDown = ({ onClick }) => {
         })
         if (response.status === 204){
           localStorage.removeItem('token');
-          console.log("Logged out")
           logout()
           onClick()
+          router.push('/');
         }
       } catch (error) {
         

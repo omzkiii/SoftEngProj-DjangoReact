@@ -92,7 +92,7 @@ const Navbar = () => {
         {/* {userDropdownOpen && <UserDropDown onClick={toggleUserDropdown} />} */}
         
 
-        {userDropdownOpen && <UserDropDown onClick={toggleUserDropdown} />}
+        {/* {userDropdownOpen && <UserDropDown onClick={toggleUserDropdown} />} */}
 
       {/* THE NAVBAR */}
       <div> 

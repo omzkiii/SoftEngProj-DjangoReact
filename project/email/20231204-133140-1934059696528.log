@@ -1,0 +1,40 @@
+Content-Type: multipart/alternative;
+ boundary="===============4143662668592509752=="
+MIME-Version: 1.0
+Subject: Password reset on localhost:8000
+From: webmaster@localhost
+To: kkk@email.com
+Date: Mon, 04 Dec 2023 05:31:40 -0000
+Message-ID: <170166790013.2040.13823532847437828003@MEDEA>
+
+--===============4143662668592509752==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+You're receiving this email because you requested a password reset for your user account at localhost:8000.
+
+Please go to the following page and choose a new password:
+http://localhost:8000/reset_password/MjE/byoqws-b5265d7700f4ed46dbc3373c311f8309
+Your username, in case you've forgotten: khala
+
+Thanks for using our site!
+
+The localhost:8000 team
+--===============4143662668592509752==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+<p>You're receiving this email because you requested a password reset for your user account at localhost:8000.</p>
+
+<p>Please go to the following page and choose a new password:</p>
+<a href="http://localhost:8000/reset_password/MjE/byoqws-b5265d7700f4ed46dbc3373c311f8309">http://localhost:8000/reset_password/MjE/byoqws-b5265d7700f4ed46dbc3373c311f8309</a>
+<p>Your username, in case you've forgotten: <b>khala</b></p>
+
+<p>Thanks for using our site!</p>
+
+<p>The localhost:8000 team</p>
+--===============4143662668592509752==--
+
+-------------------------------------------------------------------------------
