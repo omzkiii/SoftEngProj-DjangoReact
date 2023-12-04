@@ -1,4 +1,5 @@
 import ReportCard from "./ReportCard"
+import Link from "next/link"
 
 
 const OrderReport = () => {
@@ -44,7 +45,7 @@ return(
       </td>
 
       <td className="items-center space-x-2">
-        <button className="px-2 py-1 bg-blue-500 text-white rounded">View</button>
+        <button className="px-2 py-1 bg-blue-500 text-white rounded"><Link href='./adminorderdetails'>View</Link></button>
         <button className="px-2 py-1 bg-red-500 text-white rounded">Delete</button>
       </td>
     </tr>
