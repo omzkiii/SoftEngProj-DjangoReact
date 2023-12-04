@@ -14,13 +14,14 @@ export const LoggedInProvider = ({ children }) => {
   
 
   const login = () => {
-    setIsLoggedIn(true);
     getUser()
   };
 
   const logout = () => {
     setIsLoggedIn(false);
   };
+
+
 //User
   const getUser = async () => {
 
@@ -36,13 +37,15 @@ export const LoggedInProvider = ({ children }) => {
           'Authorization': 'Token ' + localStorage.getItem('token')
         },
       })
+      setIsLoggedIn(true);
       setUser(response.data)
       setCustomer(responseCust.data)
-      console.log(response.data)
-      console.log(responseCust.data)
 
 
     } catch (error) {
+      if (error.response.data.detail == "Invalid token."){
+        localStorage.removeItem('token');
+      }
       
     }
   }
@@ -54,7 +57,7 @@ export const LoggedInProvider = ({ children }) => {
 
 
 
-//Orders
+//Products
 const fetchProducts = async () => {
   try {
   const response = await axios.get(`http://127.0.0.1:8000/api/products/`)
@@ -69,9 +72,11 @@ const fetchProducts = async () => {
 
   useEffect(() =>{
     if (localStorage.getItem('token')) {
-        setIsLoggedIn(true)}
-    getUser()
-    console.log(user)
+      getUser()
+      console.log(user)
+    }
+        
+        
     fetchProducts();
   },[])
 
