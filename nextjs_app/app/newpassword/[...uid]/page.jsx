@@ -26,10 +26,10 @@ const NewPasswordPage = ({params}) => {
         try{
           const response = await axios.post('http://localhost:8000/auth/users/reset_password_confirm/', formData);
           if (response.status === 200) {
-    
             console.log('Send success');
           } else {
             console.log(response.status);
+            
           }
         }catch(error){
           console.log(error);

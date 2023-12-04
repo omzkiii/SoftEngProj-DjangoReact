@@ -92,6 +92,9 @@ const Navbar = () => {
         {/* {userDropdownOpen && <UserDropDown onClick={toggleUserDropdown} />} */}
         
 
+        {userDropdownOpen && <UserDropDown onClick={toggleUserDropdown} />}
+
+      {/* THE NAVBAR */}
       <div> 
         <img src={cartIcon} alt="Cart" onClick={toggleSidebar} className="cursor-pointer" width={60} height={60} />
           {/* THE SIDEBAR*/}
