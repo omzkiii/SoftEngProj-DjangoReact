@@ -6,7 +6,22 @@
       './app/**/*.{js,ts,jsx,tsx,mdx}',
     ],
     theme: {
-      
+      fontFamily: {
+        "Mont": ['Montserrat', 'sans-serif'],
+        "Bree": ['Bree Serif', 'serif'],
+      },
+      fontWeight: {
+        thin: '100',
+        hairline: '100',
+        extralight: '200',
+        light: '300',
+        normal: '400',
+        medium: '500',
+        semibold: '600',
+        bold: '700',
+        extrabold: '800',
+        black: '900',
+      },
       extend: {
         backgroundImage: {
           'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
@@ -16,7 +31,11 @@
         colors:{
           'AgriAccessOrange' : '#de9c4b',
           'AgriAccessGreen' : '#29544B',
-          'Lime':'#A4B07B'
+          'Lime':'#A4B07B',
+          'redfire': '#ed1b24',
+          'green': '#29544b',
+          'white': '#FFFFFF',
+          'black': '#000000'
     },
 
 
