@@ -64,6 +64,7 @@ const ProductCard = ({ product }) => {
       console.log("ERROR MESSAGE: "+ response.data)
       setCartUpdateFlag(Date.now());
       console.log("Cart Added")
+      setQuantity(0);
       console.log(product)
     } catch (error) {
       const cart = carts.filter(cart=>cart.customer == user.id && cart.product == product.id);
@@ -77,6 +78,7 @@ const ProductCard = ({ product }) => {
             'Content-Type': 'application/json',
             'Authorization': 'Token ' + localStorage.getItem('token')
           }})
+          setQuantity(0);
           setCartUpdateFlag(Date.now());
         } catch (error) {
           
