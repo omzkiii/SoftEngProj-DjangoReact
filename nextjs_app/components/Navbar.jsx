@@ -11,7 +11,7 @@ import UserDropDown from "./UserDropDown";
 
 
 const Navbar = () => {
-  const { isLoggedIn, setIsLoggedIn} = useLoggedInContext();
+  const { isLoggedIn } = useLoggedInContext();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
@@ -92,7 +92,7 @@ const Navbar = () => {
         {/* {userDropdownOpen && <UserDropDown onClick={toggleUserDropdown} />} */}
         
 
-        {userDropdownOpen && <UserDropDown onClick={toggleUserDropdown} />}
+        {/* {userDropdownOpen && <UserDropDown onClick={toggleUserDropdown} />} */}
 
       {/* THE NAVBAR */}
       <div> 
