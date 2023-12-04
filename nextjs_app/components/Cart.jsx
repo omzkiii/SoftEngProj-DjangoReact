@@ -1,73 +1,85 @@
 import React from 'react'
-
+import { useLoggedInContext } from '@/contexts/LoggedInContext';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 export default function Cart({ isSidebarOpen, closeSidebar }) {
+  const {  products, user } = useLoggedInContext();
+  const [carts, setCarts] = useState([]);
+  const [cartUpdateFlag, setCartUpdateFlag] = useState(Date.now());
+
+
 
     const calculateSubTotal = () => {
-        const totalPrice = toOrder.reduce((acc, item) => {
+        const totalPrice = carts.reduce((acc, item) => {
           return acc + item.priceDouble;
         }, 0);
         return totalPrice.toFixed(2);
       };
     
       const calculateTotal = () => {
-        const totalPrice = toOrder.reduce((acc, item) => {
+        const totalPrice = carts.reduce((acc, item) => {
           return acc + item.priceDouble;
         }, 0);
-        return (totalPrice + shippingFee).toFixed(2);
+        return (totalPrice + 100).toFixed(2);
       };
+      // let clicker = 0;
+      // const onClick = () => {
+      //   clicker=clicker+1;
+      //   currentCart();
+      // }
+
+      
+      const updateCart = async (quantity,product) => {
+        try {
+          const response = await axios.patch(`http://127.0.0.1:8000/api/cart/${user.username}/${product}`,{
+            "quantity" : quantity
+          },
+          {headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Token ' + localStorage.getItem('token')
+          }})
+        } catch (error) {
+          
+        }
+      }
+      
+
+      const addQty = (quantity, product) => {
+        quantity = parseFloat(quantity) + 1.00
+        updateCart(quantity, product)
+        setCartUpdateFlag(Date.now());
+        console.log(quantity)
+      }
+      
+      const minusQty = (quantity, product) => {
+        if(quantity !== 0){
+          quantity = quantity - 1.00
+          updateCart(quantity, product)
+          setCartUpdateFlag(Date.now());
+        }
+      }
+
+
+
+      useEffect(()=>{
+        const currentCart = async () => {
+          const response = await axios.get(`http://127.0.0.1:8000/api/cart/${user.username}`,
+          {headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Token ' + localStorage.getItem('token')
+          }})
+          if(response.status === 200){
+            console.log("FETCH SUCCESS")
+            setCarts(response.data)
+          }
+          else
+            console.log("FETCH FAILED")
+          }
+        currentCart()
+      },[cartUpdateFlag])
+
     
-    var toOrder =
-  [
-    {
-      img: '/blueberry.png',
-      name: 'Blueberry',
-      price: 'P120.00',
-      priceDouble: 120.00,
-      qty: 1,
-      size: '3kg'
-    },
-    {
-      img: '/strawberry.png',
-      name: 'Strawberry',
-      price: 'P150.00',
-      priceDouble: 150.00,
-      qty: 1,
-      size: '3kg'
-    },
-    {
-      img: '/blueberry.png',
-      name: 'Blueberry',
-      price: 'P120.00',
-      priceDouble: 120.00,
-      qty: 1,
-      size: '3kg'
-    },
-    {
-      img: '/blueberry.png',
-      name: 'Blueberry',
-      price: 'P120.00',
-      priceDouble: 120.00,
-      qty: 1,
-      size: '3kg'
-    },{
-      img: '/blueberry.png',
-      name: 'Blueberry',
-      price: 'P120.00',
-      priceDouble: 120.00,
-      qty: 1,
-      size: '3kg'
-    },{
-      img: '/blueberry.png',
-      name: 'Blueberry',
-      price: 'P120.00',
-      priceDouble: 120.00,
-      qty: 1,
-      size: '3kg'
-    },
     
-  ]
-   
-  var shippingFee = 100.00;
 
   return (
     <div className={`fixed inset-y-0 right-0 bg-gray-800 bg-opacity-50 z-50 transform transition-transform ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'} w-1/4`}>
@@ -75,7 +87,7 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
               
                 <div className="flex flex-col justify-center ">
                   <button className="bg-transparent border-AgriAccessOrange text-AgriAccessOrange border-2 rounded-full px-3 py-2 font-extrabold " onClick={closeSidebar}>
-                    &lt; CONTINUE SHOPPING
+                    &lt; CONTINUE SHOPPING 
                   </button>
                 </div>
                 <br />
@@ -85,32 +97,31 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
                 </div>
                 {/* Mapping through toOrder and displaying items */}
                 <div className="text-AgriAccessOrange">
-                  {toOrder.map((item, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 border-b">
+                  {carts.map((item) => (
+                    <div key={item.id} className="flex items-center justify-between p-2 border-b">
                       <div className="flex items-center">
                         <div>
-                          <img src={item.img} alt={item.name} width={100} height={100} className="mr-6" />
+                          <img src={item.img} alt={item.product} width={100} height={100} className="mr-6" />
                           <div className="text-2xl">
                             <h1>{item.price}</h1>
                           </div>
                         </div>
                         <div classname="flex flex-col ">
                           <div className="flex flex-row text-xl justify-center">
-                          <h1> {item.name} / </h1>
-                          <h3>  {item.size} </h3>
+                          <h1>{products[item.product].name}</h1>
                           </div>
 
                         <div className="flex justify-center mt-2 mb-2">
                           <table className="font-extrabold ">
                             <tr>
                               <td className="bg-AgriAccessGreen px-2 border-t border-b border-AgriAccessGreen" >
-                               <button> - </button> 
+                               <button onClick={()=>{minusQty(item.quantity, item.product)}}> - </button> 
                               </td>
                               <td className=" px-4 border-t border-b border-AgriAccessGreen">
-                                {item.qty}
-                              </td>
+                                {item.quantity}
+                               </td>
                               <td className="bg-AgriAccessGreen px-2 border-t border-b border-AgriAccessGreen">
-                              <button> +   </button>
+                              <button onClick={()=>{addQty(item.quantity, item.product)}}> +   </button>
                               </td>
                             </tr>
                           </table>
@@ -145,7 +156,7 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
                         </div>
 
                         <div>
-                          P{shippingFee}
+                          P 100
                         </div>
 
                       </div>
