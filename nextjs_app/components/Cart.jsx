@@ -5,17 +5,16 @@ import axios from 'axios';
 export default function Cart({ isSidebarOpen, closeSidebar }) {
   const {  products, user } = useLoggedInContext();
   const [carts, setCarts] = useState([]);
-  const [cartUpdateFlag, setCartUpdateFlag] = useState(Date.now());
 
 
 
     const calculateSubTotal = () => {
         const totalPrice = carts.reduce((acc, item) => {
-          return acc + item.priceDouble;
+          return acc + (products[item.product - 1].price * item.quantity);
         }, 0);
         return totalPrice.toFixed(2);
       };
-    
+    //TODO Fix calculate total
       const calculateTotal = () => {
         const totalPrice = carts.reduce((acc, item) => {
           return acc + item.priceDouble;
@@ -42,6 +41,19 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
           
         }
       }
+      const deleteCart = async (product) => {
+        try {
+          const response = await axios.delete(`http://127.0.0.1:8000/api/cart/${user.username}/${product}`,
+          {headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Token ' + localStorage.getItem('token')
+          }})
+          setCartUpdateFlag(Date.now());
+          console.log("Product removed from cart")
+        } catch (error) {
+          
+        }
+      }
       
 
       const addQty = (quantity, product) => {
@@ -52,15 +64,21 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
       }
       
       const minusQty = (quantity, product) => {
-        if(quantity !== 0){
+        if(quantity > 0){ 
           quantity = quantity - 1.00
           updateCart(quantity, product)
+          console.log(quantity)
+          setCartUpdateFlag(Date.now());
+        }
+        else{
+          console.log("Product removed from cart because it equals to zero")
+          deleteCart(product)
           setCartUpdateFlag(Date.now());
         }
       }
 
 
-
+    const [cartUpdateFlag, setCartUpdateFlag] = useState(Date.now());
       useEffect(()=>{
         const currentCart = async () => {
           const response = await axios.get(`http://127.0.0.1:8000/api/cart/${user.username}`,
@@ -76,6 +94,7 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
             console.log("FETCH FAILED")
           }
         currentCart()
+        console.log(products)
       },[cartUpdateFlag])
 
     
@@ -108,7 +127,7 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
                         </div>
                         <div classname="flex flex-col ">
                           <div className="flex flex-row text-xl justify-center">
-                          <h1>{products[item.product].name}</h1>
+                          <h1>{products[item.product - 1].name}</h1>
                           </div>
 
                         <div className="flex justify-center mt-2 mb-2">
@@ -129,7 +148,7 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
                         
 
                         <div className="flex justify-center">
-                          <button className="underline text-Lime">Remove this item</button>
+                          <button className="underline text-Lime" onClick={()=>deleteCart(item.product)}>Remove this item</button>
                         </div>
                         </div>                    
                       </div>
@@ -149,17 +168,7 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
                     </div>
 
                     </div>
-                    
-                      <div className="flex flex-row justify-between text-AgriAccessGreen font-extrabold">
-                        <div>
-                            Delivery
-                        </div>
-
-                        <div>
-                          P 100
-                        </div>
-
-                      </div>
+                   
 
                       <div className="flex flex-row justify-between text-3xl text-AgriAccessOrange font-extrabold">
                         <div>
