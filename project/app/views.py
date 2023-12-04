@@ -309,7 +309,7 @@ class ComputeCart(APIView):
     serializer_class = CartSerializer
     permission_classes = [IsAuthenticated, IsCartOwner]
 
-    def post(self, request, user, *args, **kwargs):
+    def get(self, request, user, *args, **kwargs):
         cart_items = Cart.objects.filter(customer__user_id=user)
         if not cart_items:
             return Response({'error': 'Cart is empty'}, status=status.HTTP_400_BAD_REQUEST)
