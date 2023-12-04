@@ -8,6 +8,10 @@ export const LoggedInProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState({});
   const [customer, setCustomer] = useState({})
+  const [products, setProducts] = useState([]);
+
+
+  
 
   const login = () => {
     setIsLoggedIn(true);
@@ -17,7 +21,7 @@ export const LoggedInProvider = ({ children }) => {
   const logout = () => {
     setIsLoggedIn(false);
   };
-
+//User
   const getUser = async () => {
 
     try {
@@ -32,7 +36,6 @@ export const LoggedInProvider = ({ children }) => {
           'Authorization': 'Token ' + localStorage.getItem('token')
         },
       })
-
       setUser(response.data)
       setCustomer(responseCust.data)
       console.log(response.data)
@@ -44,15 +47,36 @@ export const LoggedInProvider = ({ children }) => {
     }
   }
 
+  //Carts
+  
+
+
+
+
+
+//Orders
+const fetchProducts = async () => {
+  try {
+  const response = await axios.get(`http://127.0.0.1:8000/api/products/`)
+  setProducts(response.data);
+  if (response.status === 200){
+  console.log("NUMBER 1")}
+  console.log(products)
+  } catch (error){
+  console.log('ERROR ENCOUNTERED');
+  }
+}
 
   useEffect(() =>{
     if (localStorage.getItem('token')) {
         setIsLoggedIn(true)}
-        getUser()      
+    getUser()
+    console.log(user)
+    fetchProducts();
   },[])
 
   return (
-    <LoggedInContext.Provider value={{ isLoggedIn, login, logout, setIsLoggedIn, user, customer }}>
+    <LoggedInContext.Provider value={{ isLoggedIn, login, logout, setIsLoggedIn, user, customer, products, fetchProducts }}>
       {children}
     </LoggedInContext.Provider>
   );
