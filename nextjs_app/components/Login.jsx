@@ -44,7 +44,7 @@ const LoginForm = ({ onClose }) => {
   };
 
   return (
-    <div className="text-green-900">
+    <div >
 
       <label className='text-Lime'>Username</label>
             <input
@@ -75,7 +75,7 @@ const LoginForm = ({ onClose }) => {
                         value="showPassword"
                         checked={showPassword}
                         onChange={toggleShowPassword}
-                        className='mr-2 rounded-full'
+                        className='w-full px-3 py-2 mr-2 rounded-full'
                     />
                 Show Password
                 </label>
