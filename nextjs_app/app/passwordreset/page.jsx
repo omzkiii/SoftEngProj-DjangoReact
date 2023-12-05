@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Modal from '@/components/Modal';
 import axios from 'axios';
 import AccountModal from '@/components/Account';
-
+import Link from 'next/link';
 // const PasswordResetPage = ({ toggleLogIn }) => {
 const PasswordResetPage = () => {
   const [formData, setFormData] = useState({ email: '' });
@@ -14,6 +14,16 @@ const PasswordResetPage = () => {
     setFormData({ ...formData, [name]: value });
   };
   
+  const toggleLogIn = () => {
+    setShowLogIn(true);
+    setShowSignUp(false);
+  }
+
+  const toggleSignUp = () => {
+    setShowLogIn(false);
+    setShowSignUp(true);
+  }
+
   const handleSend = async () => {
   
     try{
@@ -53,25 +63,23 @@ const PasswordResetPage = () => {
           <div className="flex justify-end">
 
           <div>
-            <button className="bg-AgriAccessOrange text-white px-4 py-2 rounded-lg hover:bg-orange-400"
-                    onClick={toggleLogIn}>
-              Back
+            <Link href={'/?login=true'}>
+              <button className="bg-AgriAccessOrange text-white px-4 py-2 rounded-lg hover:bg-orange-400">
+                Back
             </button>
-            {/* <button
-                        className="bg-AgriAccessOrange text-white px-4 py-2 rounded-lg hover:bg-orange-400"
-                        onClick={toggleLogIn}
-                      >
-                        Back
-                      </button> */}
+              </Link>
           </div>
-
-
-            <button
+                    
+          <Link href={'/?login=true'}>
+          <button
               className="bg-AgriAccessGreen text-white px-4 py-2 rounded-lg hover:bg-green-800"
               onClick={handleSend}
             >
               Send
-            </button>
+            </button> 
+            </Link>
+
+           
           </div>
         </div>
       </Modal>
