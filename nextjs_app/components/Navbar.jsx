@@ -143,12 +143,6 @@ const Navbar = () => {
               </ul>
               
             </div>
-
-      
-
-        
-
-        
       </div>
     </div>
   </nav>
