@@ -9,7 +9,8 @@ export const LoggedInProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [customer, setCustomer] = useState({})
   const [products, setProducts] = useState([]);
-
+  const [carts, setCarts] = useState([]);
+  const [cartUpdateFlag, setCartUpdateFlag] = useState(Date.now());
 
   
 
@@ -40,6 +41,7 @@ export const LoggedInProvider = ({ children }) => {
       setIsLoggedIn(true);
       setUser(response.data)
       setCustomer(responseCust.data)
+      getCart(response.data.username)
 
 
     } catch (error) {
@@ -51,7 +53,25 @@ export const LoggedInProvider = ({ children }) => {
   }
 
   //Carts
+  const getCart = async (username) => {
+    if (isLoggedIn){
+      try{
+        const response = await axios.get(`http://127.0.0.1:8000/api/cart/${username}`,
+          {headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Token ' + localStorage.getItem('token')
+          }})
+        if(response.status === 200){
+          console.log("FETCH SUCCESS")
+          setCarts(response.data)
+        }
+        else
+          console.log("FETCH FAILED")
+      } catch(error) {
   
+      }
+    }
+  }
 
 
 
@@ -81,7 +101,9 @@ const fetchProducts = async () => {
   },[])
 
   return (
-    <LoggedInContext.Provider value={{ isLoggedIn, login, logout, setIsLoggedIn, user, customer, products, fetchProducts }}>
+    <LoggedInContext.Provider value={{ isLoggedIn, login, logout, setIsLoggedIn, 
+                                        user, customer, products, fetchProducts, 
+                                        carts, getCart, cartUpdateFlag, setCartUpdateFlag }}>
       {children}
     </LoggedInContext.Provider>
   );

@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import LoginForm from './Login';
 import RegisterForm from './Register';
 import Modal from './Modal';
-import './ModalStyles.css';
 const AccountModal = ({ isModalOpen, onClose, login }) => {
   const [showLogIn, setShowLogIn] = useState(true);
   const [showSignUp, setShowSignUp] = useState(false);
@@ -53,6 +52,7 @@ const AccountModal = ({ isModalOpen, onClose, login }) => {
             onClick={toggleSignUp}
           >Sign up</button>
         </div>
+
           
 
 

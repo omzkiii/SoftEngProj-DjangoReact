@@ -7,11 +7,10 @@ import axios from "axios";
 
 const UserProfile = ({params}) => {
     const paramId = params.username
-    const { user, customer } = useLoggedInContext();
+    const { user, customer, products } = useLoggedInContext();
     
     const [activeBtn, setActiveBtn] = useState("order")
     const [orders, setOrders] = useState([])
-    const [products, setProducts] = useState([])
 
     const getOrders = async () => {
 
@@ -29,22 +28,10 @@ const UserProfile = ({params}) => {
         }
     }
 
-    const getProducts = async () => {
-
-        try {
-          const response = await axios.get(`http://127.0.0.1:8000/api/products/`)
-          
-          setProducts(response.data)
-    
-        } catch (error) {
-          console.log(error)
-        }
-    }
 
 
     useEffect(() =>{
         getOrders()
-        getProducts()
     },[user])
     
 
