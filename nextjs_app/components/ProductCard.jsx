@@ -35,7 +35,6 @@ const ProductCard = ({ product }) => {
     "product": product.id
   }
 
-
   useEffect(()=>{
     if(isLoggedIn){
       getCart(user.username)
@@ -79,6 +78,26 @@ const ProductCard = ({ product }) => {
         console.log(cartData)
       }
     } else {
+      if(quantity != 0){
+        if(!localStorage.getItem('cart')){
+          localStorage.setItem('cart',[JSON.stringify([])])
+          console.log("Local Cart Created!")
+        }
+        const localCart = JSON.parse(localStorage.getItem('cart'));
+        const hasProduct = localCart.some(localCart => localCart.product === product.id);
+        if(hasProduct){
+          console.log("ALREADY IN CART!")
+          const cartToUpdate = localCart.find(localCart => localCart.product === product.id)
+          cartToUpdate.quantity = cartToUpdate.quantity + quantity
+          localStorage.setItem('cart',[JSON.stringify(localCart)])
+          setCartUpdateFlag(Date.now());
+        }else{
+          localCart.push(cartData)
+          localStorage.setItem('cart',[JSON.stringify(localCart)])
+          console.log(localCart)
+          setCartUpdateFlag(Date.now());
+        } 
+      }
 
 
 
