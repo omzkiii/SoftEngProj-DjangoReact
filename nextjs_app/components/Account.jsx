@@ -7,17 +7,22 @@ import './ModalStyles.css';
 const AccountModal = ({ isModalOpen, onClose, login }) => {
   const [showLogIn, setShowLogIn] = useState(true);
   const [showSignUp, setShowSignUp] = useState(false);
-
+  const [showResetPassword,setresetPassword] = useState(false);
 
   const toggleLogIn = () => {
     setShowLogIn(true);
     setShowSignUp(false);
+    setresetPassword(false);
   }
 
   const toggleSignUp = () => {
     setShowLogIn(false);
     setShowSignUp(true);
   }
+
+  // const toggleShowPasword = () ={
+    
+  // }
 
   return (
     <Modal isOpen={isModalOpen} closeModal={onClose}>
@@ -47,15 +52,6 @@ const AccountModal = ({ isModalOpen, onClose, login }) => {
               : 'font-extrabold bg-white text-AgriAccessOrange rounded-xl border-2 border-black p-2 w-1/4 shadow-md shadow-gray-600'}
             onClick={toggleSignUp}
           >Sign up</button>
-        </div>
-
-        <div className="bg">
-          {/* switch */}
-          <span className='switch'>
-              {/* switcher */}
-            <input type="checkbox"  id="loginInput" className="relative w-32 h-12 "/>
-            <label htmlFor="login">Log in</label> {/* Use 'htmlFor' instead of 'for' */}
-          </span>
         </div>
           
 
