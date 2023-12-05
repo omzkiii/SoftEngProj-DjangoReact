@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import LoginForm from './Login';
 import RegisterForm from './Register';
 import Modal from './Modal';
-import './ModalStyles.css';
 const AccountModal = ({ isModalOpen, onClose, login }) => {
   const [showLogIn, setShowLogIn] = useState(true);
   const [showSignUp, setShowSignUp] = useState(false);
@@ -49,19 +48,12 @@ const AccountModal = ({ isModalOpen, onClose, login }) => {
           >Sign up</button>
         </div>
 
-        <div className="bg">
-          {/* switch */}
-          <span className='switch'>
-              {/* switcher */}
-            <input type="checkbox"  id="loginInput" className="relative w-32 h-12 "/>
-            <label htmlFor="login">Log in</label> {/* Use 'htmlFor' instead of 'for' */}
-          </span>
-        </div>
           
 
 
         {showLogIn && <LoginForm onClose={onClose} />}
         {showSignUp && <RegisterForm onClose={onClose} />}
+        {/* <PasswordResetPage toggleLogIn={toggleLogIn} /> */}
       </div>
     </Modal>
   );

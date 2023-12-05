@@ -1,11 +1,15 @@
 // components/ProductCard.js
 "use client"
 import Image from "next/image";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from '../components/Modal';
+import axios from "axios";
+import { useLoggedInContext } from "@/contexts/LoggedInContext";
 
 const ProductCard = ({ product }) => {
+  const {  isLoggedIn, user, carts, getCart, cartUpdateFlag, setCartUpdateFlag } = useLoggedInContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -14,7 +18,7 @@ const ProductCard = ({ product }) => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  const [quantity, setQuantity] =  useState(0)
+  const [quantity, setQuantity] = useState(0)
 
   const addQty = () => {
     setQuantity(quantity+1)
@@ -24,12 +28,69 @@ const ProductCard = ({ product }) => {
     if(quantity !== 0)
       setQuantity(quantity-1)    
   }
-  
+
+  const cartData = {
+    "quantity": quantity,
+    "customer": user.id,
+    "product": product.id
+  }
+
+
+  useEffect(()=>{
+    if(isLoggedIn){
+      getCart(user.username)
+    }
+    
+  },[cartUpdateFlag])
+
+
+  const addToCart = async() => {
+    if(isLoggedIn){
+      try {
+        const response = await axios.post(`http://127.0.0.1:8000/api/cart/${user.username}`,cartData,{
+          headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('token')
+        },})
+        console.log("ERROR MESSAGE: "+ response.data)
+        setCartUpdateFlag(Date.now());
+        console.log("Cart Added")
+        setQuantity(0);
+        console.log(product)
+      } catch (error) {
+        const cart = carts.filter(cart=>cart.customer == user.id && cart.product == product.id);
+        console.log("CART QUANTITY "+(cart[0].quantity))
+        if(error.response.data.non_field_errors == "The fields customer, product must make a unique set."){
+          try {
+            const response = await axios.patch(`http://127.0.0.1:8000/api/cart/${user.username}/${product.id}`,{
+              "quantity" : parseInt(cart[0].quantity) + quantity
+            },
+            {headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Token ' + localStorage.getItem('token')
+            }})
+            setQuantity(0);
+            setCartUpdateFlag(Date.now());
+          } catch (error) {
+            
+          }
+        }
+        console.log("ERROR MESSAGE: "+ (error.response.data.non_field_errors))
+        console.log(cartData)
+      }
+    } else {
+
+
+
+
+    }
+  }
 
   
   return (
       <div className="bg-white rounded-lg overflow-hidden shadow-lg p-4">
-        <Image src="/productImg.png" alt="Product Image" onClick={openModal} width={600} height={600} /> 
+        
+        <img src={product.image} alt="Product Image" onClick={openModal} width={600} height={600} /> 
         <div className="mt-4">
           <h2 className="text-xl font-semibold text-gray-800">
             {product.name}
@@ -51,7 +112,7 @@ const ProductCard = ({ product }) => {
                     </td>
                   </tr>
                 </table>
-            <button className="bg-green-500 text-white px-3 py-1 rounded" >
+            <button className="bg-green-500 text-white px-3 py-1 rounded" onClick={()=>addToCart()}>
               Add to Cart
             </button>
           </div>
@@ -84,7 +145,7 @@ const ProductCard = ({ product }) => {
                 </table>
                 <button
                 className="mt-4 bg-green-500 text-white px-4 py-2 rounded"
-                onClick={closeModal}
+                onClick={()=>{addToCart();closeModal}}
               >
                 Add to Cart
               </button>

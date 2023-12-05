@@ -45,7 +45,7 @@ const RegisterForm = ({ onClose }) => {
   };
 
   return (
-    <>
+    <div className>
       {error && <p>{error}</p>}
       <input
         type="text"
@@ -124,7 +124,7 @@ const RegisterForm = ({ onClose }) => {
       >
         Sign-up
       </button>
-    </>
+    </div>
   );
 };
 
