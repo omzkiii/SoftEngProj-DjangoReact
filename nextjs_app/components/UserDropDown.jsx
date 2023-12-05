@@ -2,7 +2,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useLoggedInContext } from '../contexts/LoggedInContext';
 import { useRouter } from 'next/navigation';
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 
 const ProductDropDown = ({ onClick }) => {
