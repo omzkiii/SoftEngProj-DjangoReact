@@ -6,17 +6,22 @@ import Modal from './Modal';
 const AccountModal = ({ isModalOpen, onClose, login }) => {
   const [showLogIn, setShowLogIn] = useState(true);
   const [showSignUp, setShowSignUp] = useState(false);
-
+  const [showResetPassword,setresetPassword] = useState(false);
 
   const toggleLogIn = () => {
     setShowLogIn(true);
     setShowSignUp(false);
+    setresetPassword(false);
   }
 
   const toggleSignUp = () => {
     setShowLogIn(false);
     setShowSignUp(true);
   }
+
+  // const toggleShowPasword = () ={
+    
+  // }
 
   return (
     <Modal isOpen={isModalOpen} closeModal={onClose}>
@@ -47,7 +52,6 @@ const AccountModal = ({ isModalOpen, onClose, login }) => {
             onClick={toggleSignUp}
           >Sign up</button>
         </div>
-
           
 
 
