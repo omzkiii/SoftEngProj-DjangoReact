@@ -81,10 +81,7 @@ export const LoggedInProvider = ({ children }) => {
 const fetchProducts = async () => {
   try {
   const response = await axios.get(`http://127.0.0.1:8000/api/products/`)
-  setProducts(response.data);
-  if (response.status === 200){
-  console.log("NUMBER 1")}
-  console.log(products)
+  setProducts(response.data); 
   } catch (error){
   console.log('ERROR ENCOUNTERED');
   }

@@ -6,6 +6,7 @@ import {FaChevronLeft, FaChevronRight} from 'react-icons/fa';
 import {RxDotFilled} from "react-icons/rx"; 
 import {ImFire} from "react-icons/im";
 import Glider from 'glider-js';
+import Link from "next/link";
 import 'glider-js/glider.min.css';
 
 
@@ -69,8 +70,9 @@ const MainPage = () => {
 
     <div className="bg-white flex flex-col items-center justify-center">
       <div className="max-w-[1400px] h-[780px] w-full m-auto py-16 relative group">
-        <div style={{backgroundImage: `url(${slides[currentIndex].url})`}} className=' h-full w-full rounded-2xl center bg-cover duration-500 brightness-75'>
-        </div>
+      <Link href={`/products/discount/${currentIndex+1}`}> <div style={{backgroundImage: `url(${slides[currentIndex].url})`}} className=' h-full w-full rounded-2xl center bg-cover duration-500 brightness-75'>
+          
+        </div> </Link>
         <div className='hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[50%] left-5 text-2xl p-1 cursor-pointer'>
           {/* Left Arrow */}
           <FaChevronLeft onClick={prevSlide} size={35} />
