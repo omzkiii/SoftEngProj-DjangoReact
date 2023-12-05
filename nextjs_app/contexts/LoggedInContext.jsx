@@ -96,8 +96,7 @@ const fetchProducts = async () => {
       getUser()
       console.log(user)
     }
-        
-        
+    setCarts(JSON.parse(localStorage.getItem('cart')))
     fetchProducts();
   },[])
 

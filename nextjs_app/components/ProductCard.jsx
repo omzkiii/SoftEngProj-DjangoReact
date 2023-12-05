@@ -45,37 +45,39 @@ const ProductCard = ({ product }) => {
 
   const addToCart = async() => {
     if(isLoggedIn){
-      try {
-        const response = await axios.post(`http://127.0.0.1:8000/api/cart/${user.username}`,cartData,{
-          headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Token ' + localStorage.getItem('token')
-        },})
-        console.log("ERROR MESSAGE: "+ response.data)
-        setCartUpdateFlag(Date.now());
-        console.log("Cart Added")
-        setQuantity(0);
-        console.log(product)
-      } catch (error) {
-        const cart = carts.filter(cart=>cart.customer == user.id && cart.product == product.id);
-        console.log("CART QUANTITY "+(cart[0].quantity))
-        if(error.response.data.non_field_errors == "The fields customer, product must make a unique set."){
-          try {
-            const response = await axios.patch(`http://127.0.0.1:8000/api/cart/${user.username}/${product.id}`,{
-              "quantity" : parseInt(cart[0].quantity) + quantity
-            },
-            {headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Token ' + localStorage.getItem('token')
-            }})
-            setQuantity(0);
-            setCartUpdateFlag(Date.now());
-          } catch (error) {
-            
+      if(quantity!=0){
+        try {
+          const response = await axios.post(`http://127.0.0.1:8000/api/cart/${user.username}`,cartData,{
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Token ' + localStorage.getItem('token')
+          },})
+          console.log("ERROR MESSAGE: "+ response.data)
+          setCartUpdateFlag(Date.now());
+          console.log("Cart Added")
+          setQuantity(0);
+          console.log(product)
+        } catch (error) {
+          const cart = carts.filter(cart=>cart.customer == user.id && cart.product == product.id);
+          console.log("CART QUANTITY "+(cart[0].quantity))
+          if(error.response.data.non_field_errors == "The fields customer, product must make a unique set."){
+            try {
+              const response = await axios.patch(`http://127.0.0.1:8000/api/cart/${user.username}/${product.id}`,{
+                "quantity" : parseInt(cart[0].quantity) + quantity
+              },
+              {headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Token ' + localStorage.getItem('token')
+              }})
+              setQuantity(0);
+              setCartUpdateFlag(Date.now());
+            } catch (error) {
+              
+            }
           }
+          console.log("ERROR MESSAGE: "+ (error.response.data.non_field_errors))
+          console.log(cartData)
         }
-        console.log("ERROR MESSAGE: "+ (error.response.data.non_field_errors))
-        console.log(cartData)
       }
     } else {
       if(quantity != 0){
