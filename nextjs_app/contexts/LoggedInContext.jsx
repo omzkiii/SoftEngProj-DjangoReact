@@ -55,25 +55,20 @@ export const LoggedInProvider = ({ children }) => {
 
   //Carts
   const getCart = async (username) => {
-    if (isLoggedIn){
-      try{
-        const response = await axios.get(`http://127.0.0.1:8000/api/cart/${username}`,
-          {headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token ' + localStorage.getItem('token')
-          }})
-        if(response.status === 200){
-          console.log("FETCH SUCCESS")
-          setCarts(response.data)
-        }
-        else
-          console.log("FETCH FAILED")
-      } catch(error) {
-  
+    try{
+      const response = await axios.get(`http://127.0.0.1:8000/api/cart/${username}`,
+        {headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('token')
+        }})
+      if(response.status === 200){
+        console.log("FETCH SUCCESS")
+        setCarts(response.data)
       }
-    }
-    else{
-      setCarts(JSON.parse(localStorage.getItem('cart')))
+      else
+        console.log("FETCH FAILED")
+    } catch(error) {
+
     }
   }
 
@@ -96,7 +91,9 @@ const fetchProducts = async () => {
       getUser()
       console.log(user)
     }
-    setCarts(JSON.parse(localStorage.getItem('cart')))
+    else if (localStorage.getItem('cart')) {
+      setCarts(JSON.parse(localStorage.getItem('cart')))
+    }
     fetchProducts();
   },[])
 

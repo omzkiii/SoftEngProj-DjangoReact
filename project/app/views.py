@@ -264,11 +264,17 @@ class OrderCreateView(APIView):
         cart_items = Cart.objects.filter(customer__user_id=user)
         if not cart_items:
             return Response({'error': 'Cart is empty'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not request.data.get('name') or not request.data.get('contact_no') or not request.data.get('address'):
+            return Response({'error': 'incomplete fields'}, status=status.HTTP_400_BAD_REQUEST)
         
         self.check_object_permissions(request, cart_items[0])
         customer = Customer.objects.get(user=user)
 
-        order = Order.objects.create(user=customer, status=Order.UNPAID, )
+        order = Order.objects.create(user=customer, status=Order.UNPAID, 
+                                     name=request.data.get('name'),
+                                     contact_no=request.data.get('contact_no'),
+                                     address=request.data.get('address'))
 
         #to set order fields
         gross_amount = 0
