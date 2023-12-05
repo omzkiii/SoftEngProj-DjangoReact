@@ -5,28 +5,30 @@ import axios from 'axios';
 export default function Cart({ isSidebarOpen, closeSidebar }) {
   const {  products, user } = useLoggedInContext();
   const [carts, setCarts] = useState([]);
+  const [subtotal, setSubtotal] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [total, setTotal] = useState(0);
 
 
+      const calculateCart = async () => {
+        try {
+          const response = await axios.get(`http://127.0.0.1:8000/api/compute/${user.id}`,{
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Token ' + localStorage.getItem('token')
+            }
+          })
 
-    const calculateSubTotal = () => {
-        const totalPrice = carts.reduce((acc, item) => {
-          return acc + (products[item.product - 1].price * item.quantity);
-        }, 0);
-        return totalPrice.toFixed(2);
-      };
-    //TODO Fix calculate total
-      const calculateTotal = () => {
-        const totalPrice = carts.reduce((acc, item) => {
-          return acc + item.priceDouble;
-        }, 0);
-        return (totalPrice + 100).toFixed(2);
-      };
-      // let clicker = 0;
-      // const onClick = () => {
-      //   clicker=clicker+1;
-      //   currentCart();
-      // }
+          if(response.status === 200){
+            setSubtotal(response.data.subtotal)
+            setDiscount(response.data.discount)
+            setTotal(response.data.total)
+          }
 
+        } catch (error){
+          console.log(error.response.status)
+        }
+      }
       
       const updateCart = async (quantity,product) => {
         try {
@@ -79,23 +81,26 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
 
 
     const [cartUpdateFlag, setCartUpdateFlag] = useState(Date.now());
-      useEffect(()=>{
-        const currentCart = async () => {
-          const response = await axios.get(`http://127.0.0.1:8000/api/cart/${user.username}`,
-          {headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token ' + localStorage.getItem('token')
-          }})
-          if(response.status === 200){
-            console.log("FETCH SUCCESS")
-            setCarts(response.data)
-          }
-          else
-            console.log("FETCH FAILED")
-          }
-        currentCart()
-        console.log(products)
-      },[cartUpdateFlag])
+    useEffect(()=>{
+      
+      const currentCart = async () => {
+        const response = await axios.get(`http://127.0.0.1:8000/api/cart/${user.username}`,
+        {headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('token')
+        }})
+        if(response.status === 200){
+          console.log("FETCH SUCCESS")
+          setCarts(response.data)
+        }
+        else
+          console.log("FETCH FAILED")
+        }
+
+      
+      calculateCart()
+      currentCart()
+    },[cartUpdateFlag])
 
     
     
@@ -163,7 +168,17 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
                     </div>
 
                     <div>
-                      P{calculateSubTotal()} 
+                      P{subtotal} 
+                    </div>
+                    </div>
+                    <div className="flex flex-row justify-between text-AgriAccessGreen font-extrabold">
+
+                    <div>
+                      Discount
+                    </div>
+
+                    <div>
+                      P{discount} 
                     </div>
                     </div>
 
@@ -175,7 +190,7 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
                           Total:
                         </div>
                         <div>
-                          P{calculateTotal()}
+                          P{total}
                         </div>
                       </div>
 
