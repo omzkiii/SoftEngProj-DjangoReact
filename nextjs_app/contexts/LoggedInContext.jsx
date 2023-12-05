@@ -10,7 +10,7 @@ export const LoggedInProvider = ({ children }) => {
   const [customer, setCustomer] = useState({})
   const [products, setProducts] = useState([]);
   const [carts, setCarts] = useState([]);
-
+  const [cartUpdateFlag, setCartUpdateFlag] = useState(Date.now());
 
   
 
@@ -101,7 +101,9 @@ const fetchProducts = async () => {
   },[])
 
   return (
-    <LoggedInContext.Provider value={{ isLoggedIn, login, logout, setIsLoggedIn, user, customer, products, fetchProducts, carts, getCart }}>
+    <LoggedInContext.Provider value={{ isLoggedIn, login, logout, setIsLoggedIn, 
+                                        user, customer, products, fetchProducts, 
+                                        carts, getCart, cartUpdateFlag, setCartUpdateFlag }}>
       {children}
     </LoggedInContext.Provider>
   );

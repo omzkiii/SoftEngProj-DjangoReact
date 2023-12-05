@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function Cart({ isSidebarOpen, closeSidebar }) {
-  const {  products, user, carts, getCart } = useLoggedInContext();
+  const {  products, user, carts, getCart, cartUpdateFlag, setCartUpdateFlag } = useLoggedInContext();
   const [subtotal, setSubtotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [total, setTotal] = useState(0);
@@ -80,8 +80,6 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
         }
       }
 
-
-    const [cartUpdateFlag, setCartUpdateFlag] = useState(Date.now());
     useEffect(()=>{
       getCart(user.username)
       calculateCart()
