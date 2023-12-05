@@ -90,10 +90,12 @@ const ProductCard = ({ product }) => {
           const cartToUpdate = localCart.find(localCart => localCart.product === product.id)
           cartToUpdate.quantity = cartToUpdate.quantity + quantity
           localStorage.setItem('cart',[JSON.stringify(localCart)])
+          setCartUpdateFlag(Date.now());
         }else{
           localCart.push(cartData)
           localStorage.setItem('cart',[JSON.stringify(localCart)])
           console.log(localCart)
+          setCartUpdateFlag(Date.now());
         } 
       }
 
