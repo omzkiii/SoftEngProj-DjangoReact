@@ -3,8 +3,7 @@ import { useLoggedInContext } from '@/contexts/LoggedInContext';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 export default function Cart({ isSidebarOpen, closeSidebar }) {
-  const {  products, user } = useLoggedInContext();
-  const [carts, setCarts] = useState([]);
+  const {  products, user, carts, getCart } = useLoggedInContext();
   const [subtotal, setSubtotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [total, setTotal] = useState(0);
@@ -82,24 +81,8 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
 
     const [cartUpdateFlag, setCartUpdateFlag] = useState(Date.now());
     useEffect(()=>{
-      
-      const currentCart = async () => {
-        const response = await axios.get(`http://127.0.0.1:8000/api/cart/${user.username}`,
-        {headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Token ' + localStorage.getItem('token')
-        }})
-        if(response.status === 200){
-          console.log("FETCH SUCCESS")
-          setCarts(response.data)
-        }
-        else
-          console.log("FETCH FAILED")
-        }
-
-      
+      getCart(user.username)
       calculateCart()
-      currentCart()
     },[cartUpdateFlag])
 
     
