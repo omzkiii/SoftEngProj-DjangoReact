@@ -74,6 +74,7 @@ const Navbar = () => {
   return (
     
     <nav className="p-2 bg-green">
+      {params==='true' && <AccountModal onClose={closeModal} isModalOpen={isModalOpen}/>}
       {isClient && <style>
       @import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Montserrat:wght@700&display=swap');
       </style> }
@@ -122,7 +123,7 @@ const Navbar = () => {
                   : <Link href={'/?login=true'}>
                       <img src="/userIcon.png" alt="UserIcon" onClick={openModal} />
                     </Link>}
-                {params==='true' && <AccountModal onClose={closeModal} isModalOpen={isModalOpen}/>}
+                    
               </li>
               {/*CART */}
               <li> <Image className="flex items-bottom" src="/cartIcon.png" onClick={toggleSidebar} alt="Logo text-3xl mt-[-10px]" width={30} height={30}/> 
@@ -141,9 +142,11 @@ const Navbar = () => {
               <button type="button" onClick={handleSearch} className="bg-green-700 text-white rounded-md p-2"> Search </button>
               </li>
               </ul>
+              
             </div>
       </div>
     </div>
+    
   </nav>
 
   );

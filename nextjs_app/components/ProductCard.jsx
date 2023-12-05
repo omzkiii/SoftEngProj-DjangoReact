@@ -7,9 +7,8 @@ import axios from "axios";
 import { useLoggedInContext } from "@/contexts/LoggedInContext";
 
 const ProductCard = ({ product }) => {
-  const {  isLoggedIn, user, carts, getCart } = useLoggedInContext();
+  const {  isLoggedIn, user, carts, getCart, cartUpdateFlag, setCartUpdateFlag } = useLoggedInContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [cartUpdateFlag, setCartUpdateFlag] = useState(Date.now());
   
 
   const openModal = () => {
@@ -90,7 +89,8 @@ const ProductCard = ({ product }) => {
   
   return (
       <div className="bg-white rounded-lg overflow-hidden shadow-lg p-4">
-        <Image src={product.image} alt="Product Image" onClick={openModal} width={600} height={600} /> 
+        
+        <img src={product.image} alt="Product Image" onClick={openModal} width={600} height={600} /> 
         <div className="mt-4">
           <h2 className="text-xl font-semibold text-gray-800">
             {product.name}
