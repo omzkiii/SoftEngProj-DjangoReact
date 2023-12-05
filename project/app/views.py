@@ -348,6 +348,12 @@ class ComputeCart(APIView):
         
         return Response({"subtotal":gross_amount, "discount":total_discounts, "total": total_amount}, status=status.HTTP_200_OK)      
 
+class CheckAdminPrivilege(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get(self, request,*args, **kwargs):
+        return Response({"is_admin":True}, status=status.HTTP_200_OK)
+
 
 class ComputedTotalView(APIView):
     def get(self, request,*args, **kwargs):
