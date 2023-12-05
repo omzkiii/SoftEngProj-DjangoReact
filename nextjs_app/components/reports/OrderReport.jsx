@@ -56,17 +56,24 @@ return(
   </thead>
 
   <tbody>
-  {orders.map((order)=>(
-    <tr key ={order.id} className="py-4 text-center">
-      <td className="border-2 border-green-950 px-6">{order.id}</td>
-      <td className="border-2 border-green-950 px-6">{order.date_placed.split('T')[0]}</td>
-      <td className="border-2 border-green-950 px-6">{
-        order.product.map(p=>(<ul key={p}><li>{products.find(product=>product.id==p).name}</li></ul>))
-      }</td>
-      <td className="border-2 border-green-950 px-6">{order.total_amount}</td>
-      <td className="border-2 border-green-950 px-6">{order.status}</td>
-      <button className="px-2 py-1 bg-blue-500 text-white rounded">View</button>
-      <button className="px-2 py-1 bg-red-500 text-white rounded">Delete</button>
+    <tr className="py-4 text-center">
+      <td> {details.orderNo}</td>
+      <td> {details.orderAmt}</td>
+      <td> {details.paymentMtd}</td>
+
+      <td className="py-4 items-center">
+        <select name="status" id="orderStatus">
+          <option value="" disabled selected hidden>Choose a Status</option>
+          <option value="completed" className="text-cyan-600">Completed</option>
+          <option value="pending" className="text-green-400">Pending</option>
+          <option value="cancelled" className="text-red-400">Cancelled</option>
+        </select>
+      </td>
+
+      <td className="items-center space-x-2">
+        <button className="px-2 py-1 bg-blue-500 text-white rounded"><Link href='./adminorderdetails'>View</Link></button>
+        <button className="px-2 py-1 bg-red-500 text-white rounded">Delete</button>
+      </td>
     </tr>
     ))} 
   </tbody>
