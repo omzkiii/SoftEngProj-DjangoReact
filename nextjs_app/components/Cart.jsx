@@ -112,17 +112,17 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
                     <div key={item.id} className="flex items-center justify-between p-2 border-b">
                       <div className="flex items-center">
                         <div>
-                          <img src={item.img} alt={item.product} width={140} height={140} className="mr-6 mt-12" />
+                          <img src={products.find(product=> product.id===item.product).image} alt={item.product} width={140} height={140} className="mr-6 mt-12" />
 
                           <div className="text-2xl">
-                            <h1 className='font-Mont text-green text mt-3'>{item.price}</h1>
+                            <h1 className='font-Mont text-green text mt-3'>{products[item.product - 1].price}</h1>
                           </div>
                         </div>
                         <div classname="flex flex-col ">
                           <div className="flex flex-row text-xl justify-center">
 
-                          <h1 className='font-Bree text-green text-2xl mr-2 normal-case text-black'> {products[item.product - 1].name}</h1>
-                          <sup className='font-Bree leading-snug text-5 mt-1.5'> / {item.size} </sup>
+                          <h1 className='font-Bree text-green text-2xl mr-2 normal-case'> {products[item.product - 1].name}</h1>
+                          <sup className='font-Bree leading-snug text-5 mt-1.5'>  / {products[item.product - 1].unit} </sup>
 
                           </div>
 
@@ -134,7 +134,7 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
                                <button onClick={()=>{minusQty(item.quantity, item.product)}}> - </button> 
                               </td>
                               <td className=" px-4 border-t border-b border-AgriAccessGreen text-green">
-                                {item.qty}
+                                {item.quantity}
                               </td>
                               <td className="bg-AgriAccessGreen px-2 border-t border-b border-AgriAccessGreen text-white">
                               <button onClick={()=>{addQty(item.quantity, item.product)}}> +   </button>

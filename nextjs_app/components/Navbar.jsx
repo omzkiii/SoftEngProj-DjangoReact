@@ -20,13 +20,14 @@ import UserDropDown from "./UserDropDown";
 
 
 const Navbar = () => {
-  const { isLoggedIn } = useLoggedInContext();
+  const { isLoggedIn, setIsLoggedIn} = useLoggedInContext();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
 
   const params = searchParams.get("login");
   const [cartIcon, setCartIcon] = useState("/cartIcon.png");
+  const [isClient, setIsClient] = useState(false)
 
   const handleSearch = () => {
     router.push(`/products?q=${searchQuery}`);
@@ -65,81 +66,88 @@ const Navbar = () => {
     setIsSidebarOpen(false);
     setCartIcon("/cartIcon.png");
   };
+
+  useEffect(() => {
+    setIsClient(true)
+  }, []);
   
   return (
     
     <nav className="p-2 bg-green">
-      <style>
+      {isClient && <style>
       @import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Montserrat:wght@700&display=swap');
-      </style>
+      </style> }
         <div className="w-full h-28 border-b-[1px]">
           <div className="max-w-screen h-full mx-auto px-4 items-center justify-between flex cursor-pointer" >
           <ul className="flex items-center gap-3 uppercase ">
-          <Image className="flex items-bottom" src="/logo-white.png" alt="Logo text-3xl mt-[-10px]" width={50} height={50}/>
+          <Image className="flex items-bottom" src="/logonobg.png" alt="Logo text-3xl mt-[-10px]" width={50} height={50}/>
           <h1 className="font-Bree text-3xl ">AgriAccess</h1>
           </ul>
             <ul className="flex items-center gap-20 uppercase font-semibold">
               {/*HOME */}
-              <li href="/" class="font-Mont group transition duration-300">
+              <Link href="/"><li class="font-Mont group transition duration-300">
                 Home
                 <span class="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-white"></span>
-                </li>
+                </li></Link>
               {/*PRODUCTS */}
-              <li class="group transition duration-300" href="/products" onMouseEnter={toggleProducts} onMouseLeave={toggleProducts}>Products
+              <li class="group transition duration-300" href="/products" onMouseEnter={toggleProducts} onMouseLeave={toggleProducts}>Products {productsIsOpen && <ProductDropDown onClick={toggleProducts} />}
               <span class="font-Mont block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-white"></span>
               </li>
+              <Link href="/about" >
               <li class="font-Mont group transition duration-300">Our Story
               <span class="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-white"></span>
-              </li>
+              </li> </Link>
+              <Link href="/contact" >
+              <li class="font-Mont group transition duration-300">Contact Us
+              <span class="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-white"></span>
+              </li> </Link>
             </ul>
             <div>
-              {/*SEARCH */}
+              
               <ul className="flex items-center gap-3 uppercase font-semibold">
-              <li class="relative text-green-700" data-te-input-wrapper-init>
-                <input type="search" id="SearchBar" placeholder="Search" 
-                  class=" peer block min-h-[auto] w-full rounded border-green-300 bg-white px-3 py-[0.32rem] leading-[1.6] outline-white transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-green-700 dark:placeholder:text-green-300 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 text-green-600"/>
-                <label for="SearchBar" class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-green-300 transition-all duration-200 ease-out peer-focus:-translate-y-[1.5rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-green-700 dark:peer-focus:text-white">
-                  Search</label>
+              
+              {/*USER */}
+              <li> 
+                {isLoggedIn ? 
+                    <div className="relative">
+                      <img
+                        src="/userIcon.png"
+                        alt="UserIcon"
+                        onClick={()=>toggleUserDropdown()}
+                        className="cursor-pointer"
+                      />
+                      {userDropdownOpen && <UserDropDown onClick={()=>toggleUserDropdown()}/>}
+                    </div>
+
+                  : <Link href={'/?login=true'}>
+                      <img src="/userIcon.png" alt="UserIcon" onClick={openModal} />
+                    </Link>}
+                {params==='true' && <AccountModal onClose={closeModal} isModalOpen={isModalOpen}/>}
               </li>
               {/*CART */}
-              <li> <Image className="flex items-bottom" src="/cart-white.png" onClick={toggleSidebar} alt="Logo text-3xl mt-[-10px]" width={30} height={30}/> 
+              <li> <Image className="flex items-bottom" src="/cartIcon.png" onClick={toggleSidebar} alt="Logo text-3xl mt-[-10px]" width={30} height={30}/> 
               {isSidebarOpen && <Cart isSidebarOpen={isSidebarOpen} closeSidebar={closeSidebar}/>}
               </li>
-              {/*USER */}
-              <li> <Image className="flex items-bottom" src="/user-white.png" onClick={()=>toggleUserDropdown()} alt="Logo text-3xl mt-[-10px]" width={30} height={30}/>
-              {params==='true' && <AccountModal onClose={closeModal} isModalOpen={isModalOpen}/>}
-              {userDropdownOpen && <UserDropDown onClick={toggleUserDropdown} />}
+              {/*SEARCH */}
+              <li class="relative text-green-700" data-te-input-wrapper-init>
+              <input
+                  type="search"
+                  placeholder="Search..."
+                  className="p-2 border border-green-300 rounded-md text-black"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                
+              <button type="button" onClick={handleSearch} className="bg-green-700 text-white rounded-md p-2"> Search </button>
               </li>
               </ul>
             </div>
 
-      : <Link href={'/?login=true'}>
-          <img src="/userIcon.png" alt="UserIcon" onClick={openModal} />
-        </Link>}
-        {params==='true' && <AccountModal onClose={closeModal} isModalOpen={isModalOpen}/>}
-        {/* {userDropdownOpen && <UserDropDown onClick={toggleUserDropdown} />} */}
-        
-
-        {/* {userDropdownOpen && <UserDropDown onClick={toggleUserDropdown} />} */}
-
-      {/* THE NAVBAR */}
-      <div> 
-        <img src={cartIcon} alt="Cart" onClick={toggleSidebar} className="cursor-pointer" width={60} height={60} />
-          {/* THE SIDEBAR*/}
-          {isSidebarOpen && <Cart isSidebarOpen={isSidebarOpen} closeSidebar={closeSidebar}/>}
-        </div>
+      
 
         
 
-        <input
-          type="search"
-          placeholder="Search..."
-          className="p-2 border border-green-300 rounded-md text-black"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
         
-        <button type="button" onClick={handleSearch} className="bg-green-700 text-white rounded-md p-2"> Search </button>
       </div>
     </div>
   </nav>
