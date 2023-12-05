@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from app.views import UserRegistrationAPIView
+from app.views import UserRegistrationAPIView, CustomerRetrieveUpdateAPIView, CheckAdminPrivilege
 
 
 # router = routers.DefaultRouter()
@@ -19,7 +19,14 @@ urlpatterns = [
     path('api/', include('app.urls')),
 
     # User Registration API
+    # Request body format should be:
+    #    {
+    #        "user": {"username": "", "email": "", "first_name": "", "last_name": "", "password": "", "re_password": ""},
+    #        "cart": {"{product_id}": quantity, "10": 7}
+    #    }
+    #
     path('register/', UserRegistrationAPIView.as_view()),
+    path('checkadmin/', CheckAdminPrivilege.as_view()),
     
     # User Authentication API
     # auth/token/login/ - for logging in
@@ -30,6 +37,7 @@ urlpatterns = [
     # https://djoser.readthedocs.io/en/latest/base_endpoints.html#
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
+    path('auth/updatecustomer/<int:pk>', CustomerRetrieveUpdateAPIView.as_view()),
 
     # path('api/', include(router.urls)),
 

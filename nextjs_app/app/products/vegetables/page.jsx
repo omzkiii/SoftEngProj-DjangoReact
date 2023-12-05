@@ -50,7 +50,7 @@ const ProductPage = () => {
             <ProductCard key={product.id} product={product}/>
           ))}
         </div>
-        <p className="text-lg text-green-700 mb-8 text-center">OPEN nexjs_app/app/products/Vegetables/page.js to edit</p>
+        
       </div>
     );
   };
