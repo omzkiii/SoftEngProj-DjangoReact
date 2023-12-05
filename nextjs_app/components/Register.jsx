@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLoggedInContext } from '../contexts/LoggedInContext';
 
 const RegisterForm = ({ onClose }) => {
-  const { login } = useLoggedInContext();
+  const { login, carts } = useLoggedInContext();
   const [formData, setFormData] = useState({user:  {username:"", email:"", first_name:"", last_name:"", password:"", re_password:""}});
   const [showPassword, setShowPassword] = useState();
   const [showConfirmPassword, setShowConfirmPassword] = useState();
@@ -19,7 +19,10 @@ const RegisterForm = ({ onClose }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, ['user']: {...formData.user, [name]:value} });
+    const userFormData = formData;
+    setFormData({ ...userFormData, ['cart']: {...formData.cart, ...carts}})
+    console.log("USER FORM" + JSON.stringify(formData))
   };
 
 
@@ -41,8 +44,18 @@ const RegisterForm = ({ onClose }) => {
       // Handle network errors
       setError("Network Error");
       console.log(error);
+      console.log(formData)
     }
   };
+  useEffect(()=>{
+    const updatedCart = {...formData, cart:{...carts}}
+    
+    // Update formData state with the cart data
+    setFormData(formData => ({...formData,...updatedCart}))
+
+    console.log(formData.user.last_name)
+    console.log(updatedCart)
+  },[])
 
   return (
     <>

@@ -347,6 +347,43 @@ class ComputeCart(APIView):
         total_amount = gross_amount - total_discounts
         
         return Response({"subtotal":gross_amount, "discount":total_discounts, "total": total_amount}, status=status.HTTP_200_OK)      
+class ComputeCartAnon(APIView):
+
+    def post(self, request):
+        cart_items = request.data
+        if not cart_items:
+            return Response({'error': 'Cart is empty'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        #to set order fields
+        gross_amount = 0
+        total_discounts = 0
+        print(cart_items)
+        #iterating through each cart product
+        for item in cart_items:
+            product = Product.objects.get(id = item['product'])
+            quantity = item['quantity']
+            unit_price = product.price
+
+            # compute for total product price
+            product_price = unit_price * quantity
+
+            # compute for total product discounts
+            discounts = Discount.objects.filter(products=product)
+            product_discount = 0
+
+            for d in discounts:
+                if d.is_active and d.disc_type == Discount.PESO:
+                    product_discount += d.amount * quantity
+                elif d.is_active and d.disc_type == Discount.PERC:
+                    unit_discount = unit_price * d.amount
+                    product_discount += unit_discount * quantity
+            
+            gross_amount += product_price
+            total_discounts += min(product_discount, product_price)
+        
+        total_amount = gross_amount - total_discounts
+        
+        return Response({"subtotal":gross_amount, "discount":total_discounts, "total": total_amount}, status=status.HTTP_200_OK)
 
 class CheckAdminPrivilege(APIView):
     permission_classes = [IsAdminUser]

@@ -5,6 +5,7 @@ import axios from "axios";
 const LoggedInContext = createContext();
 
 export const LoggedInProvider = ({ children }) => {
+  const [cartData, setCartData] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState({});
   const [customer, setCustomer] = useState({})
@@ -71,6 +72,9 @@ export const LoggedInProvider = ({ children }) => {
   
       }
     }
+    else{
+      setCarts(JSON.parse(localStorage.getItem('cart')))
+    }
   }
 
 
@@ -92,8 +96,7 @@ const fetchProducts = async () => {
       getUser()
       console.log(user)
     }
-        
-        
+    setCarts(JSON.parse(localStorage.getItem('cart')))
     fetchProducts();
   },[])
 

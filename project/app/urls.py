@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.urls import path
 from .views import ProductListView, ProductListCreateView, ProductUpdateView, ProductRetrieveView, CartRetrieveUpdateDestroyView, CartListCreateView, ProductCategoryListView, ProductSearchView
 from .views import DiscountListView, DiscountCreateView, DiscountRetrieveUpdateDestroyView, OrderCreateSingleView, ReportRetrieveView
-from .views import OrderProductListView, ComputeCart, OrderCreateView, OrderRetrieveUpdateView, OrderListView, UserOrderListView, OrderRetrieveView
+from .views import OrderProductListView, ComputeCart, OrderCreateView, OrderRetrieveUpdateView, OrderListView, UserOrderListView, OrderRetrieveView, ComputeCartAnon
 
 
 urlpatterns = [
@@ -40,6 +40,8 @@ urlpatterns = [
     path('orderproducts/<int:order>', OrderProductListView.as_view(), name="order_product"),
 
     path('compute/<int:user>', ComputeCart.as_view(), name="compute"),
+    path('compute/', ComputeCartAnon.as_view(), name="computeAnon"),
+
 
 
     #Report APIs
