@@ -305,6 +305,50 @@ class OrderCreateView(APIView):
         return Response(serializer.data)      
 
 
+class ComputeCart(APIView):
+    serializer_class = CartSerializer
+    permission_classes = [IsAuthenticated, IsCartOwner]
+
+    def get(self, request, user, *args, **kwargs):
+        cart_items = Cart.objects.filter(customer__user_id=user)
+        if not cart_items:
+            return Response({'error': 'Cart is empty'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        self.check_object_permissions(request, cart_items[0])
+        customer = Customer.objects.get(user=user)
+
+        #to set order fields
+        gross_amount = 0
+        total_discounts = 0
+
+        #iterating through each cart product
+        for item in cart_items:
+            product = item.product
+            quantity = item.quantity
+            unit_price = product.price
+
+            # compute for total product price
+            product_price = unit_price * quantity
+
+            # compute for total product discounts
+            discounts = Discount.objects.filter(products=product)
+            product_discount = 0
+
+            for d in discounts:
+                if d.is_active and d.disc_type == Discount.PESO:
+                    product_discount += d.amount * quantity
+                elif d.is_active and d.disc_type == Discount.PERC:
+                    unit_discount = unit_price * d.amount
+                    product_discount += unit_discount * quantity
+            
+            gross_amount += product_price
+            total_discounts += min(product_discount, product_price)
+        
+        total_amount = gross_amount - total_discounts
+        
+        return Response({"subtotal":gross_amount, "discount":total_discounts, "total": total_amount}, status=status.HTTP_200_OK)      
+
+
 class ComputedTotalView(APIView):
     def get(self, request,*args, **kwargs):
         #Get the user

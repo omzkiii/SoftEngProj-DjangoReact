@@ -20,7 +20,7 @@ import UserDropDown from "./UserDropDown";
 
 
 const Navbar = () => {
-  const { isLoggedIn, setIsLoggedIn} = useLoggedInContext();
+  const { isLoggedIn } = useLoggedInContext();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
@@ -112,10 +112,38 @@ const Navbar = () => {
               </li>
               </ul>
             </div>
-            </div>
-          </div>
-      </nav>
-      
+
+      : <Link href={'/?login=true'}>
+          <img src="/userIcon.png" alt="UserIcon" onClick={openModal} />
+        </Link>}
+        {params==='true' && <AccountModal onClose={closeModal} isModalOpen={isModalOpen}/>}
+        {/* {userDropdownOpen && <UserDropDown onClick={toggleUserDropdown} />} */}
+        
+
+        {/* {userDropdownOpen && <UserDropDown onClick={toggleUserDropdown} />} */}
+
+      {/* THE NAVBAR */}
+      <div> 
+        <img src={cartIcon} alt="Cart" onClick={toggleSidebar} className="cursor-pointer" width={60} height={60} />
+          {/* THE SIDEBAR*/}
+          {isSidebarOpen && <Cart isSidebarOpen={isSidebarOpen} closeSidebar={closeSidebar}/>}
+        </div>
+
+        
+
+        <input
+          type="search"
+          placeholder="Search..."
+          className="p-2 border border-green-300 rounded-md text-black"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        
+        <button type="button" onClick={handleSearch} className="bg-green-700 text-white rounded-md p-2"> Search </button>
+      </div>
+    </div>
+  </nav>
+
   );
 };
 

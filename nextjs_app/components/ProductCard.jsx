@@ -1,8 +1,10 @@
 // components/ProductCard.js
 "use client"
 import Image from "next/image";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from '../components/Modal';
+import axios from "axios";
+import { useLoggedInContext } from "@/contexts/LoggedInContext";
 
 const ProductCard = ({ product }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,7 +16,7 @@ const ProductCard = ({ product }) => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  const [quantity, setQuantity] =  useState(0)
+  const [quantity, setQuantity] = useState(0)
 
   const addQty = () => {
     setQuantity(quantity+1)
@@ -24,7 +26,68 @@ const ProductCard = ({ product }) => {
     if(quantity !== 0)
       setQuantity(quantity-1)    
   }
-  
+
+  const { user } = useLoggedInContext();
+  const cartData = {
+    "quantity": quantity,
+    "customer": user.id,
+    "product": product.id
+  }
+
+  const [cartUpdateFlag, setCartUpdateFlag] = useState(Date.now());
+  const [carts, setCarts] = useState([]);
+  useEffect(()=>{
+    const currentCart = async () => {
+      const response = await axios.get(`http://127.0.0.1:8000/api/cart/${user.username}`,
+      {headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Token ' + localStorage.getItem('token')
+      }})
+      if(response.status === 200){
+        console.log("FETCH SUCCESS")
+        setCarts(response.data)
+      }
+      else
+        console.log("FETCH FAILED")
+      }
+    currentCart()
+  },[cartUpdateFlag])
+
+
+  const addToCart = async() => {
+    try {
+      const response = await axios.post(`http://127.0.0.1:8000/api/cart/${user.username}`,cartData,{
+        headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Token ' + localStorage.getItem('token')
+      },})
+      console.log("ERROR MESSAGE: "+ response.data)
+      setCartUpdateFlag(Date.now());
+      console.log("Cart Added")
+      setQuantity(0);
+      console.log(product)
+    } catch (error) {
+      const cart = carts.filter(cart=>cart.customer == user.id && cart.product == product.id);
+      console.log("CART QUANTITY "+(cart[0].quantity))
+      if(error.response.data.non_field_errors == "The fields customer, product must make a unique set."){
+        try {
+          const response = await axios.patch(`http://127.0.0.1:8000/api/cart/${user.username}/${product.id}`,{
+            "quantity" : parseInt(cart[0].quantity) + quantity
+          },
+          {headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Token ' + localStorage.getItem('token')
+          }})
+          setQuantity(0);
+          setCartUpdateFlag(Date.now());
+        } catch (error) {
+          
+        }
+      }
+      console.log("ERROR MESSAGE: "+ (error.response.data.non_field_errors))
+      console.log(cartData)
+    }
+  }
 
   
   return (
@@ -51,7 +114,7 @@ const ProductCard = ({ product }) => {
                     </td>
                   </tr>
                 </table>
-            <button className="bg-green-500 text-white px-3 py-1 rounded" >
+            <button className="bg-green-500 text-white px-3 py-1 rounded" onClick={()=>addToCart()}>
               Add to Cart
             </button>
           </div>
@@ -84,7 +147,7 @@ const ProductCard = ({ product }) => {
                 </table>
                 <button
                 className="mt-4 bg-green-500 text-white px-4 py-2 rounded"
-                onClick={closeModal}
+                onClick={()=>{addToCart();closeModal}}
               >
                 Add to Cart
               </button>
