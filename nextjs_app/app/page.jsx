@@ -8,6 +8,7 @@ import {ImFire} from "react-icons/im";
 import Glider from 'glider-js';
 import Link from "next/link";
 import 'glider-js/glider.min.css';
+import { useLoggedInContext } from '@/contexts/LoggedInContext';
 
 
 const slides = [
@@ -26,6 +27,9 @@ const slides = [
 const MainPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [previousIndex, setPreviousIndex] = useState(null);
+  const { products} = useLoggedInContext();
+  const [featured_prod, setFeatured] = useState([]);
+  
   
 
   useEffect(() => {
@@ -36,6 +40,10 @@ const MainPage = () => {
     setPreviousIndex(currentIndex);
   }, [currentIndex]);
   
+  useEffect(() => {
+    setFeatured(products.filter(p => p.is_featured))
+  }, [products]);
+
   useEffect(() => {
     new Glider(document.querySelector('.glider'), {
       slidesToShow: 3,
@@ -108,6 +116,8 @@ const MainPage = () => {
       <section class="p-slider">
       <div class="glider-contain max-w-[1400px] h-[780px] w-full m-auto py-16 relative group">
         <div class="glider">
+          
+
           {/*Product box*/}
           <div class="p-box">
             {/*DISCOUNT*/}
