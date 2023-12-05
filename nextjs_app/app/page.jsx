@@ -25,10 +25,12 @@ const slides = [
 const MainPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [previousIndex, setPreviousIndex] = useState(null);
+  
 
   useEffect(() => {
     if (currentIndex !== previousIndex) {
     }
+    
 
     setPreviousIndex(currentIndex);
   }, [currentIndex]);

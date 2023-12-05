@@ -5,8 +5,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function Cart({ isSidebarOpen, closeSidebar }) {
-  const {  products, user } = useLoggedInContext();
-  const [carts, setCarts] = useState([]);
+  const {  products, user, carts, getCart } = useLoggedInContext();
   const [subtotal, setSubtotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [total, setTotal] = useState(0);
@@ -84,24 +83,8 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
 
     const [cartUpdateFlag, setCartUpdateFlag] = useState(Date.now());
     useEffect(()=>{
-      
-      const currentCart = async () => {
-        const response = await axios.get(`http://127.0.0.1:8000/api/cart/${user.username}`,
-        {headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Token ' + localStorage.getItem('token')
-        }})
-        if(response.status === 200){
-          console.log("FETCH SUCCESS")
-          setCarts(response.data)
-        }
-        else
-          console.log("FETCH FAILED")
-        }
-
-      
+      getCart(user.username)
       calculateCart()
-      currentCart()
     },[cartUpdateFlag])
 
     
@@ -129,17 +112,17 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
                     <div key={item.id} className="flex items-center justify-between p-2 border-b">
                       <div className="flex items-center">
                         <div>
-                          <img src={item.img} alt={item.product} width={140} height={140} className="mr-6 mt-12" />
+                          <img src={products.find(product=> product.id===item.product).image} alt={item.product} width={140} height={140} className="mr-6 mt-12" />
 
                           <div className="text-2xl">
-                            <h1 className='font-Mont text-green text mt-3'>{item.price}</h1>
+                            <h1 className='font-Mont text-green text mt-3'>{products[item.product - 1].price}</h1>
                           </div>
                         </div>
                         <div classname="flex flex-col ">
                           <div className="flex flex-row text-xl justify-center">
 
-                          <h1 className='font-Bree text-green text-2xl mr-2 normal-case text-black'> {products[item.product - 1].name}</h1>
-                          <sup className='font-Bree leading-snug text-5 mt-1.5'> / {item.size} </sup>
+                          <h1 className='font-Bree text-green text-2xl mr-2 normal-case'> {products[item.product - 1].name}</h1>
+                          <sup className='font-Bree leading-snug text-5 mt-1.5'>  / {products[item.product - 1].unit} </sup>
 
                           </div>
 
@@ -151,7 +134,7 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
                                <button onClick={()=>{minusQty(item.quantity, item.product)}}> - </button> 
                               </td>
                               <td className=" px-4 border-t border-b border-AgriAccessGreen text-green">
-                                {item.qty}
+                                {item.quantity}
                               </td>
                               <td className="bg-AgriAccessGreen px-2 border-t border-b border-AgriAccessGreen text-white">
                               <button onClick={()=>{addQty(item.quantity, item.product)}}> +   </button>
