@@ -69,7 +69,7 @@ const MainPage = () => {
 
     <div className="bg-white flex flex-col items-center justify-center">
       <div className="max-w-[1400px] h-[780px] w-full m-auto py-16 relative group">
-        <div style={{backgroundImage: `url(${slides[currentIndex].url})`}} className='w-full h-full rounded-2xl bg center bg-cover duration-500 brightness-75'>
+        <div style={{backgroundImage: `url(${slides[currentIndex].url})`}} className=' h-full w-full rounded-2xl center bg-cover duration-500 brightness-75'>
         </div>
         <div className='hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[50%] left-5 text-2xl p-1 cursor-pointer'>
           {/* Left Arrow */}
