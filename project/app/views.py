@@ -89,6 +89,16 @@ class ProductUpdateView(APIView):
 
         return Response(serializer.data)
 
+    def patch(self, request, pk, *args, **kwargs):
+        product = self.get_object(pk)
+        prev_qty = product.quantity
+        serializer = ProductUpdateSerializer(product, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data)
+
+
 
 class ProductRetrieveView(RetrieveAPIView):
     queryset = Product.objects.all()
