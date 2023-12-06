@@ -47,7 +47,7 @@ const ProductCard = ({ product }) => {
     if(isLoggedIn){
       if(quantity!=0){
         try {
-          const response = await axios.post(`http://127.0.0.1:8000/api/cart/${user.username}`,cartData,{
+          const response = await axios.post( `http://127.0.0.1:8000/api/cart/${user.username}`,cartData,{
             headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Token ' + localStorage.getItem('token')
@@ -109,11 +109,11 @@ const ProductCard = ({ product }) => {
 
   
   return (
-      <div className="bg-white rounded-lg overflow-hidden shadow-lg p-4">
+      <div className="bg-white rounded-lg overflow-hidden shadow-lg p-4 text-green">
         
         <img src={product.image} alt="Product Image" onClick={openModal} width={600} height={600} /> 
         <div className="mt-4">
-          <h2 className="text-xl font-semibold text-gray-800">
+          <h2 className="text-2xl font-semibold text-gray-800 font-Bree">
             {product.name}
           </h2> 
           <div className="mt-4 flex justify-between items-center bottom-0">
@@ -133,7 +133,7 @@ const ProductCard = ({ product }) => {
                     </td>
                   </tr>
                 </table>
-            <button className="bg-green-500 text-white px-3 py-1 rounded" onClick={()=>addToCart()}>
+            <button className="bg-green-500 text-green px-3 py-1 rounded font-bold font-Mont leading-none		" onClick={()=>addToCart()}>
               Add to Cart
             </button>
           </div>
@@ -148,7 +148,7 @@ const ProductCard = ({ product }) => {
                   {product.name}
                 </h2>
                 <p className="text-green-600">{product.description}</p>
-                <p className="text-green-800 font-semibold mt-2">
+                <p className="text-green-800 font-semibold mt-2 font-Mont">
                   PHP {product.price}
                 </p>
                 <table className="font-extrabold ">

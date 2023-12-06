@@ -9,6 +9,8 @@
       fontFamily: {
         "Mont": ['Montserrat', 'sans-serif'],
         "Bree": ['Bree Serif', 'serif'],
+        "Bebas": ['Bebas Neue', 'sans-serif'],
+        
       },
       fontWeight: {
         thin: '100',
