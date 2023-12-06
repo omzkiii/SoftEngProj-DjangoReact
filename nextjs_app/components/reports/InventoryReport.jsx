@@ -94,14 +94,19 @@ const handleEdit = () => {
 
   return (
     <div>
-      <div className="text-center font-serif color text-amber-400 m-4 text-4xl font-extrabold">
+      <div className="text-center font-Bree  text-AgriAccessOrange m-4 text-4xl font-extrabold">
         <h2> INVENTORY </h2>
       </div>
 
+      <div className='mb-2 flex justify-end '>
+        <button className="bg-Lime font-Bree py-2 px-5 rounded-md">
+          Add Item
+        </button>
+      </div>
       <div className="overflow-x-auto text-black">
         <table className="min-w-full">
           <thead>
-            <tr className="text-center bg-amber-400  font-extrabold font-serif text-2xl">
+            <tr className="text-center bg-AgriAccessOrange  font-Bree  text-2xl">
               <th className="text-center text-white">PRODUCT</th>
               <th className="text-center text-white">PRODUCT NAME</th>
               <th className="text-center text-white">QUANTITY</th>
@@ -127,7 +132,7 @@ const handleEdit = () => {
                 <td>{item.name}</td>
                 <td>
                   <div className="flex items-center justify-center">
-                    <button className="border font-bold border-white rounded-full w-8 h-8 bg-transparent text-green-500 hover:bg-green-100">
+                    <button className="border font-bold border-white rounded-md w-8 h-8 bg-transparent text-green-500 hover:bg-green-100">
                       -
                     </button>
                     <span className="mx-2">{item.qty}</span>
@@ -140,10 +145,10 @@ const handleEdit = () => {
                 {item.costPerUnit}
               </td>
                 
-              <td className="items-center">
-                <div className="space-x-2">
-                  <button onClick={() => openEditModal(item, index)} className="px-2 py-1 bg-green-400 text-white rounded">Update</button>
-                  <button className="px-2 py-1 bg-red-500 text-white rounded">Delete</button>
+              <td className="flex justify-center">
+                <div className=" flex flex-col space-y-1 ">
+                  <button onClick={() => openEditModal(item, index)} className="px-2 py-1 w-20 font-Bree bg-AgriAccessGreen text-white rounded-md">Update</button>
+                  <button className="px-2 py-1 w-20 bg-red-500 font-Bree text-white rounded-md">Delete</button>
                 </div>
               </td>
               </tr>
@@ -159,7 +164,7 @@ const handleEdit = () => {
       {/* Modal for the Description of the product */}
       {selectedItem && (
         <Modal isOpen={showDescriptionModal} closeModal={closeDescriptionModal}>
-          <div className="bg-green-500 text-white rounded-lg shadow-lg p-4 text-center">
+          <div className="bg-green-500 text-white rounded-md-md-lg shadow-lg p-4 text-center">
             <div className='text-center'>
               <h1>{selectedItem.name}</h1>
             </div>
@@ -197,7 +202,7 @@ const handleEdit = () => {
               <label className="text-black m-1">Price:</label>
                 <input className="text-black m-1" type="text" value={items.costPerUnit}  placeholder={selectedItem?.costPerUnit} />
              
-            <button onClick={handleEdit} className="bg-green-500 p-1 rounded-xl">Save Changes</button>
+            <button onClick={handleEdit} className="bg-green-500 p-1 rounded-md-md-xl">Save Changes</button>
             </form>
           </div>
 
