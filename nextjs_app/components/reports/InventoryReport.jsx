@@ -5,22 +5,14 @@ import axios from 'axios';
 
 const InventoryReport = () => {
   const { products, fetchProducts, user } = useLoggedInContext();
+  const [updateFlag, setUpdateFlag] = useState(Date.now());
 
   const [showDescriptionModal, setShowDescriptionModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
 
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [editedItem, setEditedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(false);
+  const [editedItem, setEditedItem] = useState(false);
  
-  //TEST OPEN CLOSE MODALS FOR DESCRIPTION 
-  const [isDescriptionModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => {
-    showDescriptionModalDescriptionModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
 
   //CURRENT MODALS FOR DESCRIPTION
   const openDescriptionModal = (item) => {
@@ -48,24 +40,28 @@ const InventoryReport = () => {
   const updateProducts = (productId, productQty, productPrice) => {
     const productData = {
       "quantity": productQty,
-      "product": productPrice
+      "price": productPrice
     }
     try {
-      // const response = axios.patch(`http://127.0.0.1:8000/api/products/update/${productId}`,productData,{
-      //   headers: {
-      //   'Content-Type': 'application/json',
-      //   'Authorization': 'Token ' + localStorage.getItem('token')
-      // }})
-      console.log("CART EDITED")
+      const response = axios.patch(`http://127.0.0.1:8000/api/products/update/${productId}`,productData,{
+        headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Token ' + localStorage.getItem('token')
+      }})
+      console.log(productId+productQty+productPrice)
+      setUpdateFlag(Date.now())
       
     } catch (error) {
       console.log("CART EDIT FAIL")
     }
   }
-  const handleEdit = () => {
-    //updateProducts(id, itemQty, itemPrice)
-    //setShowModal(false); 
+  const handleEdit = (id,itemQty,itemPrice) => {
+    updateProducts(id, itemQty, itemPrice)
+    setEditedItem(false); 
   };
+  useEffect (()=>{
+    fetchProducts()
+  },[updateFlag])
   
 
 
@@ -119,12 +115,12 @@ const InventoryReport = () => {
                   </div>
               </td>
               <td>
-                {item.costPerUnit}
+                {item.price}
               </td>
                 
               <td className="flex justify-center">
                 <div className=" flex flex-col space-y-1 ">
-                  <button onClick={() => openEditModal(item, index)} className="px-2 py-1 w-20 font-Bree bg-AgriAccessGreen text-white rounded-md">Update</button>
+                  <button onClick={() => {openEditModal(item, index)}} className="px-2 py-1 w-20 font-Bree bg-AgriAccessGreen text-white rounded-md">Update</button>
                   <button className="px-2 py-1 w-20 bg-red-500 font-Bree text-white rounded-md">Delete</button>
                 </div>
               </td>
@@ -167,11 +163,11 @@ const InventoryReport = () => {
             <form id='update_form' className="flex flex-col  ">
               <h1 className="text-black m-1"> {selectedItem?.name}</h1>
               <label className="text-black m-1"> Quantity:</label>
-                <input className="text-black m-1" type="text"  placeholder={selectedItem?.quantity} />
+                <input className="text-black m-1" type="text"  id='itemQty' placeholder={selectedItem?.quantity} />
               <label className="text-black m-1">Price:</label>
-                <input className="text-black m-1" type="text"  placeholder={selectedItem?.price} />
+                <input className="text-black m-1" type="text" id='itemPrice' placeholder={selectedItem?.price} />
              
-            <button onClick={console.log("GAGO")} className="bg-green-500 p-1 rounded-md-md-xl text-black">Save Changes</button>
+              <button type="button" onClick={()=>handleEdit(selectedItem?.id,itemQty.value,itemPrice.value)} className="bg-green-500 p-1 rounded-md-md-xl text-black">Save Changes</button>
             </form>
           </div>
 
