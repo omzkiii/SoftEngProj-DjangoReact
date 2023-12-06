@@ -72,8 +72,10 @@ export const LoggedInProvider = ({ children }) => {
   
       }
     }
-    else{
+    else if (localStorage.getItem('cart')) {
       setCarts(JSON.parse(localStorage.getItem('cart')))
+    } else {
+      setCarts([])
     }
   }
 
@@ -96,7 +98,9 @@ const fetchProducts = async () => {
       getUser()
       console.log(user)
     }
-    setCarts(JSON.parse(localStorage.getItem('cart')))
+    else if (localStorage.getItem('cart')) {
+      setCarts(JSON.parse(localStorage.getItem('cart')))
+    }
     fetchProducts();
   },[])
 

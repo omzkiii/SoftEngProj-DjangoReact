@@ -176,12 +176,16 @@ REST_FRAMEWORK = {
 }
 
 
+DOMAIN = 'localhost:3000'
+
+
+
 # Authentication Settings
 # https://djoser.readthedocs.io/en/latest/index.html
 
 DJOSER = {
     'USER_ID_FIELD':'username',
-    'PASSWORD_RESET_CONFIRM_URL': 'reset_password/{uid}/{token}', #TODO: change URL to frontend URL
+    'PASSWORD_RESET_CONFIRM_URL': 'newpassword/{uid}/{token}', #TODO: change URL to frontend URL
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
     'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True,
     'PASSWORD_RESET_CONFIRM_RETYPE': True,
