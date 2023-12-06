@@ -2,7 +2,7 @@ import React from 'react';
 
 const AboutPage = () => {
   return (
-    <div className="bg-green-100 min-h-screen flex flex-col items-center justify-center p-8">
+    <div className="bg-green min-h-screen flex flex-col items-center justify-center p-8">
       <div className="text-center md:w-3/4 lg:w-1/2">
         <h1 className="font-extrabold text-green-500 text-4xl md:text-6xl lg:text-8xl mb-4">
           Our Story
@@ -23,7 +23,7 @@ const AboutPage = () => {
           className="w-full h-auto rounded-lg"
         />
       </div>
-      <div className="flex flex-col md:flex-row md:w-3/4 lg:w-1/2">
+      <div className="flex flex-col md:flex-row md:w-3/4 p-1 lg:w-1/2">
         <div className="md:w-1/2">
           <h2 className="font-extrabold text-green-500 text-4xl md:text-5xl lg:text-6xl mb-4">
             Mission
