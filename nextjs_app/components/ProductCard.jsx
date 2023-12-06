@@ -123,13 +123,13 @@ const ProductCard = ({ product }) => {
             <table className="font-extrabold ">
                   <tr>
                     <td className="bg-AgriAccessGreen px-2 border-t border-b border-AgriAccessGreen" >
-                      <button onClick={minusQty}> - </button> 
+                      <button onClick={minusQty} className="text-white"> - </button> 
                     </td>
                     <td className=" px-4 border-t border-b border-AgriAccessGreen text-black">
                       {quantity}
                     </td>
                     <td className="bg-AgriAccessGreen px-2 border-t border-b border-AgriAccessGreen">
-                    <button onClick={addQty}> +   </button>
+                    <button onClick={addQty} className="text-white"> +   </button>
                     </td>
                   </tr>
                 </table>
@@ -160,7 +160,7 @@ const ProductCard = ({ product }) => {
                       {quantity}
                     </td>
                     <td className="bg-AgriAccessGreen px-2 border-t border-b border-AgriAccessGreen">
-                    <button onClick={addQty}> +   </button>
+                    <button onClick={addQty} className=" text-white" > +   </button>
                     </td>
                   </tr>
                 </table>

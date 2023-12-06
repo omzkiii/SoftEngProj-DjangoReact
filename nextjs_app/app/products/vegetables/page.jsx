@@ -29,26 +29,53 @@ import { GiHamburgerMenu } from "react-icons/gi";
 const ProductPage = () => {
 
   const [products, setProducts] = useState([]);
-  
+  const [sortOrder, setSortOrder] = useState('asc');
+  const [sortBy, setSortBy] = useState('name');
   useEffect(() => {
   
     async function fetchProducts() {
       try {
         const response = await axios.get('http://localhost:8000/api/products/category/vegetable');
-        setProducts(response.data);
+        const sortedProducts = response.data.slice(); // Create a copy of the array
+        
+        sortedProducts.sort((a, b) => {
+          if (sortBy === 'price') {
+            return sortOrder === 'asc' ? a.price - b.price : b.price - a.price;
+          } else {
+            return sortOrder === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+          }
+        });
+
+        setProducts(sortedProducts);
+
       } catch (error){
         console.log('Error: ', error);
       }
     }
 
     fetchProducts();
-  }, []);
+    }, [sortOrder, sortBy]);
 
-  return (
+      const handleSortByName = () => {
+        setSortBy('name');
+        setSortOrder('asc');
+      };
+
+      const handleSortHighToLow = () => {
+        setSortBy('price');
+        setSortOrder('desc');
+      };
+
+      const handleSortLowToHigh = () => {
+        setSortBy('price');
+        setSortOrder('asc');
+      };
+    return (
       
       <div className="bg-white min-h-screen">
         <style>
-          @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bree+Serif&family=Montserrat:wght@700&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bree+Serif&family=Montserrat:wght@700&display=swap
+');
         </style>
         <div className='max-w w-full'>
           <img src="/vegetables.png"
@@ -71,8 +98,7 @@ const ProductPage = () => {
         </a>
 
 
-        <div class="absolute h-[1450px] bg-red-200 w-[3px] ml-96 mb-2 top-[80px]"></div>
-
+        <div class="absolute h-[1450px] bg-gray-200 w-[3px] ml-96 mb-2 top-[80px]"></div>
 
 
         <GiHamburgerMenu fill='AgriAccessGreen' size={40} className='absolute left-[380px] ml-10 top-[80px]'/>
@@ -83,20 +109,23 @@ const ProductPage = () => {
 
           <div className='absolute h-15 w-[190px] border-2 border-green	left-[650px] top-[79px] pl-3 pr-3
           rounded-full	hover:bg-green transition-color ease-in duration-500 cursor-pointer'>
-              <span className='text-green text-[30px] font-Bebas top-[190px] pl-2 pt-2 hover:text-white' > HIGH-LOW PRICE </span>
+              <span className='text-green text-[30px] font-Bebas top-[190px] pl-2 pt-2 hover:text-white' 
+              onClick={handleSortHighToLow}> HIGH-LOW PRICE </span>
           </div>
           <div className='absolute h-15 w-[190px] border-2 border-green	left-[920px] top-[79px] pl-3 pr-3
           rounded-full	hover:bg-green transition-color ease-in duration-500 cursor-pointer'>
-              <span className='text-green text-[30px] font-Bebas top-[190px] pl-2 pt-2 hover:text-white' > LOW-HIGH PRICE </span>
+              <span className='text-green text-[30px] font-Bebas top-[190px] pl-2 pt-2 hover:text-white' 
+               onClick={handleSortLowToHigh}> LOW-HIGH PRICE </span>
           </div>
           <div className='absolute h-15 w-[190px] border-2 border-green	left-[1200px] top-[79px] pl-3 pr-3
           rounded-full	hover:bg-green transition-color ease-in duration-500 cursor-pointer'>
-              <span className='text-green text-[30px] font-Bebas top-[190px] pl-16 pt-2 hover:text-white' > A-Z </span>
+              <span className='text-green text-[30px] font-Bebas top-[190px] pl-16 pt-2 hover:text-white' 
+              onClick={handleSortByName}
+                      > A-Z </span>
           </div>
 
           
         </div>
-
         <div className="relative max-w-[1200px] m-auto  pl-[320px] -top-[600px]">
         <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
          {products.map((product) => (
@@ -106,6 +135,7 @@ const ProductPage = () => {
         </div>
         </div>
         
+      
     );
   };
 
