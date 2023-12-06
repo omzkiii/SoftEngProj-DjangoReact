@@ -13,13 +13,17 @@ import { useLoggedInContext } from '@/contexts/LoggedInContext';
 
 const slides = [
   {
-    url: '/homepage_slide1.jpg'
+    url: '/homepage_slide1.jpg',
+    text: '50% Off'
+
   }, 
   {
-    url: '/homepage_slide2.jpg'
+    url: '/homepage_slide2.jpg',
+    text: 'Payday Deals'
   },
   {
-    url: '/homepage_slide3.jpg'
+    url: '/homepage_slide3.jpg',
+    text: 'Eary Christmas Discount'
   },
 ];
 
@@ -83,8 +87,10 @@ const MainPage = () => {
 
     <div className="bg-white flex flex-col items-center justify-center">
       <div className="max-w-[1400px] h-[780px] w-full m-auto py-16 relative group">
-      <Link href={`/products/discount/${currentIndex+1}`}> <div style={{backgroundImage: `url(${slides[currentIndex].url})`}} className=' h-full w-full rounded-2xl center bg-cover duration-500 brightness-75'>
-          
+      <Link href={`/products/discount/${currentIndex+1}`}> <div style={{backgroundImage: `url(${slides[currentIndex].url})`}} className=' h-full w-full rounded-2xl center bg-cover duration-500 brightness-75 flex items-center justify-center'>
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bree+Serif&family=Montserrat:wght@700&display=swap');      </style>
+      <h1 className='text-white text-9xl m-5' >{slides[currentIndex].text}</h1>
         </div> </Link>
         <div className='hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[50%] left-5 text-2xl p-1 cursor-pointer'>
           {/* Left Arrow */}
