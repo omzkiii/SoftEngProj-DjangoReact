@@ -5,7 +5,6 @@ import ProductCard from '../../../components/ProductCard';
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import { GiHamburgerMenu } from "react-icons/gi";
-import { GiHamburgerMenu } from "react-icons/gi";
 
 
 //THESE ARE THE TEMPORARY DATA FOR PRODUCTS:
@@ -44,7 +43,8 @@ const ProductPage = () => {
 
     fetchProducts();
   }, []);
-    return (
+
+  return (
       
       <div className="bg-white min-h-screen h-[2500 px]">
         <style>
@@ -73,7 +73,7 @@ const ProductPage = () => {
           FRUITS
         </a>
 
-        <div class="absolute h-[1450px] bg-gray-200 w-[3px] ml-96 mb-2 top-[80px]"></div>
+        <div class="absolute h-[1450px] bg-red-200 w-[3px] ml-96 mb-2 top-[80px]"></div>
 
         <GiHamburgerMenu fill='AgriAccessGreen' size={40} className='absolute left-[380px] ml-10 top-[80px]'/>
         {/*SORT  */}
@@ -96,7 +96,6 @@ const ProductPage = () => {
 
           
         </div>
-        
 
         <div className="absolute top-[1250px] ml-[1170px] max-w-[1000px] ">
         <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -105,8 +104,7 @@ const ProductPage = () => {
           ))}
         </div>
         </div>
-        </div>
-        
+     
       </div>
     );
   };
