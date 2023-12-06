@@ -51,60 +51,62 @@ const ProfileDetails = ({ customer, user, setIsEditing }) => {
         console.log(formData);
       }
 
-      return (
-        <div className="bg-green-100 flex flex-col">
-          <div className="flex justify-center">
-            <h1 className="font-extrabold text-green-500 m-4 text-4xl ">Profile</h1>
+      return (  
+        <div className=" bg-green flex items-center flex-col">
+          <div className=" flex justify-center">
+            <h1 className="font-extrabold text-amber-400 m-4 text-4xl ">Profile</h1>
           </div>
+
+          
               <div className=" flex flex-col mb-2">
               {isEditing ? (
                   <>
                   
-                  <div className="flex flex-row">
-                      <label className="mr-4 text-green-500 text-2xl font-semibold">Email:</label>
+                  <div className="flex justify-end  mb-3 flex-row">
+                      <label className="mr-4 text-amber-400 text-2xl font-semibold">Email:</label>
                       <input
                       name="email"
-                      className="border rounded text-black px-2 py-1"
+                      className="w-auto p-0 px-12 text-black border border-gray-300 rounded-[30px]"
                       defaultValue={formData.email}
                       onChange={handleInputChange}
                       />
                   </div>
   
-                  <div className="flex flex-row">
-                      <label className="mr-4 text-green-500 text-2xl font-semibold">First Name:</label>
+                  <div className="flex justify-end mb-3 flex-row">
+                      <label className="mr-4 text-amber-400 text-2xl font-semibold">First Name:</label>
                       <input
                       name="first_name"
-                      className="border rounded text-black px-2 py-1"
+                      className="w-auto p-0 px-4 text-black border  border-gray-300 rounded-[30px]"
                       defaultValue={formData.first_name}
                       onChange={handleInputChange}
                       />
                   </div>
   
-                  <div className="flex flex-row">
-                      <label className="mr-4 text-green-500 text-2xl font-semibold">Last Name:</label>
+                  <div className="flex justify-end mb-3 flex-row">
+                      <label className="mr-4 text-amber-400 text-2xl font-semibold">Last Name:</label>
                       <input
                       name="last_name"
-                      className="border rounded text-black px-2 py-1"
+                      className="auto p-0 px-4 text-black border border-gray-300 rounded-[45px]"
                       defaultValue={formData.last_name}
                       onChange={handleInputChange}
                       />
                   </div>
   
-                  <div className="flex flex-row">
-                      <label className="mr-4 text-green-500 text-2xl font-semibold">Contact No.:</label>
+                  <div className="flex justify-end mb-3 flex-row">
+                      <label className="mr-4 text-amber-400 text-2xl font-semibold">Contact No.:</label>
                       <input
                       name="contact_no"
-                      className="border rounded text-black px-2 py-1"
+                      className="w-auto p-0 px-2 text-black border border-gray-300 rounded-[45px]"
                       defaultValue={formData.contact_no}
                       onChange={handleInputChange}
                       />
                   </div>
                 
-                  <div className="flex flex-row">
-                      <label className="mr-4 text-green-500 text-2xl font-semibold">Address:</label>
+                  <div className="flex justify-end mb-3 flex-row">
+                      <label className="mr-4 text-amber-400 text-2xl font-semibold">Address:</label>
                       <input
                       name="address"
-                      className="border rounded text-black px-2 py-1"
+                      className="w-auto p-0 px-7 text-black border border-gray-300 rounded-[45px]"
                       defaultValue={formData.address}
                       onChange={handleInputChange}
                       />
@@ -112,14 +114,14 @@ const ProfileDetails = ({ customer, user, setIsEditing }) => {
                   <br>
                   </br>
                   <button
-                      className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600"
+                      className="bg-amber-400 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600"
                       onClick={handleEdit}
                   >
                       Save Changes
                   </button>
                   <br></br>
                   <button
-                      className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600"
+                      className="bg-amber-400 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600"
                       onClick={handleEditClick}
                   >
                       Back
@@ -128,23 +130,22 @@ const ProfileDetails = ({ customer, user, setIsEditing }) => {
                   </>
               ) : (
                   <button
-                  className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg mr-2 hover:bg-green-600"
-                  onClick={handleEditClick}
-                  >
+                  className="bg-amber-400 text-white font-semibold py-2 px-4 rounded-lg mr-2 hover:bg-green-600"
+                  onClick={handleEditClick}>
                   Edit Profile
                   </button>
               )}
               </div>
     
-          <ul className="text-green-500 text-2xl font-semibold">
+          <ul className="text-amber-400 text-2xl font-semibold">
             {!isEditing && (
-              <>
+              <div className="flex item-center flex-col justify-center">
                 <li className="mb-2">Name: {`${user.first_name} ${user.last_name}`}</li>
                 <li className="mb-2">Email: {user.email}</li>
                 <li className="mb-2">Username: {user.username}</li>
                 <li className="mb-2">Contact no: {customer.contact_no}</li>
                 <li className="mb-2">Address: {customer.address}</li>
-              </>
+              </div>
             )}
           </ul>
         </div>
