@@ -46,7 +46,7 @@ const ProductPage = () => {
 
   return (
       
-      <div className="bg-white min-h-screen h-[2500 px]">
+      <div className="bg-white min-h-screen">
         <style>
           @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bree+Serif&family=Montserrat:wght@700&display=swap');
         </style>
@@ -58,9 +58,6 @@ const ProductPage = () => {
           top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pb-24"
           >VEGETABLES</p>
         </div>
-
-
-
         <div className='max-w-[1500px] h-[780px] w-full m-auto py-16 relative group bg-white'>
         <a className='relative font-Bebas text-7xl left-7  text-Lime top-[50px] 
         hover:text-AgriAccessOrange transition-color ease-in duration-500 cursor-pointer'
@@ -73,13 +70,16 @@ const ProductPage = () => {
           FRUITS
         </a>
 
+
         <div class="absolute h-[1450px] bg-red-200 w-[3px] ml-96 mb-2 top-[80px]"></div>
 
+
+
         <GiHamburgerMenu fill='AgriAccessGreen' size={40} className='absolute left-[380px] ml-10 top-[80px]'/>
+        
         {/*SORT  */}
           <span className='absolute font-Bebas text-green text-[32px] left-[480px] top-[79px]
           tracking-widest	'>SORT BY : </span>
-
 
           <div className='absolute h-15 w-[190px] border-2 border-green	left-[650px] top-[79px] pl-3 pr-3
           rounded-full	hover:bg-green transition-color ease-in duration-500 cursor-pointer'>
@@ -97,15 +97,15 @@ const ProductPage = () => {
           
         </div>
 
-        <div className="absolute top-[1250px] ml-[1170px] max-w-[1000px] ">
-        <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product}/>
-          ))}
+        <div className="relative max-w-[1200px] m-auto  pl-[320px] -top-[600px]">
+        <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+         {products.map((product) => (
+          <ProductCard key={product.id} product={product}/>
+           ))}
+          </div>
         </div>
         </div>
-     
-      </div>
+        
     );
   };
 
