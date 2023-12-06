@@ -5,7 +5,7 @@ import RegisterForm from './Register'; // Import RegisterForm
 
 axios.defaults.withCredentials = true;
 
-const LoginForm = ({ onClose, toggleSignUp }) => { // Accept toggleSignUp as a prop
+const LoginForm = ({ onClose, toggleSignUp }) => {
   const { login } = useLoggedInContext();
   const [formData, setFormData] = useState({ username: '', password: '' });
   const [error, setError] = useState(null);
