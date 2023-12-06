@@ -30,21 +30,49 @@ import { GiHamburgerMenu } from "react-icons/gi";
 const ProductPage = () => {
 
   const [products, setProducts] = useState([]);
-  
+  const [sortOrder, setSortOrder] = useState('asc'); // Default sorting order
+  const [sortBy, setSortBy] = useState('name'); // Default sorting by name
   useEffect(() => {
   
     async function fetchProducts() {
       try {
         const response = await axios.get('http://localhost:8000/api/products/category/fruit');
-        setProducts(response.data);
+        const sortedProducts = response.data.slice(); // Create a copy of the array
+
+        // Sort the products based on the selected property and order
+        sortedProducts.sort((a, b) => {
+          if (sortBy === 'price') {
+            return sortOrder === 'asc' ? a.price - b.price : b.price - a.price;
+          } else {
+            return sortOrder === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+          }
+        });
+
+        setProducts(sortedProducts);
+
       } catch (error){
         console.log('Error: ', error);
       }
     }
 
     fetchProducts();
-  }, []);
-    return (
+    }, [sortOrder, sortBy]);
+
+      const handleSortByName = () => {
+        setSortBy('name');
+        setSortOrder('asc');
+      };
+
+      const handleSortHighToLow = () => {
+        setSortBy('price');
+        setSortOrder('desc');
+      };
+
+      const handleSortLowToHigh = () => {
+        setSortBy('price');
+        setSortOrder('asc');
+      };
+    return (  
 
       
       <div className="bg-white min-h-screen h-[2000px]">
@@ -82,15 +110,18 @@ const ProductPage = () => {
           tracking-widest	'>SORT BY : </span>
           <div className='absolute h-15 w-[190px] border-2 border-green	left-[650px] top-[79px] pl-3 pr-3
           rounded-full	hover:bg-green transition-color ease-in duration-500 cursor-pointer'>
-              <span className='text-green text-[30px] font-Bebas top-[190px] pl-2 pt-2 hover:text-white' > HIGH-LOW PRICE </span>
+              <span className='text-green text-[30px] font-Bebas top-[190px] pl-2 pt-2 hover:text-white' 
+               onClick={handleSortHighToLow}> HIGH-LOW PRICE </span>
           </div>
           <div className='absolute h-15 w-[190px] border-2 border-green	left-[920px] top-[79px] pl-3 pr-3
           rounded-full	hover:bg-green transition-color ease-in duration-500 cursor-pointer'>
-              <span className='text-green text-[30px] font-Bebas top-[190px] pl-2 pt-2 hover:text-white' > LOW-HIGH PRICE </span>
+              <span className='text-green text-[30px] font-Bebas top-[190px] pl-2 pt-2 hover:text-white' 
+              onClick={handleSortLowToHigh}> LOW-HIGH PRICE </span>
           </div>
           <div className='absolute h-15 w-[190px] border-2 border-green	left-[1200px] top-[79px] pl-3 pr-3
           rounded-full	hover:bg-green transition-color ease-in duration-500 cursor-pointer'>
-              <span className='text-green text-[30px] font-Bebas top-[190px] pl-16 pt-2 hover:text-white' > A-Z </span>
+              <span className='text-green text-[30px] font-Bebas top-[190px] pl-16 pt-2 hover:text-white'
+              onClick={handleSortByName}> A-Z </span>
           </div>
 
           
