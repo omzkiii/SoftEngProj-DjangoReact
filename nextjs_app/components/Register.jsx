@@ -4,7 +4,7 @@ import { useLoggedInContext } from '../contexts/LoggedInContext';
 
 const RegisterForm = ({ onClose, toggleLogIn }) => {
   const { login, carts } = useLoggedInContext();
-  const [formData, setFormData] = useState({user:  {username:"", email:"", first_name:"", last_name:"", password:"", re_password:""}});
+  const [formData, setFormData] = useState({user:  {username:"", email:"", first_name:"", last_name:"", password:"", re_password:""},cart:{}});
   const [showPassword, setShowPassword] = useState();
   const [showConfirmPassword, setShowConfirmPassword] = useState();
   const [error, setError] = useState(null);
@@ -23,15 +23,18 @@ const RegisterForm = ({ onClose, toggleLogIn }) => {
   }
 
   const handleInputChange = (e) => {
+    
     const { name, value } = e.target;
-    setFormData({ ...formData, ['user']: {...formData.user, [name]:value} });
-    const userFormData = formData;
-    setFormData({ ...userFormData, ['cart']: {...formData.cart, ...carts}})
+    setFormData({ ...formData ,['user']:{...formData.user,[name]:value}});
+    //const userFormData = formData;
+    
     console.log("USER FORM" + JSON.stringify(formData))
   };
 
 
   const handleRegister = async () => {
+    
+
     try {
       const response = await axios.post("http://localhost:8000/register/", formData);
 
@@ -53,13 +56,20 @@ const RegisterForm = ({ onClose, toggleLogIn }) => {
     }
   };
   useEffect(()=>{
-    const updatedCart = {...formData, cart:{...carts}}
+    const updatedCart = carts.reduce((acc, cartItem) => {
+      const { product, quantity } = cartItem; // Assuming each cartItem has 'product' and 'quantity' properties
+      return {
+        ...acc,
+        [product]: quantity, // Assuming 'product' is a unique identifier for each cart item
+      };},{})
+    setFormData({ ...formData,  ['cart']:{...formData.cart,...updatedCart}})
+    //const updatedCart = {...formData, cart:{...carts}}
     
     // Update formData state with the cart data
-    setFormData(formData => ({...formData,...updatedCart}))
+    //setFormData(formData => ({...formData,...updatedCart}))
 
     console.log(formData.user.last_name)
-    console.log(updatedCart)
+    //console.log(updatedCart)
   },[])
 
   return (
