@@ -57,7 +57,7 @@ const ProductPage = () => {
           </img>
           <p className="absolute text-white font-Bree text-9xl font-black tracking-widest	
           top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pb-24"
-          >FRUITS</p>
+          >FRUITS</p> 
         </div>
 
 
