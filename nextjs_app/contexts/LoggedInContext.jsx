@@ -5,6 +5,7 @@ import axios from "axios";
 const LoggedInContext = createContext();
 
 export const LoggedInProvider = ({ children }) => {
+  const [cartData, setCartData] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState({});
   const [customer, setCustomer] = useState({})
@@ -71,6 +72,11 @@ export const LoggedInProvider = ({ children }) => {
   
       }
     }
+    else if (localStorage.getItem('cart')) {
+      setCarts(JSON.parse(localStorage.getItem('cart')))
+    } else {
+      setCarts([])
+    }
   }
 
 
@@ -81,10 +87,7 @@ export const LoggedInProvider = ({ children }) => {
 const fetchProducts = async () => {
   try {
   const response = await axios.get(`http://127.0.0.1:8000/api/products/`)
-  setProducts(response.data);
-  if (response.status === 200){
-  console.log("NUMBER 1")}
-  console.log(products)
+  setProducts(response.data); 
   } catch (error){
   console.log('ERROR ENCOUNTERED');
   }
@@ -95,8 +98,9 @@ const fetchProducts = async () => {
       getUser()
       console.log(user)
     }
-        
-        
+    else if (localStorage.getItem('cart')) {
+      setCarts(JSON.parse(localStorage.getItem('cart')))
+    }
     fetchProducts();
   },[])
 

@@ -1,63 +1,61 @@
-"use client"
-import React, { useState } from 'react';
-import LoginForm from './Login';
-import RegisterForm from './Register';
-import Modal from './Modal';
-const AccountModal = ({ isModalOpen, onClose, login }) => {
-  const [showLogIn, setShowLogIn] = useState(true);
-  const [showSignUp, setShowSignUp] = useState(false);
+    "use client"
+    import React, { useState } from 'react';
+    import LoginForm from './Login';
+    import RegisterForm from './Register';
+    import Modal from './Modal';
+    const AccountModal = ({ isModalOpen, onClose, login }) => {
+      const [showLogIn, setShowLogIn] = useState(true);
+      const [showSignUp, setShowSignUp] = useState(false);
+      const [showResetPassword,setresetPassword] = useState(false);
 
+      const toggleLogIn = () => { 
+        setShowLogIn(true);
+        setShowSignUp(false);
+        setresetPassword(false);
+      }
 
-  const toggleLogIn = () => {
-    setShowLogIn(true);
-    setShowSignUp(false);
-  }
+      const toggleSignUp = () => {
+        setShowLogIn(false);
+        setShowSignUp(true);
+      }
 
-  const toggleSignUp = () => {
-    setShowLogIn(false);
-    setShowSignUp(true);
-  }
+      // const toggleShowPasword = () ={
+        
+      // }
 
-  return (
-    <Modal isOpen={isModalOpen} closeModal={onClose}>
-      <div className={`rounded-lg shadow-lg p-4 ${showLogIn ? 'bg-white text-black' : 'bg-AgriAccessOrange text-white'}`}>
-       
-        <div className="flex justify-end mb-4">
-          <button onClick={onClose} className="bg-transparent text-Lime px-2 py-0 border-2 border-AgriAccessOrange rounded-md hover:bg-orange-400 hover:text-white">
-            x
-          </button>
-        </div>
-    
-
-        <div className='mb-4 flex justify-center'>
+      return (
+        <Modal isOpen={isModalOpen} closeModal={onClose}>
+          <div className={`rounded-lg shadow-lg p-4 ${showLogIn ? 'bg-white text-black' : 'bg-AgriAccessOrange text-white'}`}>
           
-        <button
-            className={showLogIn 
-              //PAG NASA LOGIN
-              ? 'text-white bg-AgriAccessOrange font-extrabold rounded-md p-2 w-1/4 ' 
-              //PAG NASA SIGN UP
-              : 'font-extrabold bg-white text-AgriAccessOrange rounded-md p-2'}
-            onClick={toggleLogIn}
-          >Log-in</button>
-          
-          <button
-            className={showSignUp 
-              ? 'text-whit font-extrabold rounded-xl shadow-2xl p-2 ' 
-              : 'font-extrabold bg-white text-AgriAccessOrange rounded-xl border-2 border-black p-2 w-1/4 shadow-md shadow-gray-600'}
-            onClick={toggleSignUp}
-          >Sign up</button>
-        </div>
+            <div className="flex justify-end mb-4">
+              <button onClick={onClose} className="bg-transparent text-Lime px-2 py-0 border-2 border-AgriAccessOrange rounded-md hover:bg-orange-400 hover:text-white">
+                x
+              </button>
+            </div>
+        
+          {showLogIn && (
+          <div id="loginDiv" className='mb-4 flex justify-center'>
+            <h1 className="font-Bree text-4xl text-AgriAccessOrange">LOGIN</h1>
+          </div>
+        )}
+        
+        {showSignUp && (
+          <div id="registerDiv" className='mb-4 flex justify-center'>
+            <h1 className="font-Bree text-4xl text-white">REGISTER</h1>
+          </div>
+        )}
 
-          
+              
 
 
-        {showLogIn && <LoginForm onClose={onClose} />}
-        {showSignUp && <RegisterForm onClose={onClose} />}
-        {/* <PasswordResetPage toggleLogIn={toggleLogIn} /> */}
-      </div>
-    </Modal>
-  );
-};
+            {showLogIn && <LoginForm onClose={onClose} toggleSignUp={toggleSignUp} />} {/* Pass toggleSignUp */}
+            {showSignUp && <RegisterForm onClose={onClose} toggleLogIn={toggleLogIn} />}
 
-export default AccountModal;
+            {/* <PasswordResetPage toggleLogIn={toggleLogIn} /> */}
+          </div>
+        </Modal>
+      );
+    };
+
+    export default AccountModal;
 

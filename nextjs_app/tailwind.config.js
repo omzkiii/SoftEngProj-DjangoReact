@@ -35,7 +35,8 @@
           'redfire': '#ed1b24',
           'green': '#29544b',
           'white': '#FFFFFF',
-          'black': '#000000'
+          'black': '#000000',
+          'ivory': '#FFFFF0'
     },
 
 

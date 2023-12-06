@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 
 const ProductDropDown = ({ onClick }) => {
-    const { user, logout } = useLoggedInContext();
+    const { user, logout, getCart } = useLoggedInContext();
     const [isAdmin, setIsAdmin] = useState(false)
     const router = useRouter();
 
@@ -37,6 +37,7 @@ const ProductDropDown = ({ onClick }) => {
           localStorage.removeItem('token');
           logout()
           onClick()
+          getCart()
           router.push('/');
         }
       } catch (error) {
