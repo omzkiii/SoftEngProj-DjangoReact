@@ -59,7 +59,7 @@
             {/* DIV FOR USERNAME */}
               <div className="flex flex-col"> 
 
-                <label className="font-Bree text-2xl">
+                <label className="font-Bree text-xl">
                   Username
                 </label>
 
@@ -68,7 +68,7 @@
                   type="text"
                   name="username"
                   placeholder="Username"
-                  className="w-1/1.5 px-3 py-2 mb-3 rounded-lg text-white border-white border-2 placeholder-ivory bg-transparent"
+                  className="w-1/1.5 px-2 py-1 mb-3 rounded-lg text-white border-white border-2 placeholder-ivory bg-transparent"
                   value={formData.username}
                   onChange={handleInputChange}/>
                   
@@ -77,14 +77,14 @@
               {/* DIV FOR EMAIL    */}
               <div className="flex flex-col"> 
 
-                <label className="font-Bree text-2xl">
+                <label className="font-Bree text-xl">
                   E-mail
                 </label>
                 <input
                   type="email"
                   name="email"
                   placeholder="Email"
-                  className="w-1/1.5 px-3 py-2 mb-3 rounded-lg text-white border-white border-2 placeholder-ivory bg-transparent"
+                  className="w-1/1.5 px-3 py-1 mb-3 rounded-lg text-white border-white border-2 placeholder-ivory bg-transparent"
                   value={formData.email}
                   onChange={handleInputChange}
                 />
@@ -95,7 +95,7 @@
               {/* DIV FOR first_name    */}
               <div className="flex flex-col"> 
 
-                <label className="font-Bree text-2xl">
+                <label className="font-Bree text-xl">
                   First Name
                 </label>
 
@@ -103,7 +103,7 @@
                 type="text"
                 name="first_name"
                 placeholder="First name"
-                className="w-1/1.5 px-3 py-2 mb-3 rounded-lg text-white border-white border-2 placeholder-ivory bg-transparent"
+                className="w-1/1.5 px-3 py-1 mb-3 rounded-lg text-white border-white border-2 placeholder-ivory bg-transparent"
                 value={formData.first_name}
                 onChange={handleInputChange}
               />
@@ -114,14 +114,14 @@
               {/* DIV FOR last_name    */}
               <div className="flex flex-col"> 
 
-              <label className="font-Bree text-2xl">
+              <label className="font-Bree text-xl">
                 Last Name
               </label>
               <input
                 type="text"
                 name="last_name"
                 placeholder="Last name"
-                className="w-1/1.5 px-3 py-2 mb-3 rounded-lg text-white border-white border-2 placeholder-ivory bg-transparent"
+                className="w-1/1.5 px-3 py-1 mb-3 rounded-lg text-white border-white border-2 placeholder-ivory bg-transparent"
                 value={formData.last_name}
                 onChange={handleInputChange}
               />
@@ -132,7 +132,7 @@
               {/* DIV FOR password    */}
               <div className="flex flex-col"> 
 
-              <label className="font-Bree text-2xl">
+              <label className="font-Bree text-xl">
                 Password
               </label>
               
@@ -140,7 +140,7 @@
                   type={showPassword ? "text" : "password"}
                   name="password"
                   placeholder="Password"
-                  className="w-1/1.5 px-3 py-2 mb-3 rounded-lg text-white border-white border-2 placeholder-ivory bg-transparent"
+                  className="w-1/1.5 px-3 py-1 mb-3 rounded-lg text-white border-white border-2 placeholder-ivory bg-transparent"
                   value={formData.password}
                   onChange={handleInputChange}
                 />
@@ -161,7 +161,7 @@
                 {/* DIV FOR re_password    */}
               <div className="flex flex-col mt-4"> 
 
-              <label className="font-Bree text-2xl">
+              <label className="font-Bree text-xl">
                 Confirm Password
               </label>
 
@@ -169,7 +169,7 @@
                   type={showConfirmPassword ? "text" : "password"}
                   name="re_password"
                   placeholder="Confirm Password"
-                  className="w-1/1.5 px-3 py-2 mb-3 rounded-lg text-white border-white border-2 placeholder-ivory bg-transparent"                   value={formData.re_password}
+                  className="w-1/1.5 px-3 py-1 mb-3 rounded-lg text-white border-white border-2 placeholder-ivory bg-transparent"                   value={formData.re_password}
                   onChange={handleInputChange}
                 />
 
