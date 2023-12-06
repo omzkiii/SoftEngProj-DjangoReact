@@ -5,6 +5,7 @@ import ProductCard from '../../../components/ProductCard';
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import { GiHamburgerMenu } from "react-icons/gi";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 
 

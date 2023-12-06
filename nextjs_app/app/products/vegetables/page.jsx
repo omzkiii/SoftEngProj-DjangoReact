@@ -5,6 +5,7 @@ import ProductCard from '../../../components/ProductCard';
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import { GiHamburgerMenu } from "react-icons/gi";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 
 //THESE ARE THE TEMPORARY DATA FOR PRODUCTS:
@@ -102,6 +103,7 @@ const ProductPage = () => {
           {products.map((product) => (
             <ProductCard key={product.id} product={product}/>
           ))}
+        </div>
         </div>
         </div>
         
