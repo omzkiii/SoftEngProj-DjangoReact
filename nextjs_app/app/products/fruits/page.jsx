@@ -5,6 +5,7 @@ import ProductCard from '../../../components/ProductCard';
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import { GiHamburgerMenu } from "react-icons/gi";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 
 
@@ -57,7 +58,7 @@ const ProductPage = () => {
           </img>
           <p className="absolute text-white font-Bree text-9xl font-black tracking-widest	
           top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pb-24"
-          >FRUITS</p>
+          >FRUITS</p> 
         </div>
 
 

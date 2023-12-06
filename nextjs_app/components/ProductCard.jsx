@@ -47,7 +47,7 @@ const ProductCard = ({ product }) => {
     if(isLoggedIn){
       if(quantity!=0){
         try {
-          const response = await axios.post(`http://127.0.0.1:8000/api/cart/${user.username}`,cartData,{
+          const response = await axios.post( `http://127.0.0.1:8000/api/cart/${user.username}`,cartData,{
             headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Token ' + localStorage.getItem('token')

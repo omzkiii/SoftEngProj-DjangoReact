@@ -2,6 +2,7 @@ import React from 'react';
 
 const AboutPage = () => {
   return (
+
     <div className="bg-white min-h-screen flex flex-col items-center justify-center">
       <div className='max-w w-full object-top top-[10px]'>
           <img src="https://eos.com/wp-content/uploads/2020/02/technologies-in-agriculture.jpg.webp"
@@ -12,6 +13,7 @@ const AboutPage = () => {
           >OUR STORY</p>
 
       </div>
+
       <div className="text-center md:w-3/4 lg:w-1/2">
         <p className="text-4xl text-green mb-8 font-Bebas text-center mt-[100px] cursor-default">
           AgriAccess was born out of a vision to revolutionize the agricultural supply chain.
@@ -22,6 +24,7 @@ const AboutPage = () => {
           agricultural community.
         </p>
       </div>
+
      
       <div className="flex flex-col md:flex-row md:w-3/4 lg:w-1/2">
         <div className="md:w-1/2">

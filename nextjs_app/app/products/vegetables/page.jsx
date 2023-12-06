@@ -5,6 +5,7 @@ import ProductCard from '../../../components/ProductCard';
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import { GiHamburgerMenu } from "react-icons/gi";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 
 //THESE ARE THE TEMPORARY DATA FOR PRODUCTS:
@@ -45,7 +46,7 @@ const ProductPage = () => {
   }, []);
     return (
       
-      <div className="bg-white min-h-screen h-[2500px]">
+      <div className="bg-white min-h-screen h-[2500 px]">
         <style>
           @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bree+Serif&family=Montserrat:wght@700&display=swap');
         </style>
@@ -102,6 +103,7 @@ const ProductPage = () => {
           {products.map((product) => (
             <ProductCard key={product.id} product={product}/>
           ))}
+        </div>
         </div>
         </div>
         
