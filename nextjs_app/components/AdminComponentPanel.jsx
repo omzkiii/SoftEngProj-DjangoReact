@@ -23,7 +23,7 @@
     //THE UI 
     return (
     
-      <div className="bg-green-100 min-h-screen px-8 py-2">
+      <div className="bg-white min-h-screen px-8 py-2">
                   <div className="mx-18 my-14">
                     <div className="float-left mx-8">
                         <img src="orangeUserIcon.png" className="mb-1" alt="User Icon" />
