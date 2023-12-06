@@ -112,6 +112,9 @@ class Order(models.Model):
 
     
     user = models.ForeignKey(Customer, on_delete=models.DO_NOTHING)
+    name = models.CharField(max_length=255, null=True)
+    contact_no = models.CharField(max_length=255, null=True)
+    address = models.CharField(max_length=255, null=True)
     product = models.ManyToManyField(Product, through="OrderProduct")
     date_placed = models.DateTimeField(auto_now_add=True)
     date_completed = models.DateTimeField(null=True, blank=True)

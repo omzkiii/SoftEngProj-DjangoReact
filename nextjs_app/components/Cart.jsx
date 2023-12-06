@@ -3,35 +3,57 @@ import React from 'react'
 import { useLoggedInContext } from '@/contexts/LoggedInContext';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Link from 'next/link';
 
 export default function Cart({ isSidebarOpen, closeSidebar }) {
-  const {  products, user, carts, getCart, cartUpdateFlag, setCartUpdateFlag } = useLoggedInContext();
+  const {  products, user, carts, getCart, cartUpdateFlag, setCartUpdateFlag, isLoggedIn } = useLoggedInContext();
   const [subtotal, setSubtotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [total, setTotal] = useState(0);
 
 
       const calculateCart = async () => {
-        try {
-          const response = await axios.get(`http://127.0.0.1:8000/api/compute/${user.id}`,{
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Token ' + localStorage.getItem('token')
+        if(isLoggedIn){
+          try {
+            const response = await axios.get(`http://127.0.0.1:8000/api/compute/${user.id}`,{
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Token ' + localStorage.getItem('token')
+              }
+            })
+
+            if(response.status === 200){
+              setSubtotal(response.data.subtotal)
+              setDiscount(response.data.discount)
+              setTotal(response.data.total)
             }
-          })
 
-          if(response.status === 200){
-            setSubtotal(response.data.subtotal)
-            setDiscount(response.data.discount)
-            setTotal(response.data.total)
+          } catch (error){
+            console.log(error.response.status)
           }
-
-        } catch (error){
-          console.log(error.response.status)
         }
+        else{
+          try {
+            const response = await axios.post(`http://127.0.0.1:8000/api/compute/`,JSON.parse(localStorage.getItem('cart')))
+
+            if(response.status === 200){
+              setSubtotal(response.data.subtotal)
+              setDiscount(response.data.discount)
+              setTotal(response.data.total)
+            }
+
+          } catch (error){
+            console.log(JSON.parse(localStorage.getItem('cart')))
+            setSubtotal(0);
+            setDiscount(0);
+            setTotal(0);
+          }
+        }
+        
       }
       
       const updateCart = async (quantity,product) => {
+        
         try {
           const response = await axios.patch(`http://127.0.0.1:8000/api/cart/${user.username}/${product}`,{
             "quantity" : quantity
@@ -45,45 +67,84 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
         }
       }
       const deleteCart = async (product) => {
-        try {
-          const response = await axios.delete(`http://127.0.0.1:8000/api/cart/${user.username}/${product}`,
-          {headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token ' + localStorage.getItem('token')
-          }})
-          setCartUpdateFlag(Date.now());
-          console.log("Product removed from cart")
-        } catch (error) {
-          
+        if(isLoggedIn){
+          try {
+            const response = await axios.delete(`http://127.0.0.1:8000/api/cart/${user.username}/${product}`,
+            {headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Token ' + localStorage.getItem('token')
+            }})
+            setCartUpdateFlag(Date.now());
+            console.log("Product removed from cart")
+          } catch (error) {
+            
+          }
+        }
+        else{
+          let localCart = JSON.parse(localStorage.getItem('cart'));
+            localCart = localCart.filter(localCart => localCart.product !== product)
+            localStorage.setItem('cart',[JSON.stringify(localCart)])
+            setCartUpdateFlag(Date.now());
+            
         }
       }
       
 
       const addQty = (quantity, product) => {
-        quantity = parseFloat(quantity) + 1.00
-        updateCart(quantity, product)
-        setCartUpdateFlag(Date.now());
-        console.log(quantity)
+        if(isLoggedIn){
+          quantity = parseFloat(quantity) + 1.00
+          updateCart(quantity, product)
+          setCartUpdateFlag(Date.now());
+          console.log(quantity)
+        }
+        else{
+          const localCart = JSON.parse(localStorage.getItem('cart'));
+          const hasProduct = localCart.some(localCart => localCart.product === product);
+          console.log("ALREADY IN CART!")
+          const cartToUpdate = localCart.find(localCart => localCart.product === product)
+          cartToUpdate.quantity = cartToUpdate.quantity + 1
+          localStorage.setItem('cart',[JSON.stringify(localCart)])
+          setCartUpdateFlag(Date.now());
+        }
       }
       
       const minusQty = (quantity, product) => {
-        if(quantity > 0){ 
-          quantity = quantity - 1.00
-          updateCart(quantity, product)
-          console.log(quantity)
-          setCartUpdateFlag(Date.now());
+        if(isLoggedIn){
+          if(quantity > 0){ 
+            quantity = quantity - 1.00
+            updateCart(quantity, product)
+            console.log(quantity)
+            setCartUpdateFlag(Date.now());
+          }
+          else{
+            console.log("Product removed from cart because it equals to zero")
+            deleteCart(product)
+            setCartUpdateFlag(Date.now());
+          }
         }
         else{
-          console.log("Product removed from cart because it equals to zero")
-          deleteCart(product)
-          setCartUpdateFlag(Date.now());
+          const localCart = JSON.parse(localStorage.getItem('cart'));
+          const cartToUpdate = localCart.find(localCart => localCart.product === product)
+          if(cartToUpdate.quantity > 0){
+            console.log("ALREADY IN CART!")
+            cartToUpdate.quantity = cartToUpdate.quantity - 1
+            localStorage.setItem('cart',[JSON.stringify(localCart)])
+            setCartUpdateFlag(Date.now());
+          }
+          else{
+            let localCart = JSON.parse(localStorage.getItem('cart'));
+            localCart = localCart.filter(localCart => localCart.product !== product)
+            localStorage.setItem('cart',[JSON.stringify(localCart)])
+            setCartUpdateFlag(Date.now());
+
+          }
         }
       }
 
     useEffect(()=>{
       getCart(user.username)
       calculateCart()
-    },[cartUpdateFlag])
+    },[cartUpdateFlag, isLoggedIn])
 
     
     
@@ -185,10 +246,12 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
                           P{total}
                         </div>
                       </div>
-
-                    <div className="mt-5">
-                        <button className="bg-transparent border-Lime text-Lime border-2 rounded-full w-full py-2 font-extrabold">CHECKOUT</button>
-                    </div>
+                    {carts.length !== 0 &&
+                      <div className="mt-5">
+                      <Link href="/checkoutPage"><button onClick={closeSidebar} className="bg-transparent border-Lime text-Lime border-2 rounded-full w-full py-2 font-extrabold">CHECKOUT</button></Link>
+                      </div>
+                    }
+                    
 
                   </div>
             </div>

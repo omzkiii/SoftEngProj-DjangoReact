@@ -2,24 +2,23 @@ import axios from "axios";
 import Link from "next/link";
 import { useLoggedInContext } from '../contexts/LoggedInContext';
 import { useRouter } from 'next/navigation';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 
 const ProductDropDown = ({ onClick }) => {
-    const { user, logout } = useLoggedInContext();
+    const { user, logout, getCart } = useLoggedInContext();
     const [isAdmin, setIsAdmin] = useState(false)
     const router = useRouter();
 
     const checkIfAdmin = async() => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/admin/',{
+        const response = await axios.get('http://127.0.0.1:8000/checkadmin/',{
           headers: {
-            'Content-Type': 'application/json',
             'Authorization': 'Token ' + localStorage.getItem('token')
           }
         })
 
-        console.log(response.data.is_admin)
+        setIsAdmin(response.data.is_admin)
       } catch (error) {
         
       }
@@ -38,6 +37,7 @@ const ProductDropDown = ({ onClick }) => {
           localStorage.removeItem('token');
           logout()
           onClick()
+          getCart()
           router.push('/');
         }
       } catch (error) {
@@ -51,9 +51,9 @@ const ProductDropDown = ({ onClick }) => {
         
     return (
         <>
-            <ul className="absolute top-18 bg-green-600 border rounded shadow-lg">
-                    <Link href={`/profile/user/${user.username}`}><li onClick={onClick} className="px-4 py-2 cursor-pointer hover:bg-gray-100 hover:text-green-950">
-                      Profile
+            <ul className="absolute top-18 bg-green-600 border rounded shadow-lg z-50">
+                    <Link href={isAdmin ? 'adminPage' : `/profile/user/${user.username}`}><li onClick={onClick} className="px-4 py-2 cursor-pointer hover:bg-gray-100 hover:text-green-950">
+                      {isAdmin? "Dashboard": "Profile"}
                     </li></Link>
                     <li onClick={handleLogout} 
                         className="px-4 py-2 cursor-pointer hover:bg-gray-100 hover:text-green-950"> Log out</li>

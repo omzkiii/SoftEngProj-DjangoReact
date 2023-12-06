@@ -26,7 +26,7 @@ urlpatterns = [
     #    }
     #
     path('register/', UserRegistrationAPIView.as_view()),
-    path('admin/', CheckAdminPrivilege.as_view()),
+    path('checkadmin/', CheckAdminPrivilege.as_view()),
     
     # User Authentication API
     # auth/token/login/ - for logging in

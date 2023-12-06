@@ -36,6 +36,7 @@ const NewPasswordPage = ({params}) => {
         }
         console.log(uid);
         console.log(token);
+        
       }
 
     return (
