@@ -115,14 +115,16 @@ const Navbar = () => {
                         alt="UserIcon"
                         onClick={()=>toggleUserDropdown()}
                         className="cursor-pointer"
-                        width="10px" // Adjust the width as desired
-                         height="10px"
+                        width="30px" // Adjust the width as desired
+                         height="30px"
                       />
                       {userDropdownOpen && <UserDropDown onClick={()=>toggleUserDropdown()}/>}
                     </div>
 
                   : <Link href={'/?login=true'}>
-                      <img src="/userIcon.png" alt="UserIcon" onClick={openModal} />
+                      <img src="/userIcon.png" alt="UserIcon" onClick={openModal} 
+                      width="30px" // Adjust the width as desired
+                      height="30px"/>
                     </Link>}
                     
               </li>
