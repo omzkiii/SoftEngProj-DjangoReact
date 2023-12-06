@@ -80,7 +80,7 @@ const Navbar = () => {
         <div className="w-full h-28 border-b-[1px]">
           <div className="max-w-screen h-full mx-auto px-4 items-center justify-between flex cursor-pointer" >
           <ul className="flex items-center gap-3 uppercase ">
-          <Image className="flex items-bottom" src="/logonobg.png" alt="Logo text-3xl mt-[-10px]" width={50} height={50}/>
+          <Image className="flex items-bottom" src="/siteLogo.png" alt="Logo text-3xl mt-[-10px]" width={50} height={50}/>
           <h1 className="font-Bree text-3xl ">AgriAccess</h1>
           </ul>
             <ul className="flex items-center gap-20 uppercase font-semibold">
