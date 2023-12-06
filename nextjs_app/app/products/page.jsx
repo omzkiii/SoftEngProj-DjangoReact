@@ -31,13 +31,13 @@ const ProductPage = () => {
     fetchProducts();
   }, [query]);
     return (
-      <div className="bg-green-100 min-h-screen">
+      <div className="bg-white min-h-screen">
         <div className="max-w-6xl mx-auto p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {products.map((product) => (
             <ProductCard key={product.id} product={product}/>
           ))}
         </div>
-        <p className="text-lg text-green-700 mb-8 text-center">OPEN nexjs_app/app/products/Vegetables/page.js to edit</p>
+        
       </div>
     );
   };

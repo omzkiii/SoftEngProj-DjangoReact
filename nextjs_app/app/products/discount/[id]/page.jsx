@@ -33,8 +33,8 @@ const DiscountPage = ({params}) => {
   }, [products]);
 
     return (
-      <div className="bg-green-100 min-h-screen">
-        <h1 className="font-extrabold text-green-500 mb-4 text-8xl">{discount.description}</h1>
+      <div className="bg-white min-h-screen">
+        <h1 className="font-extrabold text-green-500 mb-4 text-8xl text-green">{discount.description}</h1>
         
         <div className="max-w-6xl mx-auto p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {disc_prod.map((product) => (
