@@ -31,7 +31,7 @@ const OrderHistory = ({orders, products}) => {
                                 }</td>
                                 <td className="border-2 border-amber-400 px-6">{order.total_amount}</td>
                                 <td className="border-2 border-amber-400 px-6">{order.status}</td>
-                                <td className="border-2 text-blue-600 border-amber-400 px-6"><Link href='http://localhost:3000/userorderdetails'>View details</Link></td>
+                                <td className="border-2 text-blue-600 border-amber-400 px-6"><Link href={`http://localhost:3000/userorderdetails/${order.id}`}>View details</Link></td>
                             </tr>
                         ))}                    
                     </tbody>

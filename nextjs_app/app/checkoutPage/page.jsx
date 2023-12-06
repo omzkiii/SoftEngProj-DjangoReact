@@ -97,52 +97,34 @@ const checkOutPage = () => {
 
   return (
     <>
-      <div className="h-screen w-screen bg-green-100">
+      <div className="h-screen w-screen bg-green">
         <div className="w-full flex flex-row">
-          <div className="h-screen w-screen bg-green-400 font-bold flex flex-col">
-            <h2 class="font-sans m-8 text-4xl text-green-900">Checkout</h2>
+          <div className="h-screen w-screen bg-green font-bold flex flex-col">
+            <h2 class="font-sans m-8 text-4xl text-amber-400">Checkout</h2>
 
             <div class=" p-8 pt-0  rounded">
     
               <div className="mb-2 flex justify-center">
                   <div className="field1 pr-10 w-1/2">
-                    <label htmlFor="field1" className="block text-gray-700 text-sm font-bold mb-2">NAME</label>
+                    <label htmlFor="field1" className="block text-amber-400 text-sm font-bold mb-2">NAME</label>
                     <input value={formData.name} onChange={handleInputChange} type="text" id="field1" name="name" className="w-full p-2 text-black border border-gray-300 rounded-[45px]" />
                   </div>
                     <div className="flex-1 w-1/2">
-                    <label htmlFor="field2" className="block text-gray-700 text-sm font-bold mb-2">CONTACT NO.</label>
+                    <label htmlFor="field2" className="block text-amber-400 text-sm font-bold mb-2">CONTACT NO.</label>
                     <input value={formData.contact_no} onChange={handleInputChange} type="text" id="field2" name="contact_no" className="w-full p-2 text-black border border-gray-300 rounded-[45px]" />
                   </div>
               </div>
 
     
               <div class="mb-2">
-                <label for="field2" class="block text-gray-700 text-sm font-bold mb-2">ADDRESS</label>
+                <label for="field2" class="block text-amber-400 text-sm font-bold mb-2">ADDRESS</label>
                 <input value={formData.address} onChange={handleInputChange} type="text" id="field2" name="address" class="w-full p-2 border border-gray-300 text-black rounded-[45px]"></input>
               </div>
               </div>
 
-              <h2 class="font-sans text-center mb-5 mt-8 text-4xl text-green-900">Payment</h2>
-              <div className="mb-4 flex justify-center mx-auto font-sans font-bold gap-12"> 
-              <div className="">
-                <button type="radio" id="button3" className="px-9 p-3 border border-gray-300 rounded-[10px] bg-white text-green-900 hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300">
-                  GCASH
-                </button>
-              </div>
-              <div className="">
-                <button type="radio" id="button4" className="px-9 p-3 border text-s border-gray-300 rounded-[10px] bg-white text-green-900 hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300">
-                  CREDIT/DEBIT CARD
-                </button>
-              </div>
-              <div className="">
-                <button type="radio" id="button5" className="px-9 p-3 border border-gray-300 rounded-[10px] bg-white text-green-900 hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300">
-                  MAYA
-                </button>
-              </div>
-              </div>
 
                <div className="div flex justify-center">
-              <button onClick={placeOrder} type="submit" class="bg-green-900  text-white p-2  hover:bg-blue-700 w-2/6  ">PLACE ORDER</button>
+              <button onClick={placeOrder} type="submit" class="bg-amber-400  text-white p-2 hover:bg-white hover:text-amber-400 w-2/6  ">PLACE ORDER</button>
              </div>
              
             
@@ -156,9 +138,9 @@ const checkOutPage = () => {
                 <div class=" px-10 py-4 border-solid border-gray-200 text-center font-bold">
                 <img src={item.image} alt="Image Description" class="w-20 h-20 object-cover mx-auto"></img></div>
                 <div class="flex flex-col">
-                  <h1 class=" border-solid border-gray-200 font-sans font-bold text-4xl text-green-90 ">{item.name}</h1>
-                <h1 class="px-full  border-solid  border-gray-200 font-sans font-semibold text-m text-green-900 ">{`Quantity: ${carts.find(c=>c.product==item.id).quantity}`}</h1>
-                  <h1 class="px-full  border-solid  border-gray-200 font-sans font-semibold text-m text-green-900 ">P{item.price}</h1>       
+                  <h1 class=" border-solid border-gray-200 font-sans font-bold text-4xl text-green ">{item.name}</h1>
+                <h1 class="px-full  border-solid  border-gray-200 font-sans font-semibold text-m text-green ">{`Quantity: ${carts.find(c=>c.product==item.id).quantity}`}</h1>
+                  <h1 class="px-full  border-solid  border-gray-200 font-sans font-semibold text-m text-green ">P{item.price}</h1>       
                 </div>
                 </div>
 
