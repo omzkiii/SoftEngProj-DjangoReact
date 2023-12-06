@@ -54,6 +54,11 @@ const ProductPage = () => {
     }
 
     fetchProducts();
+
+  }, []);
+
+  return (
+
     }, [sortOrder, sortBy]);
 
       const handleSortByName = () => {
@@ -71,6 +76,7 @@ const ProductPage = () => {
         setSortOrder('asc');
       };
     return (
+
       
       <div className="bg-white min-h-screen">
         <style>
@@ -97,7 +103,8 @@ const ProductPage = () => {
         </a>
 
 
-        <div class="absolute h-[1450px] bg-gray-200 w-[3px] ml-96 mb-2 top-[80px]"></div>
+        <div class="absolute h-[1450px] bg-red-200 w-[3px] ml-96 mb-2 top-[80px]"></div>
+
 
 
         <GiHamburgerMenu fill='AgriAccessGreen' size={40} className='absolute left-[380px] ml-10 top-[80px]'/>
@@ -125,6 +132,7 @@ const ProductPage = () => {
 
           
         </div>
+
         <div className="relative max-w-[1200px] m-auto  pl-[320px] -top-[600px]">
         <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
          {products.map((product) => (
@@ -134,7 +142,6 @@ const ProductPage = () => {
         </div>
         </div>
         
-      
     );
   };
 

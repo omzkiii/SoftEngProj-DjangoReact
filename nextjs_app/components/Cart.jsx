@@ -1,16 +1,30 @@
 
 import React from 'react'
 import { useLoggedInContext } from '@/contexts/LoggedInContext';
+import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
+import AccountModal from "./Account";
 
 export default function Cart({ isSidebarOpen, closeSidebar }) {
   const {  products, user, carts, getCart, cartUpdateFlag, setCartUpdateFlag, isLoggedIn } = useLoggedInContext();
   const [subtotal, setSubtotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [total, setTotal] = useState(0);
+  const [link, setLink] = useState("/?login=true")
+  const searchParams = useSearchParams();
+  const params = searchParams.get("login");
 
+  
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
       const calculateCart = async () => {
         if(isLoggedIn){
@@ -144,14 +158,20 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
     useEffect(()=>{
       getCart(user.username)
       calculateCart()
+      if (isLoggedIn){
+        setLink("/checkoutPage")
+      } 
     },[cartUpdateFlag, isLoggedIn])
 
     
     
 
   return (
+    <>
+      {params==='true' && <AccountModal onClose={closeModal} isModalOpen={isModalOpen}/>}
     
     <div className={`fixed inset-y-0 right-0 bg-gray-800 bg-opacity-50 z-50 transform transition-transform ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'} w-1/4`}>
+      
               <div className={`absolute top-0 right-0 h-full bg-white min-w-full p-4 transform transition-transform ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'} w-1/4  overflow-y-auto`}>
 
                 <div className="flex flex-col justify-center ">
@@ -246,14 +266,17 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
                           P{total}
                         </div>
                       </div>
+                    
+                    
                     {carts.length !== 0 &&
                       <div className="mt-5">
-                      <Link href="/checkoutPage"><button onClick={closeSidebar} className="bg-transparent border-Lime text-Lime border-2 rounded-full w-full py-2 font-extrabold">CHECKOUT</button></Link>
+                      <Link href={link}><button onClick={isLoggedIn ? closeSidebar: openModal} className="bg-transparent border-Lime text-Lime border-2 rounded-full w-full py-2 font-extrabold">CHECKOUT</button></Link>
                       </div>
                     }
                     
 
                   </div>
             </div>
+            </>
   )
 }
