@@ -5,7 +5,6 @@ import ProductCard from '../../../components/ProductCard';
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import { GiHamburgerMenu } from "react-icons/gi";
-import { GiHamburgerMenu } from "react-icons/gi";
 
 
 
@@ -75,7 +74,7 @@ const ProductPage = () => {
           FRUITS
         </a>
 
-        <div class="absolute h-[700px] bg-gray-200 w-[3px] ml-96 mb-1 bottom-2"></div>
+        <div class="absolute h-[850px] bg-gray-200 w-[3px] ml-96 mb-2 bottom-2 top-[80px]"></div>
 
         <GiHamburgerMenu fill='AgriAccessGreen' size={40} className='absolute left-[380px] ml-10 top-[80px]'/>
         {/*SORT  */}
@@ -97,8 +96,8 @@ const ProductPage = () => {
           
         </div>
 
-        <div className="absolute top-[1250px] ml-[1200px] max-w-[1000px] ">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="relative max-w-[1200px] m-auto  pl-[320px] -top-[600px]">
+          <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
              {products.map((product) => (
         <ProductCard key={product.id} product={product}/>
          ))}
