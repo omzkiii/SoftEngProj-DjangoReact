@@ -105,13 +105,7 @@ const InventoryReport = () => {
                 <td>{item.name}</td>
                 <td>
                   <div className="flex items-center justify-center">
-                    <button className="border font-bold border-white rounded-md w-8 h-8 bg-transparent text-green-500 hover:bg-green-100">
-                      -
-                    </button>
                     <span className="mx-2">{item.quantity}</span>
-                    <button className="border font-bold border-white  w-8 h-8 bg-transparent text-green-500 hover:bg-green-100">
-                      +
-                    </button>
                   </div>
               </td>
               <td>
