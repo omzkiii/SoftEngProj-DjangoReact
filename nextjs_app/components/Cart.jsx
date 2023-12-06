@@ -3,6 +3,7 @@ import React from 'react'
 import { useLoggedInContext } from '@/contexts/LoggedInContext';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Link from 'next/link';
 
 export default function Cart({ isSidebarOpen, closeSidebar }) {
   const {  products, user, carts, getCart, cartUpdateFlag, setCartUpdateFlag, isLoggedIn } = useLoggedInContext();
@@ -143,7 +144,7 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
     useEffect(()=>{
       getCart(user.username)
       calculateCart()
-    },[cartUpdateFlag])
+    },[cartUpdateFlag, isLoggedIn])
 
     
     
@@ -245,10 +246,12 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
                           P{total}
                         </div>
                       </div>
-
-                    <div className="mt-5">
-                        <button className="bg-transparent border-Lime text-Lime border-2 rounded-full w-full py-2 font-extrabold">CHECKOUT</button>
-                    </div>
+                    {carts.length !== 0 &&
+                      <div className="mt-5">
+                      <Link href="/checkoutPage"><button onClick={closeSidebar} className="bg-transparent border-Lime text-Lime border-2 rounded-full w-full py-2 font-extrabold">CHECKOUT</button></Link>
+                      </div>
+                    }
+                    
 
                   </div>
             </div>
