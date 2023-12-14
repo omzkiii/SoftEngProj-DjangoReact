@@ -214,10 +214,15 @@ const RegisterForm = ({ onClose, toggleLogIn }) => {
 
       <div className="mt-4 flex flex-row">
         <div>
-          <h1 className="text-black mr-2"> Already have an account?</h1>
+          <h1 className="text-black mr-2 font-Bree"> Already have an account?</h1>
         </div>
         <div>
-          <h1 onClick={toggleLogIn} className="text-blue-600 cursor-pointer px-4">Log in Now!</h1>
+          <a 
+            onClick={toggleLogIn} 
+            className="inline-block transition-transform transform-gpu hover:translate-y-[-5px] hover:scale-110">
+            <h1 onClick={toggleLogIn} className="cursor-pointer px-4 font-Bree text-white">Log in Now!</h1>
+          </a>
+          
         </div>
       </div>
 
