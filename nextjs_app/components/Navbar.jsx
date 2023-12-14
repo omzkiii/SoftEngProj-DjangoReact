@@ -115,21 +115,22 @@ const Navbar = () => {
                         alt="UserIcon"
                         onClick={()=>toggleUserDropdown()}
                         className="cursor-pointer"
-                        width="30px" // Adjust the width as desired
-                         height="30px"
+                        width="50px" // Adjust the width as desired
+                         height="50px"
                       />
                       {userDropdownOpen && <UserDropDown onClick={()=>toggleUserDropdown()}/>}
                     </div>
 
                   : <Link href={'/?login=true'}>
                       <img src="/userIcon.png" alt="UserIcon" onClick={openModal} 
-                      width="30px" // Adjust the width as desired
-                      height="30px"/>
+                      width="50px" // Adjust the width as desired
+                      height="50px"/>
                     </Link>}
                     
               </li>
               {/*CART */}
-              <li> <Image className="flex items-bottom" src="/cartIcon.png" onClick={toggleSidebar} alt="Logo text-3xl mt-[-10px]" width={30} height={30}/> 
+              <li> 
+                <Image className="flex items-bottom" src="/cartIcon.png" onClick={toggleSidebar} alt="Cart Logo" width={50} height={50}/> 
               {isSidebarOpen && <Cart isSidebarOpen={isSidebarOpen} closeSidebar={closeSidebar}/>}
               </li>
               {/*SEARCH */}

@@ -170,9 +170,12 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
     <>
       {params==='true' && <AccountModal onClose={closeModal} isModalOpen={isModalOpen}/>}
     
-    <div className={`fixed inset-y-0 right-0 bg-gray-800 bg-opacity-50 z-50 transform transition-transform ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'} w-1/4`}>
-      
-              <div className={`absolute top-0 right-0 h-full bg-white min-w-full p-4 transform transition-transform ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'} w-1/4  overflow-y-auto`}>
+      <div>
+
+
+
+      <div className={`fixed inset-y-0 right-0 bg-gray-800 bg-opacity-50 z-50 transform transition-transform ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'} w-1/4 duration-500 ease-in-out`}>
+      <div className={`absolute top-0 right-0 h-full bg-white min-w-full p-4 transform transition-transform ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'} w-1/4  overflow-y-auto`}>
 
                 <div className="flex flex-col justify-center ">
                   <button className="bg-transparent border-AgriAccessOrange text-AgriAccessOrange border-2 rounded-full px-3 py-2 font-extrabold font-Bree" onClick={closeSidebar}>
@@ -277,6 +280,7 @@ export default function Cart({ isSidebarOpen, closeSidebar }) {
 
                   </div>
             </div>
+                  </div>
             </>
   )
 }
