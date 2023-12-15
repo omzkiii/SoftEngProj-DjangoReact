@@ -27,7 +27,7 @@ To integrate and start the back end server to the web application, run the follo
 
     python -m venv (env name)
   
-  **2.2** Using Pythono's built-in venv module, create a new environment. Make sure to change the *_(env name)_* to your preferred virtual environment name.
+  **2.2** Using Python's built-in venv module, create a new environment. Make sure to change the *_(env name)_* to your preferred virtual environment name.
       
     python (env name)\Scripts\activate
 
@@ -35,9 +35,9 @@ To integrate and start the back end server to the web application, run the follo
 
     python (env name)\Scripts\activate
 
-  **2.4** Change the current directory again to the root folder of the project.
+  **2.4** Change the current directory to the file path below.
 
-       cd ...\SoftEngProj-DjangoReact
+       cd ...\SoftEngProj-DjangoReact\project
 
   **2.5** Install the Python packages in the `requirements.txt` file using the code below:
     
