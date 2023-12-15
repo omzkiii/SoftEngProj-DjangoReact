@@ -43,7 +43,7 @@ To integrate and start the back end server to the web application, run the follo
     
       pip install -r requirements
 
-  *2.6* To run the back-end server, enter the code below in the terminal to execute the Django development server to run the project.
+  **2.6** To run the back-end server, enter the code below in the terminal to execute the Django development server to run the project.
 
     python manage.py runserver
   
