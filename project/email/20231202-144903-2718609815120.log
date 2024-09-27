@@ -1,0 +1,40 @@
+Content-Type: multipart/alternative;
+ boundary="===============1441826799059012524=="
+MIME-Version: 1.0
+Subject: Password reset on 127.0.0.1:8000
+From: webmaster@localhost
+To: sooyoung@email.com
+Date: Sat, 02 Dec 2023 06:49:03 -0000
+Message-ID: <170149974325.8232.1943595349881035077@MEDEA>
+
+--===============1441826799059012524==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+You're receiving this email because you requested a password reset for your user account at 127.0.0.1:8000.
+
+Please go to the following page and choose a new password:
+http://127.0.0.1:8000/reset_password/OQ/byl55r-119524e18a84e4fe4f2a6902ba3a61a3
+Your username, in case you've forgotten: psooyoung
+
+Thanks for using our site!
+
+The 127.0.0.1:8000 team
+--===============1441826799059012524==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+<p>You're receiving this email because you requested a password reset for your user account at 127.0.0.1:8000.</p>
+
+<p>Please go to the following page and choose a new password:</p>
+<a href="http://127.0.0.1:8000/reset_password/OQ/byl55r-119524e18a84e4fe4f2a6902ba3a61a3">http://127.0.0.1:8000/reset_password/OQ/byl55r-119524e18a84e4fe4f2a6902ba3a61a3</a>
+<p>Your username, in case you've forgotten: <b>psooyoung</b></p>
+
+<p>Thanks for using our site!</p>
+
+<p>The 127.0.0.1:8000 team</p>
+--===============1441826799059012524==--
+
+-------------------------------------------------------------------------------

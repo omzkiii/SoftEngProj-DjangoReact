@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from app.views import UserRegistrationAPIView, CustomerRetrieveUpdateAPIView
+from app.views import UserRegistrationAPIView, CustomerRetrieveUpdateAPIView, CheckAdminPrivilege
 
 
 # router = routers.DefaultRouter()
@@ -26,6 +26,7 @@ urlpatterns = [
     #    }
     #
     path('register/', UserRegistrationAPIView.as_view()),
+    path('checkadmin/', CheckAdminPrivilege.as_view()),
     
     # User Authentication API
     # auth/token/login/ - for logging in

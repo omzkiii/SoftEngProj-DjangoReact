@@ -1,7 +1,7 @@
   //FRAMEWORK NECCESITIES
   "use client" 
   import React from 'react';
-  import { useState } from "react";
+  import { useEffect, useState } from "react";
 
   //REPORT PAGES TO BE PULLED TO THE BOX
   import InventoryReport from '../components/reports/InventoryReport';
@@ -9,7 +9,7 @@
   import SalesReport from '../components/reports/FinancialReport';
 
   const MainPage = () => {
-
+ 
     //VARIABLES AND BUTTON FUNCTION 
 
     const [activeBtn, setActiveBtn] = useState("inventory");
@@ -23,7 +23,7 @@
     //THE UI 
     return (
     
-      <div className="bg-green-100 min-h-screen px-8 py-2">
+      <div className="bg-white min-h-screen px-8 py-2">
                   <div className="mx-18 my-14">
                     <div className="float-left mx-8">
                         <img src="orangeUserIcon.png" className="mb-1" alt="User Icon" />

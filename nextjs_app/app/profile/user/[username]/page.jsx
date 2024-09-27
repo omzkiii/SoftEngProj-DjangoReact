@@ -7,11 +7,10 @@ import axios from "axios";
 
 const UserProfile = ({params}) => {
     const paramId = params.username
-    const { user, customer } = useLoggedInContext();
+    const { user, customer, products } = useLoggedInContext();
     
     const [activeBtn, setActiveBtn] = useState("order")
     const [orders, setOrders] = useState([])
-    const [products, setProducts] = useState([])
 
     const getOrders = async () => {
 
@@ -29,23 +28,11 @@ const UserProfile = ({params}) => {
         }
     }
 
-    const getProducts = async () => {
-
-        try {
-          const response = await axios.get(`http://127.0.0.1:8000/api/products/`)
-          console.log(response.data)
-          setProducts(response.data)
-    
-        } catch (error) {
-          console.log(error)
-        }
-    }
 
 
     useEffect(() =>{
         getOrders()
-        getProducts()
-    },[user.id])
+    },[user])
     
 
     const toggleView = (e) => {
@@ -54,13 +41,16 @@ const UserProfile = ({params}) => {
 
 
     return (
-        <div className="bg-green-100 min-h-screen px-40 py-16 flex flex-col items-start justify-start">
-            <div className="flex justify-center">
-                <h1 className="font-extrabold text-green-500 m-4 text-5xl">Hello, {user.first_name}!</h1>
+        <div className="bg-green min-h-screen px-40 py-16 flex flex-col">
+          <div className="flex item-center justify-center">
+            <img src=".png" class="rounded-full w-32 h-32 bg-red-50"></img>
+          </div>
+            <div className="flex item-center justify-center">
+                <h1 className="font-extrabold text-amber-400 m-4 text-5xl">Hello, {user.first_name}!</h1>
             </div>
-            <div className="flex justify-center">
-                <button value="order" onClick={toggleView} className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg mr-2 hover:bg-green-600">View Order History</button>
-                <button value="profile" onClick={toggleView} className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg mr-2 hover:bg-green-600">View Profile</button>
+            <div className="flex item-center justify-center">
+                <button value="order" onClick={toggleView} className="bg-amber-400 text-white font-semibold py-2 px-4 rounded-lg mr-2 hover:bg-amber-400 hover:text-green">View Order History</button>
+                <button value="profile" onClick={toggleView} className="bg-amber-400 text-white font-semibold py-2 px-4 rounded-lg mr-2 hover:bg-amber-400 hover:text-green">View Profile</button>
             </div>
 
             {activeBtn === "order" && <OrderHistory user={user} orders={orders} products={products}/>}

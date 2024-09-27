@@ -1,0 +1,32 @@
+Content-Type: multipart/alternative;
+ boundary="===============4560270213218166596=="
+MIME-Version: 1.0
+Subject: localhost:8000 - Your password has been successfully changed!
+From: webmaster@localhost
+To: sooyoung@email.com
+Date: Wed, 06 Dec 2023 00:02:28 -0000
+Message-ID: <170182094853.17152.938865445013644982@MEDEA>
+
+--===============4560270213218166596==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+Your password has been changed!
+
+Thanks for using our site!
+
+The localhost:8000 team
+--===============4560270213218166596==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+<p>Your password has been changed!</p>
+
+<p>Thanks for using our site!</p>
+
+<p>The localhost:8000 team</p>
+--===============4560270213218166596==--
+
+-------------------------------------------------------------------------------

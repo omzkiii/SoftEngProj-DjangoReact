@@ -1,7 +1,9 @@
  //TODO: fetch analytics based on month and year props    
-    
+import axios from "axios";
+import { useEffect, useState } from "react";
     
     const FinancialReport = () => {
+      const [sales, setSales] = useState([]);
        
         const analytics =[
           {

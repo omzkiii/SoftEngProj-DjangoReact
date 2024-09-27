@@ -1,0 +1,40 @@
+Content-Type: multipart/alternative;
+ boundary="===============9049276305334772981=="
+MIME-Version: 1.0
+Subject: Password reset on localhost:8000
+From: webmaster@localhost
+To: sooyoung@email.com
+Date: Wed, 06 Dec 2023 00:01:57 -0000
+Message-ID: <170182091783.17152.14016541172551505865@MEDEA>
+
+--===============9049276305334772981==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+You're receiving this email because you requested a password reset for your user account at localhost:8000.
+
+Please go to the following page and choose a new password:
+http://localhost:3000/newpassword/OQ/bys0z9-e24b6bcc0f1825a8060e0b7538236ff4
+Your username, in case you've forgotten: psooyoung
+
+Thanks for using our site!
+
+The localhost:8000 team
+--===============9049276305334772981==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+<p>You're receiving this email because you requested a password reset for your user account at localhost:8000.</p>
+
+<p>Please go to the following page and choose a new password:</p>
+<a href="http://localhost:3000/newpassword/OQ/bys0z9-e24b6bcc0f1825a8060e0b7538236ff4">http://localhost:3000/newpassword/OQ/bys0z9-e24b6bcc0f1825a8060e0b7538236ff4</a>
+<p>Your username, in case you've forgotten: <b>psooyoung</b></p>
+
+<p>Thanks for using our site!</p>
+
+<p>The localhost:8000 team</p>
+--===============9049276305334772981==--
+
+-------------------------------------------------------------------------------

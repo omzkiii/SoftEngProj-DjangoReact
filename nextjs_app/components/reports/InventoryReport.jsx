@@ -1,62 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from '@/components/Modal';
+import { useLoggedInContext } from '@/contexts/LoggedInContext';
+import axios from 'axios';
 
 const InventoryReport = () => {
+  const { products, fetchProducts, user } = useLoggedInContext();
+  const [updateFlag, setUpdateFlag] = useState(Date.now());
+
   const [showDescriptionModal, setShowDescriptionModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
 
-
-  
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [editedItem, setEditedItem] = useState(null);
-
-  // THE TEST ITEMS AND VARIABLES
-  const items = [
-    {
-      Id : 1,
-      productImg: '/kamotePic.jpg',
-      name: 'Kamote',
-      qty: 54,
-      costPerUnit: '120/kg',
-      //Use "<br>" to indicate a new line, use back ticks for new lines too.
-      description: 
-      `
-     
-      Price: 120/kg<br>
-      Quantity: 54kg <br> 
-
-      This Kamote has been harvested in the grenest fields of Batanes <br>
-      Handpicked and fertilized from the farmers that brought joy to the land. <br>
-      Taste the freshest and organic sweet potato refined by filipinos, for the nationhood! <br>
-       `
-    },
-    {
-      Id: 2,
-      productImg: '/chickenBreastPic.jpg',
-      name: 'Chicken Breast',
-      qty: 62,
-      costPerUnit: '170/kg',
-      description: 
-      `Price: 170/kg <br>
-      quantity: 62 kg <br>
-
-      Chicken breast from the green field of Central Luzon where chickens are fed  <br>
-      with organic and healthy feeds. Taste the delicate poultry of the north now with AgriAccess!
-       `
-    }
-    
-  ];
-
-  
-  //TEST OPEN CLOSE MODALS FOR DESCRIPTION 
-  const [isDescriptionModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => {
-    setDescriptionModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  const [selectedItem, setSelectedItem] = useState(false);
+  const [editedItem, setEditedItem] = useState(false);
+ 
 
   //CURRENT MODALS FOR DESCRIPTION
   const openDescriptionModal = (item) => {
@@ -69,39 +25,61 @@ const InventoryReport = () => {
     setSelectedItem(null);
   };
   
-6
-// The Function to update the details in db (To EDIT)
-const handleEdit = () => {
-    if (editedItem) {
-      const updatedItems = items.map((item, index) => {
-        if (index === editedItem.index) {
-          return editedItem.editedData;
-      }
-      return item;
-    });
-
-    setItems(updatedItems);
-    setShowModal(false); 
+  const handleAdd = () => {
+      console.log(products)
   }
-};
+
+  
    // Function to open the edit modal with the selected item's details
-   const openEditModal = (item, index) => {
+  const openEditModal = (item, index) => {
     setEditedItem({ editedData: { ...item }, index });
     setShowUpdateModal(true);
     setSelectedItem(item); // Set the selected item for displaying the image in the update modal
   };
 
+  const updateProducts = (productId, productQty, productPrice) => {
+    const productData = {
+      "quantity": productQty,
+      "price": productPrice
+    }
+    try {
+      const response = axios.patch(`http://127.0.0.1:8000/api/products/update/${productId}`,productData,{
+        headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Token ' + localStorage.getItem('token')
+      }})
+      console.log(productId+productQty+productPrice)
+      setUpdateFlag(Date.now())
+      
+    } catch (error) {
+      console.log("CART EDIT FAIL")
+    }
+  }
+  const handleEdit = (id,itemQty,itemPrice) => {
+    updateProducts(id, itemQty, itemPrice)
+    setEditedItem(false); 
+  };
+  useEffect (()=>{
+    fetchProducts()
+  },[updateFlag])
+  
+
 
   return (
     <div>
-      <div className="text-center font-serif color text-amber-400 m-4 text-4xl font-extrabold">
+      <div className="text-center font-Bree  text-AgriAccessOrange m-4 text-4xl font-extrabold">
         <h2> INVENTORY </h2>
       </div>
 
+      <div className='mb-2 flex justify-end '>
+        <button className="bg-Lime font-Bree py-2 px-5 rounded-md" onClick={()=>handleAdd()}>
+          Add Item
+        </button>
+      </div>
       <div className="overflow-x-auto text-black">
         <table className="min-w-full">
           <thead>
-            <tr className="text-center bg-amber-400  font-extrabold font-serif text-2xl">
+            <tr className="text-center bg-AgriAccessOrange  font-Bree  text-2xl">
               <th className="text-center text-white">PRODUCT</th>
               <th className="text-center text-white">PRODUCT NAME</th>
               <th className="text-center text-white">QUANTITY</th>
@@ -111,12 +89,12 @@ const handleEdit = () => {
           </thead>
 
           <tbody>
-            {items.map((item, index) => (
+            {products.map((item, index) => (
               <tr key={index} className="py-4 text-center items-center">
                 <td className="align-middle text-center items-center cursor-pointer"
                 onClick={() => openDescriptionModal(item)}> 
                   <img 
-                    src={item.productImg}
+                    src={item.image}
                     alt={item.name}
                     width={100}
                     height={100}
@@ -127,41 +105,31 @@ const handleEdit = () => {
                 <td>{item.name}</td>
                 <td>
                   <div className="flex items-center justify-center">
-                    <button className="border font-bold border-white rounded-full w-8 h-8 bg-transparent text-green-500 hover:bg-green-100">
-                      -
-                    </button>
-                    <span className="mx-2">{item.qty}</span>
-                    <button className="border font-bold border-white  w-8 h-8 bg-transparent text-green-500 hover:bg-green-100">
-                      +
-                    </button>
+                    <span className="mx-2">{item.quantity}</span>
                   </div>
               </td>
               <td>
-                {item.costPerUnit}
+                {item.price}
               </td>
                 
-              <td className="items-center">
-                <div className="space-x-2">
-                  <button onClick={() => openEditModal(item, index)} className="px-2 py-1 bg-green-400 text-white rounded">Update</button>
-                  <button className="px-2 py-1 bg-red-500 text-white rounded">Delete</button>
+              <td className="flex justify-center">
+                <div className=" flex flex-col space-y-1 ">
+                  <button onClick={() => {openEditModal(item, index)}} className="px-2 py-1 w-20 font-Bree bg-AgriAccessGreen text-white rounded-md">Update</button>
+                  <button className="px-2 py-1 w-20 bg-red-500 font-Bree text-white rounded-md">Delete</button>
                 </div>
               </td>
               </tr>
             ))}
           </tbody>
         </table>
-
-
-
-        
       </div>
 
       {/* Modal for the Description of the product */}
       {selectedItem && (
         <Modal isOpen={showDescriptionModal} closeModal={closeDescriptionModal}>
-          <div className="bg-green-500 text-white rounded-lg shadow-lg p-4 text-center">
+          <div className="bg-green-500 text-white rounded-md-md-lg shadow-lg p-4 text-center">
             <div className='text-center'>
-              <h1>{selectedItem.name}</h1>
+              <h1>{selectedItem?.name}</h1>
             </div>
             
             {/* Part of the code that does the multi-line when \n is typed */}
@@ -186,18 +154,14 @@ const handleEdit = () => {
                     height={200}
                   />
             </div>
-            <form className="flex flex-col  ">
-
-              <label className="text-black m-1">Product ID: </label>
-                <input className="text-black m-1" type="text" value={items.productId}  placeholder={selectedItem?.Id}/>
-              <label className="text-black m-1"> Product Name:</label>
-                <input className="text-black m-1" type="text" value={items.name} placeholder={selectedItem?.name} />
+            <form id='update_form' className="flex flex-col  ">
+              <h1 className="text-black m-1"> {selectedItem?.name}</h1>
               <label className="text-black m-1"> Quantity:</label>
-                <input className="text-black m-1" type="text" value={items.qty} placeholder={selectedItem?.qty} />
+                <input className="text-black m-1" type="text"  id='itemQty' placeholder={selectedItem?.quantity} />
               <label className="text-black m-1">Price:</label>
-                <input className="text-black m-1" type="text" value={items.costPerUnit}  placeholder={selectedItem?.costPerUnit} />
+                <input className="text-black m-1" type="text" id='itemPrice' placeholder={selectedItem?.price} />
              
-            <button onClick={handleEdit} className="bg-green-500 p-1 rounded-xl">Save Changes</button>
+              <button type="button" onClick={()=>handleEdit(selectedItem?.id,itemQty.value,itemPrice.value)} className="bg-green-500 p-1 rounded-md-md-xl text-black">Save Changes</button>
             </form>
           </div>
 

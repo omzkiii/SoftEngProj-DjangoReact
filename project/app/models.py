@@ -50,26 +50,6 @@ class Cart(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.DecimalField(max_digits=20, decimal_places=2)
 
-    def transfer_to_order(self):
-        # Retrieve the products in the cart
-        cart_products = Cart.objects.filter(customer=self.customer)
-
-        # Create an order
-        new_order = Order.objects.create(user=self.customer, status=Order.UNPAID)
-
-        # Transfer each product from the cart to OrderProduct
-        for cart_product in cart_products:
-            OrderProduct.objects.create(
-                order=new_order,
-                product=cart_product.product,
-                quantity=cart_product.quantity
-            )
-
-        # Optionally, you can clear the cart after transferring the products
-        #cart_products.delete()
-
-        return new_order
-
     def __str__(self) -> str:
         return f"{self.customer.user.username}'s Cart"
 
@@ -132,6 +112,9 @@ class Order(models.Model):
 
     
     user = models.ForeignKey(Customer, on_delete=models.DO_NOTHING)
+    name = models.CharField(max_length=255, null=True)
+    contact_no = models.CharField(max_length=255, null=True)
+    address = models.CharField(max_length=255, null=True)
     product = models.ManyToManyField(Product, through="OrderProduct")
     date_placed = models.DateTimeField(auto_now_add=True)
     date_completed = models.DateTimeField(null=True, blank=True)

@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+import Link from 'next/link';
 
 const PaymentInstructions = () => {
   const [email, setEmail] = useState('');
@@ -24,27 +25,27 @@ const PaymentInstructions = () => {
   };
 
   return (
-    <div className="bg-green-100 min-h-screen flex flex-col items-center justify-center">
-      <h1 className="font-extrabold text-green-500 mb-4 text-8xl">Payment Instructions</h1>
-      <h2 className="text-2xl font-bold text-green-500">Seller Bank Accounts</h2>
+    <div className="bg-green min-h-screen font-Bree flex flex-col items-center justify-center">
+      <h1 className="font-extrabold text-amber-400 mb-4 text-8xl">Payment Instructions</h1>
+      <h2 className="text-2xl font-bold text-white">Seller Bank Accounts</h2>
       <br>
       </br>
       <ul>
         {sellerAccounts.map((account, index) => (
           <li key={index}>
-            <p className="text-lg text-green-700 mb-8 text-center" >Bank Name: {account.bankName}</p>
-            <p className="text-lg text-green-700 mb-8">Account Number: {account.accountNumber}</p>
+            <p className="text-lg mb-8 text-center" >Bank Name: {account.bankName}</p>
+            <p className="text-lg mb-8">Account Number: {account.accountNumber}</p>
             
           </li>
         ))}
       </ul>
-      <p className="text-lg text-green-700 mb-8">Please send the Receipt here</p>
-      <p className="text-lg text-green-700 mb-8">agriaccess@gmail.com</p>
+      <p className="text-lg mb-8">Please send the Receipt here</p>
+      <p className="text-lg mb-8">agriaccess@gmail.com</p>
       <div>
         <button 
         onClick={handleSubmit}
-        className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800"
-        >Done</button>
+        className="bg-amber-400 text-white px-4 py-2 rounded-lg hover:bg-white hover:text-green border-2 border-solid "
+        ><Link href="/">Done</Link></button>
       </div>
     </div>
   );
